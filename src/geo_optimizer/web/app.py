@@ -28,7 +28,7 @@ from urllib.parse import urlsplit
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -2415,6 +2415,34 @@ async def analyze_logs(request: Request):
 
     return JSONResponse(content=dataclasses.asdict(result))
 
+
+# ─── Redirect 301 espliciti (SEO) ─────────────────────────────────────────────
+# Pagine che sono esistite in produzione (e avevano ranking/impression in GSC) ma
+# sono cadute nel passaggio di branch: senza redirect rispondono 404 e l'equity
+# accumulata va persa. Registrate PRIMA del mount StaticFiles così vincono il
+# match; la variante senza slash va registrata a parte perché per un path
+# inesistente StaticFiles risponderebbe 404 senza mai emettere il 307/301.
+_SEO_REDIRECTS = {
+    "/de/beste-geo-tools": "/best-geo-tools/",
+    "/nl/beste-geo-tools": "/best-geo-tools/",
+}
+
+
+def _register_seo_redirects() -> None:
+    for source, target in _SEO_REDIRECTS.items():
+
+        def make_handler(dest: str):
+            async def permanent_redirect() -> RedirectResponse:
+                return RedirectResponse(url=dest, status_code=301)
+
+            return permanent_redirect
+
+        handler = make_handler(target)
+        app.get(source, include_in_schema=False)(handler)
+        app.get(source + "/", include_in_schema=False)(handler)
+
+
+_register_seo_redirects()
 
 # Garantisce il MIME corretto per i woff2 (alcuni ambienti li servono come
 # application/octet-stream, invalidando il <link rel="preload" as="font">).

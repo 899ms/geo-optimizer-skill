@@ -746,3 +746,37 @@ def test_ai_service_json_restituisce_capabilities(client):
     assert "name" in data
     assert "capabilities" in data
     assert len(data["capabilities"]) > 0
+
+
+# ─── Test: redirect 301 SEO ──────────────────────────────────────────────────
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        "/de/beste-geo-tools",
+        "/de/beste-geo-tools/",
+        "/nl/beste-geo-tools",
+        "/nl/beste-geo-tools/",
+    ],
+)
+def test_pagine_comparison_ritirate_ridirigono_301_su_best_geo_tools(client, source):
+    """Le pagine DE/NL ritirate devono rispondere 301 verso /best-geo-tools/.
+
+    Erano servite in produzione (impression e ranking in GSC) e sono cadute nel
+    passaggio di branch: senza il 301 risponderebbero 404 e l'equity va persa.
+    """
+    response = client.get(source, follow_redirects=False)
+
+    assert response.status_code == 301, f"{source} deve rispondere 301, non {response.status_code}"
+    assert response.headers["location"] == "/best-geo-tools/"
+
+
+def test_redirect_seo_non_intercetta_altri_path(client):
+    """Un path fuori dalla mappa redirect non deve ricevere un 301 dalla mappa.
+
+    /best-geo-tools/ (la destinazione) e un path inesistente qualunque devono
+    passare a StaticFiles: la mappa non deve fare da catch-all.
+    """
+    response = client.get("/de/qualcosa-altro", follow_redirects=False)
+    assert response.status_code == 404
