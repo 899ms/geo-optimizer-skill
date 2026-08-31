@@ -37,7 +37,7 @@ const faqs = [
   },
 ];
 
-// Passi HowTo — riusati nello schema HowTo (procedura del tool).
+// Passi della procedura mostrati nella sezione "How it works" della pagina.
 const howToSteps = [
   {
     name: 'Enter your URL and competitor URLs',
@@ -313,17 +313,4 @@ const howToSteps = [
     ]
   })} />
 
-  {/* HowTo schema — procedura del tool di analisi competitor */}
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to analyze competitor AI visibility with GeoReady",
-    "description": "Benchmark your site against competitor domains to see which is most ready to be cited by AI answer engines, then prioritise fixes by scoring weight.",
-    "step": howToSteps.map((step, index) => ({
-      "@type": "HowToStep",
-      "position": index + 1,
-      "name": step.name,
-      "text": step.text
-    }))
-  })} />
 </Shell>

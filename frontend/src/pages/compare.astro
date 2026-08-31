@@ -24,14 +24,6 @@ const SCORE_BANDS = [
   ['0–35', 'Critical', 'Crawlability or structure blocks visibility before content matters.'],
 ] as const;
 
-// I passi del confronto — riusati nel markup visibile e nello schema HowTo.
-const HOWTO_STEPS = [
-  ['Enter the first URL', 'Type the address of site A — your own domain or a reference competitor — into the first field.'],
-  ['Enter the second URL', 'Type the address of site B in the second field. Both URLs are validated before they are fetched.'],
-  ['Run the free comparison', 'Start the head-to-head audit. Each site is scored across the same 8 signal categories, with no account required.'],
-  ['Read the side-by-side gap', 'Compare the two GEO scores category by category and identify where one domain holds a measurable advantage.'],
-] as const;
-
 // FAQ visibili — riusate sia nel markup crawlable che nello schema FAQPage.
 // Tenere allineate: ogni modifica al testo va replicata in entrambi i punti.
 const faqs = [
@@ -342,18 +334,4 @@ const faqs = [
     }))
   })} />
 
-  {/* HowTo — i passi del confronto due siti */}
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to compare AI search visibility for two sites",
-    "description": "Run a free head-to-head GEO comparison: enter two URLs, score each site across the same 8 signal categories, and read the side-by-side gap.",
-    "totalTime": "PT2M",
-    "step": HOWTO_STEPS.map(([name, text], index) => ({
-      "@type": "HowToStep",
-      "position": index + 1,
-      "name": name,
-      "text": text
-    }))
-  })} />
 </Shell>

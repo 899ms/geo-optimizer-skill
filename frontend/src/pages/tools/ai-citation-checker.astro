@@ -13,13 +13,6 @@ const description =
   'Free AI citation checker powered by Perplexity Sonar: see whether AI answer engines mention your brand and cite your domain — with real, verifiable source citations.';
 const canonical = 'https://geoready.dev/tools/ai-citation-checker/';
 
-// I passi del controllo — riusati nello schema HowTo.
-const HOWTO_STEPS = [
-  ['Enter your domain', 'Type your brand, domain, and product category so the checker can ask the questions your customers would ask.'],
-  ['Run the free check', 'Start the citation check. The tool queries a source-backed AI answer engine — no account required.'],
-  ['Read the verdict', 'See whether ChatGPT- and Perplexity-style answers cite your domain, mention you without citing, or cite a competitor instead — and which sources were returned.'],
-] as const;
-
 // FAQ visibili — riusate sia nel markup crawlable che nello schema FAQPage.
 const faqs = [
   {
@@ -374,18 +367,6 @@ const faqs = [
             "@type": "Answer",
             "text": faq.answer
           }
-        }))
-      },
-      {
-        "@type": "HowTo",
-        "name": "How to check if AI answers cite you",
-        "description": "Run a free AI citation check powered by Perplexity Sonar: enter your domain, run the check, and read whether AI answer engines cite you or a competitor.",
-        "totalTime": "PT1M",
-        "step": HOWTO_STEPS.map(([name, text], index) => ({
-          "@type": "HowToStep",
-          "position": index + 1,
-          "name": name,
-          "text": text
         }))
       },
       {

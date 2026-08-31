@@ -25,7 +25,11 @@ if (!article) return Astro.redirect('/404', 301);
 
 const canonical = `https://geoready.dev/guides/${slug}/`;
 const title = article.metaTitle || article.title;
-const schemaType = article.schemaOrgType || 'Article';
+// HowTo è deprecato per Google (set 2023) e qui sostituirebbe l'entità Article
+// principale con proprietà che HowTo nemmeno prevede (headline, ecc.). Se il CMS
+// lo indica ancora su vecchi articoli, degrada ad Article; la bonifica del campo
+// schemaOrgType va fatta in Sanity Studio.
+const schemaType = article.schemaOrgType === 'HowTo' ? 'Article' : article.schemaOrgType || 'Article';
 const author = article.author || 'Juan Camilo Auriti';
 const ogImageUrl = article.ogImage?.asset
   ? urlForImage(article.ogImage).width(1200).height(630).fit('crop').auto('format').url()
