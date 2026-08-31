@@ -95,9 +95,22 @@ async function fetchSanityEntries() {
       warnings.push(`SANITY SKIP: "${a.slug}" ha categoria "${a.category}" senza route dinamica nota — non aggiunto alla sitemap.`);
       continue;
     }
-    out.push({ url: `${prefix}${a.slug}/`, lastmod: a.dateModified || a.datePublished || today() });
+    out.push({ url: `${prefix}${a.slug}/`, lastmod: clampToToday(a.dateModified || a.datePublished || today(), a.slug) });
   }
   return out;
+}
+
+/** Un lastmod nel futuro non è mai onesto: un articolo live con dateModified/
+ *  datePublished programmata oltre oggi (data editoriale scritta a mano, o legacy
+ *  senza status) finirebbe in sitemap con una data che Google può solo considerare
+ *  falsa, insegnandogli a ignorare il tag. Clamp a oggi, con avviso. */
+function clampToToday(date, slug) {
+  const cap = today();
+  if (date > cap) {
+    warnings.push(`LASTMOD FUTURO: "${slug}" dichiara ${date} — clampato a ${cap}.`);
+    return cap;
+  }
+  return date;
 }
 
 // changefreq/priority curati per pagina (preserva i valori storici della sitemap).
