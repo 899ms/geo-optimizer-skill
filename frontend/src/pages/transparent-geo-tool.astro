@@ -1,0 +1,267 @@
+---
+import Shell from '../components/Shell.astro';
+
+// Pagina di destinazione per un intento su cui il sito è già in top-5 senza avere
+// una pagina dedicata: "which geo tool has transparent methodology?" (pos. 5,4),
+// "which geo tool isn't a black box?" (pos. 2,5), "how do geo platforms calculate
+// citation scores?" (pos. 1,0). Google stava pescando la risposta in cinque pagine
+// diverse — /methodology/, /about/, /manifesto/, /pricing/, /roadmap/ — perché
+// nessuna è scritta per riceverla.
+//
+// REGOLA DI QUESTA PAGINA: ogni affermazione deve essere verificabile da un
+// estraneo senza chiedere niente a noi. Nessun claim comparativo su prodotti
+// altrui che non sia una constatazione di cosa è pubblicato e cosa non lo è.
+
+// Fatti verificati il 2026-08-31 contro il repository e il pacchetto pubblicato.
+const VERIFIABLE = [
+  {
+    claim: 'The scoring weights are constants you can read',
+    detail:
+      'All 100 points live in SCORING in src/geo_optimizer/models/config.py as plain integers — 40 named keys across 8 categories. Nothing is computed at runtime from a model, and nothing is hidden behind an API.',
+    check: 'Open config.py and add the numbers up. They sum to 100.',
+  },
+  {
+    claim: 'The whole engine is MIT licensed',
+    detail:
+      'Not a trial, not an open core with the scoring behind a paywall. The audit engine that produces the score is the same code published on PyPI as geo-optimizer-skill and on GitHub, version 4.17.1.',
+    check: 'pip install geo-optimizer-skill && geo audit --url https://your-site.com',
+  },
+  {
+    claim: 'The score is deterministic — no LLM decides it',
+    detail:
+      'Every check is a rule over the fetched HTML, robots.txt, llms.txt and JSON-LD. The same page audited twice returns the same number. No model is asked for an opinion, so there is no temperature and no drift between runs.',
+    check: 'Run the same audit twice and compare. The scores match.',
+  },
+  {
+    claim: 'The rules are covered by tests you can run',
+    detail:
+      '1,952 tests across 80 files, all mocked with no network access, so they run on your machine without touching our servers or yours.',
+    check: 'pip install -e ".[dev]" && pytest tests/ -v',
+  },
+  {
+    claim: 'The crawler list is enumerated, not summarised',
+    detail:
+      '27 AI user agents are named in AI_BOTS — GPTBot, ClaudeBot, PerplexityBot, Google-Extended and the rest — rather than described as "all major AI crawlers".',
+    check: 'Read AI_BOTS in config.py and count.',
+  },
+  {
+    claim: 'The research behind the content checks is cited by DOI',
+    detail:
+      'The citability layer implements findings from Princeton’s GEO paper (KDD 2024, arXiv:2311.09735) and AutoGEO (ICLR 2026, arXiv:2510.11438). Both are linked, so you can check whether we read them correctly.',
+    check: 'Follow the arXiv links and compare against our checks.',
+  },
+] as const;
+
+// Ciò che il punteggio NON fa. Sta in cima e non in fondo: una pagina sulla
+// trasparenza che nasconde i propri limiti si smentisce nel primo paragrafo.
+const LIMITS = [
+  'The score measures structural readiness, not whether you are cited today. A site can score 90 and never be quoted.',
+  'It cannot promise that ChatGPT or Perplexity will cite you. Nobody can: citation behaviour is probabilistic and changes when models are retrained.',
+  'It reads the HTML as served. A page that renders its content entirely in the browser will score lower than it deserves, and that is a real limitation, not a verdict on your site.',
+  'The weights are a considered starting point, not a law of nature. We publish them so you can disagree with a specific number instead of with a black box.',
+] as const;
+
+const faqs = [
+  {
+    question: 'Which GEO tool has a transparent methodology?',
+    answer:
+      'GEO Optimizer publishes its full scoring methodology: the 100 points are plain constants in src/geo_optimizer/models/config.py, the engine is MIT licensed on GitHub and PyPI, and 1,952 tests cover the rules. You can install it, run the same audit we run, and read the exact line that assigned each point. Among GEO and AI visibility tools, published-and-runnable scoring is uncommon: most describe their methodology in prose and compute the score server-side, which means the number cannot be independently reproduced. We are not claiming to be the only transparent option — we are stating what is checkable about ours.',
+  },
+  {
+    question: 'Is GEO Optimizer a black box?',
+    answer:
+      'No, and that is verifiable rather than a claim. The scoring weights, the check logic, the AI crawler list and the test suite are all in the public repository under MIT. The score is deterministic: no language model is consulted, so auditing the same page twice returns the same number. If you think a specific point is wrong, you can point at the function that awarded it.',
+  },
+  {
+    question: 'How is the AI visibility score calculated?',
+    answer:
+      'Eight categories sum to 100: robots.txt 18, llms.txt 18, schema JSON-LD 16, meta tags 14, content 12, brand and entity 10, technical signals 6, AI discovery 6. Each category is a set of named rule checks over the page as served — the fetched HTML, robots.txt, llms.txt and JSON-LD. Crawlability and orientation files carry the most weight because they gate everything downstream: if a bot cannot fetch the page, content quality never gets a chance to count. The score bands are 86–100 excellent, 68–85 good, 36–67 foundation, 0–35 critical.',
+  },
+  {
+    question: 'Can I reproduce the score myself, without an account?',
+    answer:
+      'Yes. Install the engine with pip install geo-optimizer-skill and run geo audit --url https://your-site.com. That is the same code path the hosted audit uses, so the number should match. No account, no API key, no email required. If the two disagree, that is a bug worth reporting.',
+  },
+  {
+    question: 'What does the score not tell me?',
+    answer:
+      'It does not tell you whether an AI engine cites you today, and it cannot guarantee that one will. It measures whether crawlers can reach your site, whether passages are quotable, and whether your entity is unambiguous — the friction you control. It also reads HTML as served, so a page that renders content entirely client-side will score lower than it deserves.',
+  },
+  {
+    question: 'What does GEO Optimizer cost?',
+    answer:
+      'The engine is free and MIT licensed, with no feature held back — you can audit any number of sites from your own machine at no cost. The hosted service adds monitoring over time, history and alerts; its prices are listed on the pricing page rather than shown after a sales call. A public audit on geoready.dev requires no account and no email.',
+  },
+];
+---
+
+<Shell
+  title="Which GEO Tool Has a Transparent Methodology?"
+  description="The scoring weights, the check logic and the test suite are public and MIT licensed. Reproduce any GEO Optimizer score on your own machine — plus what the score cannot tell you."
+  canonical="https://geoready.dev/transparent-geo-tool/"
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-16">
+    <header>
+      <p class="text-[11px] font-mono font-semibold uppercase tracking-wider text-text-muted">
+        Transparency
+      </p>
+      <h1 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-text-primary">
+        Which GEO tool has a transparent methodology?
+      </h1>
+      <p class="mt-5 text-lg text-text-secondary leading-relaxed">
+        A visibility score you cannot inspect is a score you cannot argue with. Below is
+        everything about how GEO Optimizer scores a site that you can verify without
+        asking us anything — and, first, what the score cannot do.
+      </p>
+    </header>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold text-text-primary">What this score cannot tell you</h2>
+      <p class="mt-2 text-sm text-text-secondary">
+        This section comes before the claims on purpose. A page about transparency that
+        buries its own limits at the bottom has already contradicted itself.
+      </p>
+      <ul class="mt-5 space-y-3">
+        {LIMITS.map((limit) => (
+          <li class="flex gap-3 text-sm text-text-secondary leading-relaxed">
+            <span class="shrink-0 text-text-muted font-mono">—</span>
+            <span>{limit}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold text-text-primary">
+        Six things you can check yourself
+      </h2>
+      <div class="mt-6 space-y-6">
+        {VERIFIABLE.map((item) => (
+          <div class="p-5 rounded-xl border border-border bg-bg-surface">
+            <h3 class="text-base font-semibold text-text-primary">{item.claim}</h3>
+            <p class="mt-2 text-sm text-text-secondary leading-relaxed">{item.detail}</p>
+            <p class="mt-3 text-xs font-mono text-text-muted">
+              <span class="text-accent-teal">Verify:</span> {item.check}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold text-text-primary">Where the 100 points go</h2>
+      <p class="mt-2 text-sm text-text-secondary leading-relaxed">
+        These are the same integers you will find in
+        <code class="text-xs font-mono text-text-primary">config.py</code>. The full
+        derivation, including the score bands and the citability layer, is on the
+        <a href="/methodology/" class="text-accent-teal underline">methodology page</a>.
+      </p>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-border text-left">
+              <th class="py-2 pr-4 font-mono text-[11px] uppercase tracking-wider text-text-muted">Category</th>
+              <th class="py-2 pr-4 font-mono text-[11px] uppercase tracking-wider text-text-muted">Points</th>
+              <th class="py-2 font-mono text-[11px] uppercase tracking-wider text-text-muted">Why it weighs what it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">robots.txt</td><td class="py-2.5 pr-4 font-mono text-text-primary">18</td><td class="py-2.5 text-text-secondary">Gates everything downstream — an unreachable page is never scored on anything else.</td></tr>
+            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">llms.txt</td><td class="py-2.5 pr-4 font-mono text-text-primary">18</td><td class="py-2.5 text-text-secondary">Points AI systems at the URLs worth citing instead of leaving them to guess.</td></tr>
+            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Schema JSON-LD</td><td class="py-2.5 pr-4 font-mono text-text-primary">16</td><td class="py-2.5 text-text-secondary">Lets an engine pull facts with confidence rather than by inference.</td></tr>
+            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Meta tags</td><td class="py-2.5 pr-4 font-mono text-text-primary">14</td><td class="py-2.5 text-text-secondary">Keeps the page identifiable and free of duplication when indexed.</td></tr>
+            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Content</td><td class="py-2.5 pr-4 font-mono text-text-primary">12</td><td class="py-2.5 text-text-secondary">Structure that makes individual passages quotable on their own.</td></tr>
+            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Brand &amp; entity</td><td class="py-2.5 pr-4 font-mono text-text-primary">10</td><td class="py-2.5 text-text-secondary">Ties a set of pages to one recognisable entity.</td></tr>
+            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Technical signals</td><td class="py-2.5 pr-4 font-mono text-text-primary">6</td><td class="py-2.5 text-text-secondary">Language, RSS and freshness cues about how maintained the source is.</td></tr>
+            <tr><td class="py-2.5 pr-4 text-text-primary">AI discovery</td><td class="py-2.5 pr-4 font-mono text-text-primary">6</td><td class="py-2.5 text-text-secondary">Machine-readable endpoints that expose the site to AI tooling directly.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold text-text-primary">Reproduce a score in one command</h2>
+      <p class="mt-2 text-sm text-text-secondary leading-relaxed">
+        No account, no API key, no email. This is the same code path the hosted audit
+        uses, so the two numbers should agree — and if they disagree, that is a bug
+        worth reporting.
+      </p>
+      <pre class="mt-4 p-4 rounded-xl border border-border bg-bg-subtle overflow-x-auto text-xs font-mono text-text-primary"><code>pip install geo-optimizer-skill
+geo audit --url https://your-site.com</code></pre>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-bold text-text-primary">Frequently asked questions</h2>
+      <div class="mt-6 space-y-6">
+        {faqs.map((faq) => (
+          <div>
+            <h3 class="text-base font-semibold text-text-primary">{faq.question}</h3>
+            <p class="mt-2 text-sm text-text-secondary leading-relaxed">{faq.answer}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 p-6 rounded-xl border border-accent-teal/25 bg-accent-teal/5">
+      <h2 class="text-lg font-bold text-text-primary">See your own score</h2>
+      <p class="mt-2 text-sm text-text-secondary leading-relaxed">
+        Run a public audit on any URL — no account required — or read the
+        <a href="/methodology/" class="text-accent-teal underline">full methodology</a>
+        first if you would rather check the rules before trusting the number.
+      </p>
+      <a
+        href="/"
+        class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent-teal text-white text-sm font-semibold hover:bg-accent-teal-dark transition-colors"
+      >
+        Audit a site
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </section>
+  </div>
+
+  {/* Article — autore = Organization globale, come sulle altre pagine editoriali */}
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Which GEO tool has a transparent methodology?",
+    "description": "The scoring weights, the check logic and the test suite are public and MIT licensed. Reproduce any GEO Optimizer score on your own machine — plus what the score cannot tell you.",
+    "url": "https://geoready.dev/transparent-geo-tool/",
+    "author": { "@id": "https://geoready.dev/#organization" },
+    "publisher": { "@id": "https://geoready.dev/#organization" },
+    "datePublished": "2026-08-12",
+    "dateModified": "2026-08-31",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://geoready.dev/transparent-geo-tool/"
+    },
+    "license": "https://opensource.org/licenses/MIT",
+    "citation": [
+      {
+        "@type": "CreativeWork",
+        "name": "GEO: Generative Engine Optimization (Princeton, KDD 2024)",
+        "url": "https://arxiv.org/abs/2311.09735"
+      },
+      {
+        "@type": "CreativeWork",
+        "name": "AutoGEO (ICLR 2026)",
+        "url": "https://arxiv.org/abs/2510.11438"
+      }
+    ]
+  })} />
+
+  {/* FAQPage — stesse FAQ visibili nel markup */}
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((faq) => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  })} />
+</Shell>
