@@ -401,9 +401,13 @@ const medPct = Math.max(0, Math.min(100, Number(BENCHMARK.median) || 0));
                   href={c.link.href}
                   target={c.link.href.startsWith('http') ? '_blank' : undefined}
                   rel={c.link.href.startsWith('http') ? 'noopener' : undefined}
-                  class="mt-2 inline-block text-sm font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep"
+                  class="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep"
                 >
-                  {c.link.label} →
+                  {c.link.label}
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                  </svg>
                 </a>
               )}
             </div>

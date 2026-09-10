@@ -24,6 +24,11 @@ const shipped = phase.items.filter((i) => i.status === 'available').length;
 const shippedPct = total > 0 ? Math.round((shipped / total) * 100) : 0;
 
 const phaseIndex = String(index + 1).padStart(2, '0');
+
+// Filler cells so the hairline grid never exposes the rail ground as full
+// slabs in unfilled trailing slots: the rail must stay a 1px seam only.
+const fillSm = (2 - (total % 2)) % 2;
+const fillLg = (3 - (total % 3)) % 3;
 ---
 
 <section>
@@ -53,5 +58,9 @@ const phaseIndex = String(index + 1).padStart(2, '0');
         </li>
       );
     })}
+    {fillSm > 0 && <li aria-hidden="true" class="hidden bg-white sm:block lg:hidden"></li>}
+    {Array.from({ length: fillLg }).map(() => (
+      <li aria-hidden="true" class="hidden bg-white lg:block"></li>
+    ))}
   </ul>
 </section>
