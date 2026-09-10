@@ -55,18 +55,18 @@ export default function EmailGateBanner({ score, categories, claimToken }: Email
   // Success state — a copy of the report is on its way
   if (status === 'success') {
     return (
-      <div className="rounded-xl border border-accent-teal/25 bg-accent-teal/5 p-6 text-center">
-        <div className="w-12 h-12 rounded-full bg-accent-teal/10 flex items-center justify-center mx-auto mb-3">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent-teal">
+      <div className="rounded-[4px] border border-pass/50 bg-pass-wash/60 p-6 text-center">
+        <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-pass-wash">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pass-deep">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
             <path d="M22 4L12 14.01l-3-3" />
           </svg>
         </div>
-        <p className="text-sm font-semibold text-text-primary mb-1">
+        <p className="mb-1 text-sm font-semibold text-ink">
           Report sent to your inbox
         </p>
-        <p className="text-xs text-text-secondary max-w-sm mx-auto leading-relaxed">
-          Check <strong className="text-text-primary">{email}</strong> for a copy of the complete
+        <p className="mx-auto max-w-sm text-xs leading-relaxed text-ink-soft">
+          Check <strong className="font-semibold text-ink">{email}</strong> for a copy of the complete
           8-category GEO breakdown with scores, signals, and recommendations.
         </p>
       </div>
@@ -74,23 +74,23 @@ export default function EmailGateBanner({ score, categories, claimToken }: Email
   }
 
   return (
-    <div className="rounded-xl border border-accent-teal/25 bg-accent-teal/5 p-5">
-      <div className="flex items-center gap-2 mb-2">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent-teal shrink-0" aria-hidden="true">
+    <div className="rounded-[4px] border border-rail bg-white p-5">
+      <div className="mb-2 flex items-center gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-ink-mute" aria-hidden="true">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
           <polyline points="22,6 12,13 2,6" />
         </svg>
-        <span className="text-sm font-semibold text-text-primary">
+        <span className="text-sm font-semibold text-ink">
           Want this report in your inbox?
         </span>
       </div>
 
-      <p className="text-sm text-text-secondary leading-snug mb-3">
+      <p className="mb-3 text-sm leading-snug text-ink-soft">
         Optional — the full report is already on this page. Enter your email and we'll
         send you a copy of the complete 8-category breakdown to keep or share.
       </p>
 
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
         <input
           type="email"
           required
@@ -98,16 +98,16 @@ export default function EmailGateBanner({ score, categories, claimToken }: Email
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={status === 'submitting'}
-          className="flex-1 px-3 py-2 rounded-lg border border-border bg-bg-surface text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-teal focus:ring-1 focus:ring-accent-teal/30"
+          className="flex-1 rounded-[4px] border border-ink/25 bg-white px-3 py-2 text-sm text-ink caret-pass-deep placeholder:text-ink-mute focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30 disabled:opacity-60"
         />
         <button
           type="submit"
           disabled={status === 'submitting' || !email || !claimToken}
-          className="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-accent-teal text-white text-sm font-semibold hover:bg-accent-teal-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-[4px] bg-pass-deep px-4 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass disabled:cursor-not-allowed disabled:opacity-50"
         >
           {status === 'submitting' ? (
             <>
-              <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-20" />
                 <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
               </svg>
@@ -116,7 +116,7 @@ export default function EmailGateBanner({ score, categories, claimToken }: Email
           ) : (
             <>
               Email me this report
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </>
@@ -125,12 +125,12 @@ export default function EmailGateBanner({ score, categories, claimToken }: Email
       </form>
 
       {status === 'error' && (
-        <p className="mt-2 text-xs text-accent-danger">{errorMsg}</p>
+        <p className="mt-2 text-xs text-fail">{errorMsg}</p>
       )}
 
-      <p className="mt-2 text-[10px] text-text-muted">
+      <p className="mt-2 text-[10px] text-ink-mute">
         One email with your report copy. No spam, unsubscribe anytime.{' '}
-        <a href="/privacy/" className="text-text-muted underline hover:text-text-secondary">Privacy Policy</a>
+        <a href="/privacy/" className="text-ink-mute underline underline-offset-2 hover:text-ink-soft">Privacy Policy</a>
       </p>
     </div>
   );

@@ -24,76 +24,81 @@ export default function BenchmarkComparison({ score, grade }: BenchmarkCompariso
   const isTopQuarter = grade === 'excellent';
 
   return (
-    <div className="p-5 rounded-xl border border-border bg-bg-surface">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-text-muted">
+    <div className="overflow-hidden rounded-[4px] border border-rail bg-white">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-rail px-5 py-2.5">
+        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">
           Benchmark
         </span>
-        <span className="text-[10px] font-mono text-text-muted">
+        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink-mute">
           State of GEO · {totalDomains} domains · June 2026
         </span>
       </div>
 
-      {/* Score vs average */}
-      <div className="grid grid-cols-3 gap-4 mb-4">
-        <div>
-          <div className="text-[10px] font-mono uppercase tracking-wider text-text-muted">Your score</div>
-          <div className="font-mono text-2xl font-bold tabular-nums text-text-primary mt-0.5">{score}</div>
+      <div className="p-5">
+        {/* Score vs average */}
+        <div className="mb-4 grid grid-cols-3 gap-4">
+          <div>
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Your score</div>
+            <div className="mt-0.5 font-mono text-2xl font-bold tabular-nums text-ink">{score}</div>
+          </div>
+          <div>
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Average</div>
+            <div className="mt-0.5 font-mono text-2xl font-bold tabular-nums text-ink-soft">{avgScore}</div>
+          </div>
+          <div>
+            <div className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Median</div>
+            <div className="mt-0.5 font-mono text-2xl font-bold tabular-nums text-ink-soft">{medianScore}</div>
+          </div>
         </div>
-        <div>
-          <div className="text-[10px] font-mono uppercase tracking-wider text-text-muted">Average</div>
-          <div className="font-mono text-2xl font-bold tabular-nums text-text-secondary mt-0.5">{avgScore}</div>
+
+        {/* Position bar — the visitor's row is solid, the cohort marker dashed */}
+        <div className="mb-3">
+          <div className="mb-1.5 flex items-center justify-between font-mono text-[10px] tabular-nums text-ink-mute">
+            <span>0</span>
+            <span>50</span>
+            <span>100</span>
+          </div>
+          <div className="relative h-2.5 overflow-hidden rounded-[2px] border border-ink/40 bg-paper">
+            {/* Cohort average marker (reference data → dashed) */}
+            <div
+              className="absolute bottom-0 top-0 w-0 border-l border-dashed border-ink-mute/60"
+              style={{ left: `${avgScore}%` }}
+              title={`Average: ${avgScore}`}
+            />
+            {/* Score bar (your data → solid fill) */}
+            <div
+              className={`h-full transition-all duration-700 ${isAboveAvg ? 'bg-pass' : 'bg-warn'}`}
+              style={{ width: `${Math.min(score, 100)}%` }}
+            />
+          </div>
         </div>
-        <div>
-          <div className="text-[10px] font-mono uppercase tracking-wider text-text-muted">Median</div>
-          <div className="font-mono text-2xl font-bold tabular-nums text-text-secondary mt-0.5">{medianScore}</div>
-        </div>
+
+        {/* Verdict */}
+        <p className="text-sm leading-relaxed text-ink-soft">
+          {isTopQuarter ? (
+            <>
+              You're in the <strong className="font-semibold text-pass-deep">top {band.share}%</strong> of audited sites —
+              only <strong className="font-semibold text-ink">{band.domains}</strong> sites reach the {gradeLabels[grade]} band.
+            </>
+          ) : isAboveAvg ? (
+            <>
+              You're <strong className="font-semibold text-pass-deep">above average</strong> (+{(score - avgScore).toFixed(1)} points),
+              but still in the {gradeLabels[grade]} band — <strong className="font-semibold text-ink">{band.share}%</strong> of sites are here.
+            </>
+          ) : (
+            <>
+              You're <strong className="font-semibold text-warn">below average</strong> ({(score - avgScore).toFixed(1)} points).
+              <strong className="font-semibold text-ink"> {band.share}%</strong> of sites are in the {gradeLabels[grade]} band — most can be reached by AI but cannot be cited with confidence.
+            </>
+          )}
+        </p>
       </div>
 
-      {/* Position bar */}
-      <div className="mb-3">
-        <div className="flex items-center justify-between text-[10px] font-mono text-text-muted mb-1.5">
-          <span>0</span>
-          <span>50</span>
-          <span>100</span>
-        </div>
-        <div className="relative h-2 rounded-full bg-bg-subtle overflow-hidden">
-          {/* Average marker */}
-          <div
-            className="absolute top-0 bottom-0 w-px bg-text-muted/40"
-            style={{ left: `${avgScore}%` }}
-            title={`Average: ${avgScore}`}
-          />
-          {/* Score bar */}
-          <div
-            className="h-full rounded-full transition-all duration-700"
-            style={{
-              width: `${Math.min(score, 100)}%`,
-              backgroundColor: isAboveAvg ? '#059669' : '#D97706',
-            }}
-          />
-        </div>
+      <div className="border-t border-rail px-5 py-2.5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink-mute">
+          source: lib/benchmark2026.ts
+        </p>
       </div>
-
-      {/* Verdict */}
-      <p className="text-sm text-text-secondary leading-relaxed">
-        {isTopQuarter ? (
-          <>
-            You're in the <strong className="text-accent-success">top {band.share}%</strong> of audited sites —
-            only <strong className="text-text-primary">{band.domains}</strong> sites reach the {gradeLabels[grade]} band.
-          </>
-        ) : isAboveAvg ? (
-          <>
-            You're <strong className="text-accent-success">above average</strong> (+{(score - avgScore).toFixed(1)} points),
-            but still in the {gradeLabels[grade]} band — <strong className="text-text-primary">{band.share}%</strong> of sites are here.
-          </>
-        ) : (
-          <>
-            You're <strong className="text-accent-warning">below average</strong> ({(score - avgScore).toFixed(1)} points).
-            <strong className="text-text-primary"> {band.share}%</strong> of sites are in the {gradeLabels[grade]} band — most can be reached by AI but cannot be cited with confidence.
-          </>
-        )}
-      </p>
     </div>
   );
 }

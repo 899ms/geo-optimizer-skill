@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import type { Recommendation } from '../../lib/mockData';
 
+// Priority → state token (Status Monopoly rule): critical reports fail,
+// high reports warn; medium/low carry no alarm state and stay neutral —
+// the chip label alone ranks them.
 const priorityConfig = {
-  critical: { color: '#DC2626', bg: 'rgba(220, 38, 38, 0.06)', border: 'rgba(220, 38, 38, 0.15)', label: 'Critical' },
-  high: { color: '#D97706', bg: 'rgba(217, 119, 6, 0.06)', border: 'rgba(217, 119, 6, 0.15)', label: 'High' },
-  medium: { color: '#0D9488', bg: 'rgba(13, 148, 136, 0.06)', border: 'rgba(13, 148, 136, 0.15)', label: 'Medium' },
-  low: { color: '#475569', bg: 'rgba(71, 85, 105, 0.06)', border: 'rgba(71, 85, 105, 0.15)', label: 'Low' },
+  critical: { chip: 'bg-fail-wash text-fail', label: 'Critical' },
+  high: { chip: 'bg-warn-wash text-warn', label: 'High' },
+  medium: { chip: 'border border-rail text-ink-mute', label: 'Medium' },
+  low: { chip: 'border border-rail text-ink-mute', label: 'Low' },
 };
 
 interface RecommendationListProps {
@@ -25,32 +28,25 @@ export default function RecommendationList({ recommendations }: RecommendationLi
   };
 
   return (
-    <div className="space-y-2">
+    <div className="divide-y divide-rail overflow-hidden rounded-[4px] border border-rail bg-white">
       {recommendations.map((rec) => {
         const config = priorityConfig[rec.priority];
         const isOpen = expanded.has(rec.id);
         const hasDetail = Boolean(rec.description);
 
         return (
-          <div
-            key={rec.id}
-            className="rounded-lg border overflow-hidden transition-colors"
-            style={{ borderColor: isOpen ? config.border : 'var(--color-border)' }}
-          >
+          <div key={rec.id}>
             {hasDetail ? (
               <button
                 onClick={() => toggle(rec.id)}
                 aria-expanded={isOpen}
-                className="w-full px-4 py-3 flex items-center gap-3 text-left hover:bg-bg-subtle/50 transition-colors"
+                className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-pass-wash/50"
               >
-                <span
-                  className="shrink-0 text-[11px] font-mono font-semibold px-2 py-0.5 rounded uppercase tracking-wider"
-                  style={{ color: config.color, backgroundColor: config.bg }}
-                >
+                <span className={`shrink-0 rounded-[2px] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] ${config.chip}`}>
                   {config.label}
                 </span>
-                <span className="flex-1 text-sm font-medium text-text-primary truncate min-w-0">{rec.title}</span>
-                <span className="text-[11px] font-mono text-accent-teal shrink-0 hidden sm:inline">{rec.impact}</span>
+                <span className="min-w-0 flex-1 truncate text-sm font-medium text-ink">{rec.title}</span>
+                <span className="hidden shrink-0 font-mono text-[11px] text-pass-deep sm:inline">{rec.impact}</span>
                 <svg
                   width="14"
                   height="14"
@@ -58,34 +54,32 @@ export default function RecommendationList({ recommendations }: RecommendationLi
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
-                  className={`shrink-0 text-text-muted transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                  className={`shrink-0 text-ink-mute transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                  aria-hidden="true"
                 >
                   <path d="M6 9l6 6 6-6" />
                 </svg>
               </button>
             ) : (
-              <div className="px-4 py-3 flex items-start gap-3">
-                <span
-                  className="shrink-0 text-[11px] font-mono font-semibold px-2 py-0.5 rounded uppercase tracking-wider mt-0.5"
-                  style={{ color: config.color, backgroundColor: config.bg }}
-                >
+              <div className="flex items-start gap-3 px-4 py-3">
+                <span className={`mt-0.5 shrink-0 rounded-[2px] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] ${config.chip}`}>
                   {config.label}
                 </span>
-                <span className="text-sm text-text-primary leading-relaxed">{rec.title}</span>
+                <span className="text-sm leading-relaxed text-ink">{rec.title}</span>
               </div>
             )}
 
             {isOpen && hasDetail && (
-              <div className="px-4 pb-4 pt-0 bg-bg-surface">
-                <p className="text-sm text-text-secondary leading-relaxed pt-3">{rec.description}</p>
+              <div className="px-4 pb-4 pt-0">
+                <p className="pt-3 text-sm leading-relaxed text-ink-soft">{rec.description}</p>
                 <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[11px] text-text-muted">Category:</span>
-                    <span className="text-[11px] font-mono text-text-secondary">{rec.category}</span>
+                    <span className="text-[11px] text-ink-mute">Category:</span>
+                    <span className="font-mono text-[11px] text-ink-soft">{rec.category}</span>
                   </div>
-                  <div className="sm:hidden flex items-center gap-1.5">
-                    <span className="text-[11px] text-text-muted">Impact:</span>
-                    <span className="text-[11px] font-mono text-accent-teal">{rec.impact}</span>
+                  <div className="flex items-center gap-1.5 sm:hidden">
+                    <span className="text-[11px] text-ink-mute">Impact:</span>
+                    <span className="font-mono text-[11px] text-pass-deep">{rec.impact}</span>
                   </div>
                 </div>
               </div>

@@ -49,7 +49,7 @@ export default function ExportActions({ reportUrl }: ExportActionsProps) {
           <a
             key={action.label}
             href={action.href}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-border bg-bg-base text-xs font-medium text-text-secondary hover:text-text-primary hover:border-accent-teal/30 hover:bg-bg-subtle/50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-[4px] border border-rail bg-white px-3 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:bg-pass-wash"
             target={action.href.startsWith('http') ? '_blank' : undefined}
             rel={action.href.startsWith('http') ? 'noopener' : undefined}
           >
@@ -60,7 +60,7 @@ export default function ExportActions({ reportUrl }: ExportActionsProps) {
           <button
             key={action.label}
             onClick={action.onClick}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-border bg-bg-base text-xs font-medium text-text-secondary hover:text-text-primary hover:border-accent-teal/30 hover:bg-bg-subtle/50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-[4px] border border-rail bg-white px-3 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:bg-pass-wash"
           >
             {action.icon}
             {action.label}
