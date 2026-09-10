@@ -89,38 +89,42 @@ const faqs = [
     answer: `This is a benchmark of sites that chose to audit with GeoReady — not a random sample of the entire web. The cohort skews toward teams already curious about AI visibility, which means these scores likely overestimate average readiness. Real-world averages across all websites are almost certainly lower.`,
   },
 ];
+
+// Annotazione mono ricorrente: campione e periodo dichiarati dalla pagina stessa
+// (Methodology: 288 domini, 10–30 giugno 2026). Nessun numero inventato.
+const SAMPLE_NOTE = 'n = 288 · 10–30 Jun 2026';
 ---
 
 <Shell title={title} description={description} canonical={canonical}>
-  <article itemscope itemtype="https://schema.org/Article">
+  <article itemscope itemtype="https://schema.org/Article" class="bg-paper font-text text-ink">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16">
 
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <header class="mb-12 max-w-3xl">
-        <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-[10px] font-mono text-text-muted uppercase tracking-wider mb-4">
-          <a href="/" class="hover:text-accent-teal">GeoReady</a>
-          <span class="w-1 h-1 rounded-full bg-text-muted" />
-          <a href="/state-of-geo/" class="hover:text-accent-teal">State of GEO</a>
-          <span class="w-1 h-1 rounded-full bg-text-muted" />
+        <nav aria-label="Breadcrumb" class="mb-5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-mute">
+          <a href="/" class="transition-colors hover:text-ink">GeoReady</a>
+          <span class="h-1 w-1 rounded-full bg-ink-mute" aria-hidden="true" />
+          <a href="/state-of-geo/" class="transition-colors hover:text-ink">State of GEO</a>
+          <span class="h-1 w-1 rounded-full bg-ink-mute" aria-hidden="true" />
           <span>June 2026</span>
         </nav>
 
-        <div class="flex items-center gap-2 mb-4">
-          <span class="text-[11px] font-mono font-semibold bg-accent-teal/10 text-accent-teal border border-accent-teal/20 px-2.5 py-1 rounded-full uppercase tracking-wider">
-            June 2026 Report
-          </span>
-          <span class="text-[11px] font-mono text-text-muted">288 domains · Published 1 July 2026</span>
-        </div>
-
-        <h1 itemprop="headline" class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary leading-tight tracking-tight">
+        <h1 itemprop="headline" class="font-head text-4xl font-extrabold leading-[1.05] tracking-[-0.03em] text-ink md:text-5xl">
           State of GEO: June 2026
         </h1>
-        <p class="mt-2 font-display text-xl md:text-2xl font-semibold text-text-secondary">
+        <p class="mt-2 font-head text-xl font-bold tracking-[-0.02em] text-ink-soft md:text-2xl">
           AI Search Readiness Across 288 Domains
         </p>
 
-        <p class="mt-5 text-base md:text-lg text-text-secondary leading-relaxed" itemprop="description">
-          Every June, GeoReady publishes its benchmark of AI search readiness across sites audited with the open-source GEO Optimizer engine. This is the first full edition: <strong class="text-text-primary">288 unique domains</strong>, scored across 8 categories, 100 points, and a single consistent rubric. The numbers below are the baseline to beat — and the map of where almost every website is still leaving points on the table.
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <span class="rounded-[2px] border border-rail px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink-mute">
+            June 2026 Report
+          </span>
+          <span class="font-mono text-[11px] text-ink-mute">288 domains · Published 1 July 2026</span>
+        </div>
+
+        <p class="mt-5 text-base leading-relaxed text-ink-soft md:text-lg" itemprop="description">
+          Every June, GeoReady publishes its benchmark of AI search readiness across sites audited with the open-source GEO Optimizer engine. This is the first full edition: <strong class="text-ink">288 unique domains</strong>, scored across 8 categories, 100 points, and a single consistent rubric. The numbers below are the baseline to beat — and the map of where almost every website is still leaving points on the table.
         </p>
 
         <meta itemprop="datePublished" content={datePublished} />
@@ -135,93 +139,120 @@ const faqs = [
         height={452}
       />
 
-      {/* ── Executive summary box ───────────────────────────────────────────── */}
-      <section class="rounded-2xl border border-accent-teal/30 bg-accent-teal/5 p-6 mb-12 not-prose">
-        <p class="text-xs font-mono text-accent-teal uppercase tracking-wider mb-4">Executive summary — June 2026</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-          <div>
-            <p class="text-3xl font-bold text-text-primary">{stats.avgScore}</p>
-            <p class="text-xs text-text-muted mt-0.5">avg GEO score / 100</p>
-          </div>
-          <div>
-            <p class="text-3xl font-bold text-text-primary">{stats.domains}</p>
-            <p class="text-xs text-text-muted mt-0.5">unique domains</p>
-          </div>
-          <div>
-            <p class="text-3xl font-bold text-text-primary">{stats.pctLlmsTxt}%</p>
-            <p class="text-xs text-text-muted mt-0.5">have llms.txt</p>
-          </div>
-          <div>
-            <p class="text-3xl font-bold text-text-primary">{stats.pctBelowGood}%</p>
-            <p class="text-xs text-text-muted mt-0.5">Foundation or Critical</p>
-          </div>
+      {/* ── Executive summary — l'unico log well della pagina: incornicia il
+          risultato misurato principale del mese (dati first-party) ─────────── */}
+      <section class="mb-12 overflow-hidden rounded-[4px] bg-well text-well-ink" aria-label="Executive summary — June 2026">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-well-ink/15 px-6 py-3">
+          <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-well-mute">Executive summary — June 2026</p>
+          <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-well-mute">{SAMPLE_NOTE}</span>
         </div>
-        <ul class="space-y-1.5 text-sm text-text-secondary">
-          <li class="flex items-start gap-2"><span class="text-accent-teal mt-0.5">→</span> <span>84% of audited sites are in the Foundation or Critical band — most can be reached by AI but cannot be cited with confidence.</span></li>
-          <li class="flex items-start gap-2"><span class="text-accent-teal mt-0.5">→</span> <span>AI Discovery is the worst-performing category at 8.3% efficiency — the single biggest opportunity in June 2026.</span></li>
-          <li class="flex items-start gap-2"><span class="text-accent-teal mt-0.5">→</span> <span>Having an llms.txt is not enough: only 27.8% of domains have a full, structured file.</span></li>
-          <li class="flex items-start gap-2"><span class="text-accent-teal mt-0.5">→</span> <span>.ai domains lead with a 90% llms.txt adoption rate and a 59.7 average score — the highest of any TLD.</span></li>
-        </ul>
+        <div class="px-6 py-6 md:px-8">
+          <div class="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-4">
+            <div>
+              <p class="font-head text-3xl font-extrabold tabular-nums tracking-[-0.02em] text-white">{stats.avgScore}</p>
+              <p class="mt-1 text-xs leading-relaxed text-well-mute">avg GEO score / 100</p>
+            </div>
+            <div>
+              <p class="font-head text-3xl font-extrabold tabular-nums tracking-[-0.02em] text-white">{stats.domains}</p>
+              <p class="mt-1 text-xs leading-relaxed text-well-mute">unique domains</p>
+            </div>
+            <div>
+              <p class="font-head text-3xl font-extrabold tabular-nums tracking-[-0.02em] text-white">{stats.pctLlmsTxt}%</p>
+              <p class="mt-1 text-xs leading-relaxed text-well-mute">have llms.txt</p>
+            </div>
+            <div>
+              <p class="font-head text-3xl font-extrabold tabular-nums tracking-[-0.02em] text-white">{stats.pctBelowGood}%</p>
+              <p class="mt-1 text-xs leading-relaxed text-well-mute">Foundation or Critical</p>
+            </div>
+          </div>
+          <ul class="mt-6 space-y-2 text-sm leading-relaxed text-well-ink">
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-well-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+              <span>84% of audited sites are in the Foundation or Critical band — most can be reached by AI but cannot be cited with confidence.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-well-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+              <span>AI Discovery is the worst-performing category at 8.3% efficiency — the single biggest opportunity in June 2026.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-well-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+              <span>Having an llms.txt is not enough: only 27.8% of domains have a full, structured file.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-well-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+              <span>.ai domains lead with a 90% llms.txt adoption rate and a 59.7 average score — the highest of any TLD.</span>
+            </li>
+          </ul>
+        </div>
+        <div class="border-t border-well-ink/15 px-6 py-3">
+          <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-well-mute">source: benchmark_audit_events · GET /api/public/benchmark</p>
+        </div>
       </section>
 
-      <div class="space-y-14 text-text-secondary leading-relaxed [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-text-primary [&_h2]:leading-tight [&_h2]:tracking-tight [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-text-primary [&_p]:text-text-secondary [&_p]:leading-relaxed">
+      <div class="space-y-14 leading-relaxed text-ink-soft [&_h2]:font-head [&_h2]:text-2xl [&_h2]:font-extrabold [&_h2]:leading-tight [&_h2]:tracking-[-0.02em] [&_h2]:text-ink [&_h3]:font-head [&_h3]:text-lg [&_h3]:font-extrabold [&_h3]:tracking-[-0.01em] [&_h3]:text-ink [&_p]:text-ink-soft [&_p]:leading-relaxed [&_li]:text-ink-soft [&_li]:leading-relaxed">
 
         {/* ── 1. Score distribution ──────────────────────────────────────────── */}
         <section>
           <h2>Score distribution: 84% below the Good threshold</h2>
           <p class="mt-4">
-            The average GEO score across {stats.domains} unique domains is <strong class="text-text-primary">{stats.avgScore} out of 100</strong>. The median is {stats.median}, with the bottom quarter of sites scoring at or below {stats.p25} and the top quarter at or above {stats.p75}. The highest score in the dataset is {stats.maxScore}; the lowest is {stats.minScore}.
+            The average GEO score across {stats.domains} unique domains is <strong class="text-ink">{stats.avgScore} out of 100</strong>. The median is {stats.median}, with the bottom quarter of sites scoring at or below {stats.p25} and the top quarter at or above {stats.p75}. The highest score in the dataset is {stats.maxScore}; the lowest is {stats.minScore}.
           </p>
           <p class="mt-4">
             The band breakdown is the clearest way to read the data:
           </p>
 
-          <div class="mt-6 overflow-x-auto rounded-xl border border-border">
-            <table class="w-full text-sm">
-              <thead>
-                <tr class="bg-bg-subtle text-text-muted text-[11px] font-mono uppercase tracking-wider">
-                  <th class="px-4 py-3 text-left border-b border-border">Band</th>
-                  <th class="px-4 py-3 text-left border-b border-border">Score range</th>
-                  <th class="px-4 py-3 text-right border-b border-border">Domains</th>
-                  <th class="px-4 py-3 text-right border-b border-border">Share</th>
-                  <th class="px-4 py-3 text-left border-b border-border">What it means</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-border">
-                <tr class="bg-bg-surface">
-                  <td class="px-4 py-3 font-semibold text-accent-success">Excellent</td>
-                  <td class="px-4 py-3 font-mono">86–100</td>
-                  <td class="px-4 py-3 text-right font-mono">4</td>
-                  <td class="px-4 py-3 text-right font-mono text-accent-success">1.4%</td>
-                  <td class="px-4 py-3 text-xs">All 8 categories well covered. Citable by AI with confidence.</td>
-                </tr>
-                <tr class="bg-bg-base">
-                  <td class="px-4 py-3 font-semibold text-accent-teal">Good</td>
-                  <td class="px-4 py-3 font-mono">68–85</td>
-                  <td class="px-4 py-3 text-right font-mono">56</td>
-                  <td class="px-4 py-3 text-right font-mono text-accent-teal">19.4%</td>
-                  <td class="px-4 py-3 text-xs">Strong fundamentals. Minor gaps in entity signals or AI discovery.</td>
-                </tr>
-                <tr class="bg-bg-surface">
-                  <td class="px-4 py-3 font-semibold text-yellow-500">Foundation</td>
-                  <td class="px-4 py-3 font-mono">36–67</td>
-                  <td class="px-4 py-3 text-right font-mono">186</td>
-                  <td class="px-4 py-3 text-right font-mono text-yellow-500">64.6%</td>
-                  <td class="px-4 py-3 text-xs">Reachable by AI but thin on structure, entity, and discovery signals.</td>
-                </tr>
-                <tr class="bg-bg-base">
-                  <td class="px-4 py-3 font-semibold text-red-400">Critical</td>
-                  <td class="px-4 py-3 font-mono">0–35</td>
-                  <td class="px-4 py-3 text-right font-mono">42</td>
-                  <td class="px-4 py-3 text-right font-mono text-red-400">14.6%</td>
-                  <td class="px-4 py-3 text-xs">Significant barriers — blocked crawlers, missing schema, no AI signals.</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="mt-6 overflow-hidden rounded-[4px] border border-rail bg-white">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-rail px-4 py-2.5">
+              <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">score bands</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">{SAMPLE_NOTE}</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[560px] text-left text-sm">
+                <thead>
+                  <tr class="border-b border-rail bg-paper">
+                    <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Band</th>
+                    <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Score range</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Domains</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Share</th>
+                    <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">What it means</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-rail">
+                  <tr>
+                    <td class="px-4 py-3 font-semibold text-ink">Excellent</td>
+                    <td class="px-4 py-3 font-mono tabular-nums">86–100</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums text-ink">4</td>
+                    <td class="px-4 py-3 text-right font-mono font-semibold tabular-nums text-ink">1.4%</td>
+                    <td class="px-4 py-3 text-xs">All 8 categories well covered. Citable by AI with confidence.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-semibold text-ink">Good</td>
+                    <td class="px-4 py-3 font-mono tabular-nums">68–85</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums text-ink">56</td>
+                    <td class="px-4 py-3 text-right font-mono font-semibold tabular-nums text-ink">19.4%</td>
+                    <td class="px-4 py-3 text-xs">Strong fundamentals. Minor gaps in entity signals or AI discovery.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-semibold text-ink">Foundation</td>
+                    <td class="px-4 py-3 font-mono tabular-nums">36–67</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums text-ink">186</td>
+                    <td class="px-4 py-3 text-right font-mono font-semibold tabular-nums text-ink">64.6%</td>
+                    <td class="px-4 py-3 text-xs">Reachable by AI but thin on structure, entity, and discovery signals.</td>
+                  </tr>
+                  <tr>
+                    <td class="px-4 py-3 font-semibold text-ink">Critical</td>
+                    <td class="px-4 py-3 font-mono tabular-nums">0–35</td>
+                    <td class="px-4 py-3 text-right font-mono tabular-nums text-ink">42</td>
+                    <td class="px-4 py-3 text-right font-mono font-semibold tabular-nums text-ink">14.6%</td>
+                    <td class="px-4 py-3 text-xs">Significant barriers — blocked crawlers, missing schema, no AI signals.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <p class="mt-5">
-            The practical reading: <strong class="text-text-primary">four in five audited sites cannot be described, cited, or recommended by an AI engine with confidence</strong>. They can be crawled — most pass the robots.txt check — but they lack the structured signals that let models anchor facts to a specific brand or page. Being reachable is not the same as being citable.
+            The practical reading: <strong class="text-ink">four in five audited sites cannot be described, cited, or recommended by an AI engine with confidence</strong>. They can be crawled — most pass the robots.txt check — but they lack the structured signals that let models anchor facts to a specific brand or page. Being reachable is not the same as being citable.
           </p>
         </section>
 
@@ -239,49 +270,56 @@ const faqs = [
             The GEO rubric scores eight categories. Each has a different maximum. The table below shows the June 2026 average for each, what the maximum is, and the efficiency percentage — how much of the available points the average site is capturing.
           </p>
 
-          <div class="mt-6 overflow-x-auto rounded-xl border border-border">
-            <table class="w-full text-sm">
-              <thead>
-                <tr class="bg-bg-subtle text-text-muted text-[11px] font-mono uppercase tracking-wider">
-                  <th class="px-4 py-3 text-left border-b border-border">Category</th>
-                  <th class="px-4 py-3 text-right border-b border-border">Avg score</th>
-                  <th class="px-4 py-3 text-right border-b border-border">Max</th>
-                  <th class="px-4 py-3 text-right border-b border-border">Efficiency</th>
-                  <th class="px-4 py-3 border-b border-border"></th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-border">
-                {stats.categories.map((cat, i) => (
-                  <tr class={i % 2 === 0 ? 'bg-bg-surface' : 'bg-bg-base'}>
-                    <td class="px-4 py-3 font-medium text-text-primary">{cat.name}</td>
-                    <td class="px-4 py-3 text-right font-mono">{cat.avg}</td>
-                    <td class="px-4 py-3 text-right font-mono text-text-muted">{cat.max}</td>
-                    <td class="px-4 py-3 text-right font-mono font-semibold" style={`color: ${cat.pct >= 75 ? 'var(--color-accent-success, #22c55e)' : cat.pct >= 50 ? 'var(--color-accent-teal, #0d9488)' : '#f59e0b'}`}>
-                      {cat.pct}%
-                    </td>
-                    <td class="px-4 py-3 w-32">
-                      <div class="h-1.5 rounded-full bg-bg-subtle overflow-hidden">
-                        <div class="h-full rounded-full bg-accent-teal" style={`width:${cat.pct}%`} />
-                      </div>
-                    </td>
+          <div class="mt-6 overflow-hidden rounded-[4px] border border-rail bg-white">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-rail px-4 py-2.5">
+              <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">category efficiency</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">{SAMPLE_NOTE}</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[560px] text-left text-sm">
+                <thead>
+                  <tr class="border-b border-rail bg-paper">
+                    <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Category</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Avg score</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Max</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Efficiency</th>
+                    <th scope="col" class="px-4 py-3"></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody class="divide-y divide-rail">
+                  {stats.categories.map((cat) => (
+                    <tr>
+                      <td class="px-4 py-3 font-medium text-ink">{cat.name}</td>
+                      <td class="px-4 py-3 text-right font-mono tabular-nums">{cat.avg}</td>
+                      <td class="px-4 py-3 text-right font-mono tabular-nums text-ink-mute">{cat.max}</td>
+                      <td class="px-4 py-3 text-right font-mono font-semibold tabular-nums text-ink">{cat.pct}%</td>
+                      <td class="px-4 py-3 w-32">
+                        <div class="h-2 rounded-[2px] border border-dashed border-ink-mute/60" aria-hidden="true">
+                          <div class="h-full bg-ink-mute/25" style={`width:${cat.pct}%`} />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <p class="mt-6">
-            Three categories form a strong foundation. <strong class="text-text-primary">Meta tags</strong> lead at 88.6% efficiency — title tags, descriptions, and canonical URLs are well understood and broadly implemented. <strong class="text-text-primary">Content quality</strong> follows at 80%, driven by the 77.1% of sites that lead pages with a direct, parseable answer. <strong class="text-text-primary">Robots and crawler access</strong> scores 75.6%: most sites allow the major AI bots, with an average of 23.3 bots explicitly permitted.
+            Three categories form a strong foundation. <strong class="text-ink">Meta tags</strong> lead at 88.6% efficiency — title tags, descriptions, and canonical URLs are well understood and broadly implemented. <strong class="text-ink">Content quality</strong> follows at 80%, driven by the 77.1% of sites that lead pages with a direct, parseable answer. <strong class="text-ink">Robots and crawler access</strong> scores 75.6%: most sites allow the major AI bots, with an average of 23.3 bots explicitly permitted.
           </p>
 
           <p class="mt-4">
-            Three categories cluster at the bottom. <strong class="text-text-primary">Schema markup</strong> at 38.1%, <strong class="text-text-primary">LLMs.txt</strong> at 38.9%, and <strong class="text-text-primary">Brand & entity</strong> at 38.0% all score below 40% of their potential. But the outlier is <strong class="text-text-primary">AI Discovery</strong> at just 8.3% — an average of 0.5 points out of 6. In June 2026, AI discovery files are still a concept that almost no one has acted on.
+            Three categories cluster at the bottom. <strong class="text-ink">Schema markup</strong> at 38.1%, <strong class="text-ink">LLMs.txt</strong> at 38.9%, and <strong class="text-ink">Brand & entity</strong> at 38.0% all score below 40% of their potential. But the outlier is <strong class="text-ink">AI Discovery</strong> at just 8.3% — an average of 0.5 points out of 6. In June 2026, AI discovery files are still a concept that almost no one has acted on.
           </p>
         </section>
 
         {/* ── 3. Adoption rates ──────────────────────────────────────────────── */}
         <section>
-          <h2>Adoption rates: the machine-readability stack</h2>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <h2>Adoption rates: the machine-readability stack</h2>
+            <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">{SAMPLE_NOTE}</p>
+          </div>
           <p class="mt-4">
             The GEO rubric checks specific technical signals beyond category scores. These adoption rates show where the default behavior of the web sits in June 2026.
           </p>
@@ -302,36 +340,46 @@ const faqs = [
               { label: 'FAQ content on page', pct: 13.2, note: 'Low even as content — Q&A structure is underused.' },
             ].map(item => (
               <div>
-                <div class="flex justify-between text-sm mb-1">
-                  <span class="text-text-secondary">{item.label}</span>
-                  <span class="font-mono font-semibold text-text-primary">{item.pct}%</span>
+                <div class="flex items-baseline justify-between gap-2 text-sm">
+                  <span class="text-ink-soft">{item.label}</span>
+                  <span class="font-mono text-[12px] font-semibold tabular-nums text-ink">{item.pct}%</span>
                 </div>
-                <div class="h-2 rounded-full bg-bg-subtle overflow-hidden">
-                  <div class="h-full rounded-full bg-accent-teal" style={`width:${item.pct}%`} />
+                <div class="mt-1.5 h-2 rounded-[2px] border border-dashed border-ink-mute/60" aria-hidden="true">
+                  <div class="h-full bg-ink-mute/25" style={`width:${item.pct}%`} />
                 </div>
-                <p class="text-xs text-text-muted mt-1">{item.note}</p>
+                <p class="mt-1 text-xs text-ink-mute">{item.note}</p>
               </div>
             ))}
           </div>
 
           <p class="mt-6">
-            The llms.txt data reveals a pattern common in early-adoption cycles: <strong class="text-text-primary">presence is not quality</strong>. 58.3% of audited sites have an llms.txt file — a clear majority. But only 27.8% have a full, structured file with meaningful sections and links. The remaining 30% of adopters publish a minimal file: sometimes a single line, sometimes a stub with no URLs. A stub llms.txt is better than nothing, but it provides almost no orientation value to an AI tool trying to understand a site's important content.
+            The llms.txt data reveals a pattern common in early-adoption cycles: <strong class="text-ink">presence is not quality</strong>. 58.3% of audited sites have an llms.txt file — a clear majority. But only 27.8% have a full, structured file with meaningful sections and links. The remaining 30% of adopters publish a minimal file: sometimes a single line, sometimes a stub with no URLs. A stub llms.txt is better than nothing, but it provides almost no orientation value to an AI tool trying to understand a site's important content.
           </p>
 
-          <div class="mt-6 grid sm:grid-cols-2 gap-4">
-            <div class="rounded-xl border border-accent-teal/30 bg-accent-teal/5 p-5">
-              <p class="text-xs font-mono text-accent-teal uppercase tracking-wider mb-2">llms.txt correlation</p>
-              <p class="text-3xl font-bold text-text-primary">+24 pts</p>
-              <p class="text-sm text-text-secondary mt-1">
-                Sites <em>with</em> llms.txt average <strong class="text-text-primary">66/100</strong>. Sites <em>without</em> average <strong class="text-text-primary">42/100</strong>. Publishing an llms.txt is the single signal most correlated with overall GEO score.
-              </p>
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            <div class="overflow-hidden rounded-[4px] border border-rail bg-white">
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-rail px-5 py-2.5">
+                <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">llms.txt correlation</p>
+                <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">{SAMPLE_NOTE}</span>
+              </div>
+              <div class="px-5 py-4">
+                <p class="font-head text-3xl font-extrabold tabular-nums tracking-[-0.02em] text-ink">+24 pts</p>
+                <p class="mt-1 text-sm leading-relaxed text-ink-soft">
+                  Sites <em>with</em> llms.txt average <strong class="text-ink">66/100</strong>. Sites <em>without</em> average <strong class="text-ink">42/100</strong>. Publishing an llms.txt is the single signal most correlated with overall GEO score.
+                </p>
+              </div>
             </div>
-            <div class="rounded-xl border border-accent-teal/30 bg-accent-teal/5 p-5">
-              <p class="text-xs font-mono text-accent-teal uppercase tracking-wider mb-2">Schema markup correlation</p>
-              <p class="text-3xl font-bold text-text-primary">+29 pts</p>
-              <p class="text-sm text-text-secondary mt-1">
-                Sites <em>with</em> valid JSON-LD average <strong class="text-text-primary">65/100</strong>. Sites <em>without</em> average <strong class="text-text-primary">36/100</strong>. Organization and WebSite schema drive the biggest share of this gap.
-              </p>
+            <div class="overflow-hidden rounded-[4px] border border-rail bg-white">
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-rail px-5 py-2.5">
+                <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Schema markup correlation</p>
+                <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">{SAMPLE_NOTE}</span>
+              </div>
+              <div class="px-5 py-4">
+                <p class="font-head text-3xl font-extrabold tabular-nums tracking-[-0.02em] text-ink">+29 pts</p>
+                <p class="mt-1 text-sm leading-relaxed text-ink-soft">
+                  Sites <em>with</em> valid JSON-LD average <strong class="text-ink">65/100</strong>. Sites <em>without</em> average <strong class="text-ink">36/100</strong>. Organization and WebSite schema drive the biggest share of this gap.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -340,7 +388,7 @@ const faqs = [
         <section>
           <h2>The biggest gap: AI Discovery at 8.3% efficiency</h2>
           <p class="mt-4">
-            Every category in the GEO rubric has a gap. But AI Discovery is in a different tier. The average score is <strong class="text-text-primary">0.5 points out of a maximum of 6</strong> — an 8.3% capture rate. Only 16% of audited sites expose any AI discovery endpoint.
+            Every category in the GEO rubric has a gap. But AI Discovery is in a different tier. The average score is <strong class="text-ink">0.5 points out of a maximum of 6</strong> — an 8.3% capture rate. Only 16% of audited sites expose any AI discovery endpoint.
           </p>
           <p class="mt-4">
             AI discovery files — like <code class="text-sm font-mono">/.well-known/ai.txt</code> and the signals inside a well-structured <code class="text-sm font-mono">llms.txt</code> — are designed to make a site explicitly machine-navigable. They go beyond allowing crawlers: they describe the site's purpose, its most important content, and the context an AI needs to answer questions about it with specificity rather than generality.
@@ -349,9 +397,11 @@ const faqs = [
             The gap exists because these standards are new and publishing them requires deliberate action — nothing in a default CMS install or hosting setup creates them automatically. That makes it one of the rarest signals in June 2026, and one of the easiest to capture simply by doing what almost nobody has done yet.
           </p>
 
-          <div class="mt-6 rounded-xl border border-accent-teal/40 bg-accent-teal/5 p-5">
-            <p class="text-xs font-mono text-accent-teal uppercase tracking-wider mb-2">Opportunity sizing</p>
-            <p class="text-sm text-text-secondary">
+          <div class="mt-6 overflow-hidden rounded-[4px] border border-rail bg-white">
+            <div class="border-b border-rail px-5 py-2.5">
+              <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Opportunity sizing</p>
+            </div>
+            <p class="px-5 py-4 text-sm leading-relaxed text-ink-soft">
               A site that publishes a complete <code class="text-sm font-mono">/.well-known/ai.txt</code>, a structured <code class="text-sm font-mono">llms.txt</code>, and correct Organization + WebSite schema can move from a Foundation score to a Good score without touching a single line of content. That is roughly 15–25 points of recoverable GEO score from three files, none of which require backend changes.
             </p>
           </div>
@@ -361,32 +411,38 @@ const faqs = [
         <section>
           <h2>By TLD: who is leading AI search readiness</h2>
           <p class="mt-4">
-            Breaking the dataset by top-level domain reveals a clear pattern: <strong class="text-text-primary">AI-native extensions lead, and the gap is structural, not random</strong>. Sites on .ai extensions are AI-first companies that already understand why machine-readability matters. Sites on .cn are the furthest behind, separated by more than 36 points from the .ai average.
+            Breaking the dataset by top-level domain reveals a clear pattern: <strong class="text-ink">AI-native extensions lead, and the gap is structural, not random</strong>. Sites on .ai extensions are AI-first companies that already understand why machine-readability matters. Sites on .cn are the furthest behind, separated by more than 36 points from the .ai average.
           </p>
 
-          <div class="mt-6 overflow-x-auto rounded-xl border border-border">
-            <table class="w-full text-sm">
-              <thead>
-                <tr class="bg-bg-subtle text-text-muted text-[11px] font-mono uppercase tracking-wider">
-                  <th class="px-4 py-3 text-left border-b border-border">TLD</th>
-                  <th class="px-4 py-3 text-right border-b border-border">Domains</th>
-                  <th class="px-4 py-3 text-right border-b border-border">Avg score</th>
-                  <th class="px-4 py-3 text-right border-b border-border">llms.txt</th>
-                  <th class="px-4 py-3 text-right border-b border-border">Schema</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-border">
-                {stats.tlds.map((row, i) => (
-                  <tr class={i % 2 === 0 ? 'bg-bg-surface' : 'bg-bg-base'}>
-                    <td class="px-4 py-3 font-mono font-semibold text-text-primary">{row.tld}</td>
-                    <td class="px-4 py-3 text-right font-mono text-text-muted">{row.n}</td>
-                    <td class="px-4 py-3 text-right font-mono font-bold text-text-primary">{row.avg}</td>
-                    <td class="px-4 py-3 text-right font-mono">{row.pctLlms}%</td>
-                    <td class="px-4 py-3 text-right font-mono">{row.pctSchema}%</td>
+          <div class="mt-6 overflow-hidden rounded-[4px] border border-rail bg-white">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-rail px-4 py-2.5">
+              <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">tld breakdown</span>
+              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">{SAMPLE_NOTE}</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full min-w-[560px] text-left text-sm">
+                <thead>
+                  <tr class="border-b border-rail bg-paper">
+                    <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">TLD</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Domains</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Avg score</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">llms.txt</th>
+                    <th scope="col" class="px-4 py-3 text-right font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Schema</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody class="divide-y divide-rail">
+                  {stats.tlds.map((row) => (
+                    <tr>
+                      <td class="px-4 py-3 font-mono font-semibold text-ink">{row.tld}</td>
+                      <td class="px-4 py-3 text-right font-mono tabular-nums text-ink-mute">{row.n}</td>
+                      <td class="px-4 py-3 text-right font-mono font-semibold tabular-nums text-ink">{row.avg}</td>
+                      <td class="px-4 py-3 text-right font-mono tabular-nums">{row.pctLlms}%</td>
+                      <td class="px-4 py-3 text-right font-mono tabular-nums">{row.pctSchema}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <p class="mt-5">
@@ -410,7 +466,7 @@ const faqs = [
             The next tier — the one that separates Foundation from Good — is where most June 2026 sites stall. Getting from 53.6 to 70 requires three things that are known but not yet widespread: a complete llms.txt (not just a stub), Organization and WebSite schema with consistent brand naming, and at least one AI discovery endpoint. Together, these three moves are worth 15–25 points for most Foundation sites.
           </p>
           <p class="mt-4">
-            The deeper story in the data is that <strong class="text-text-primary">AI search readiness has a skills-transfer problem</strong>. Teams that are strong on traditional SEO — meta tags, canonical, schema basics — are not automatically strong on AI signals. The skills overlap, but AI readiness requires a different vocabulary: machine navigation rather than search engine optimization, entity disambiguation rather than keyword targeting, AI discovery rather than sitemap submission. The teams that already understand AI (the .ai domain cohort) have made the leap instinctively. Most others have not yet.
+            The deeper story in the data is that <strong class="text-ink">AI search readiness has a skills-transfer problem</strong>. Teams that are strong on traditional SEO — meta tags, canonical, schema basics — are not automatically strong on AI signals. The skills overlap, but AI readiness requires a different vocabulary: machine navigation rather than search engine optimization, entity disambiguation rather than keyword targeting, AI discovery rather than sitemap submission. The teams that already understand AI (the .ai domain cohort) have made the leap instinctively. Most others have not yet.
           </p>
           <p class="mt-4">
             The good news: nothing in the gap is architecturally difficult. The actions that move a site from Foundation to Good — publish a complete llms.txt, add the right schema types, expose AI discovery files — do not require a redesign, a backend migration, or a content overhaul. They are publishing decisions. They require knowing what to publish, not building anything new.
@@ -432,44 +488,44 @@ const faqs = [
           </p>
           <ol class="mt-5 space-y-4 list-decimal pl-5">
             <li>
-              <strong class="text-text-primary">Publish a full llms.txt</strong> (not a stub). Include at minimum: a brief site description, sections for your most important pages, and URLs to your docs, blog, and product pages. Use the free <a href="/tools/llms-txt-generator/" class="text-accent-teal hover:underline">llms.txt generator</a> to build a starter in under 5 minutes.
+              <strong class="text-ink">Publish a full llms.txt</strong> (not a stub). Include at minimum: a brief site description, sections for your most important pages, and URLs to your docs, blog, and product pages. Use the free <a href="/tools/llms-txt-generator/" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">llms.txt generator</a> to build a starter in under 5 minutes.
             </li>
             <li>
-              <strong class="text-text-primary">Add Organization and WebSite JSON-LD</strong>. Only 51% and 52.4% of sites have these respectively, despite them being among the highest-value schema types for entity recognition. Include <code class="text-sm font-mono">name</code>, <code class="text-sm font-mono">url</code>, <code class="text-sm font-mono">logo</code>, <code class="text-sm font-mono">sameAs</code>, and <code class="text-sm font-mono">description</code> at minimum.
+              <strong class="text-ink">Add Organization and WebSite JSON-LD</strong>. Only 51% and 52.4% of sites have these respectively, despite them being among the highest-value schema types for entity recognition. Include <code class="text-sm font-mono">name</code>, <code class="text-sm font-mono">url</code>, <code class="text-sm font-mono">logo</code>, <code class="text-sm font-mono">sameAs</code>, and <code class="text-sm font-mono">description</code> at minimum.
             </li>
             <li>
-              <strong class="text-text-primary">Publish a <code class="text-sm font-mono">/.well-known/ai.txt</code></strong>. Only 16% of sites do this. It is a single file with a handful of lines — but it is the signal that places a site in the top 16% of AI discovery readiness immediately.
+              <strong class="text-ink">Publish a <code class="text-sm font-mono">/.well-known/ai.txt</code></strong>. Only 16% of sites do this. It is a single file with a handful of lines — but it is the signal that places a site in the top 16% of AI discovery readiness immediately.
             </li>
             <li>
-              <strong class="text-text-primary">Audit your robots.txt for accidental AI bot blocks</strong>. The average site allows 23.3 AI bots but blocks 0.5. Confirm that <code class="text-sm font-mono">GPTBot</code>, <code class="text-sm font-mono">ClaudeBot</code>, <code class="text-sm font-mono">PerplexityBot</code>, and <code class="text-sm font-mono">GoogleOther</code> are either explicitly allowed or not listed (default allow).
+              <strong class="text-ink">Audit your robots.txt for accidental AI bot blocks</strong>. The average site allows 23.3 AI bots but blocks 0.5. Confirm that <code class="text-sm font-mono">GPTBot</code>, <code class="text-sm font-mono">ClaudeBot</code>, <code class="text-sm font-mono">PerplexityBot</code>, and <code class="text-sm font-mono">GoogleOther</code> are either explicitly allowed or not listed (default allow).
             </li>
             <li>
-              <strong class="text-text-primary">Add FAQ schema where FAQ content already exists</strong>. Only 13.2% of sites have FAQ schema, but 13.2% have FAQ content. These should be the same number. Every page with a Q&A section that lacks FAQ JSON-LD is a missed citation opportunity.
+              <strong class="text-ink">Add FAQ schema where FAQ content already exists</strong>. Only 13.2% of sites have FAQ schema, but 13.2% have FAQ content. These should be the same number. Every page with a Q&A section that lacks FAQ JSON-LD is a missed citation opportunity.
             </li>
             <li>
-              <strong class="text-text-primary">Re-audit after each change</strong>. The GEO rubric rewards compound improvements: each signal reinforces the others. A site with llms.txt + Organization schema + canonical URL is not just the sum of three parts — it is an entity that AI models can triangulate across multiple signals.
+              <strong class="text-ink">Re-audit after each change</strong>. The GEO rubric rewards compound improvements: each signal reinforces the others. A site with llms.txt + Organization schema + canonical URL is not just the sum of three parts — it is an entity that AI models can triangulate across multiple signals.
             </li>
           </ol>
         </section>
 
         {/* ── 8. Mid-page CTA ─────────────────────────────────────────────────── */}
-        <section class="rounded-2xl border border-border bg-bg-surface p-6 md:p-8">
+        <section class="rounded-[4px] border border-rail bg-white p-6 md:p-8">
           <h2>See where your site stands against the June 2026 benchmark</h2>
           <p class="mt-3">
             The average score in June 2026 is 53.6. Run a free audit to see your GEO score across all eight categories, identify which band you are in, and get the specific actions that recover the most points first.
           </p>
-          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
               href="/ai-seo-audit/"
               data-cta="state_geo_june2026_mid_audit"
-              class="inline-flex items-center justify-center rounded-full bg-accent-teal px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-teal-dark"
+              class="inline-flex items-center justify-center rounded-[4px] bg-pass-deep px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
             >
               Audit my site free
             </a>
             <a
               href="/state-of-geo/"
               data-cta="state_geo_june2026_live_benchmark"
-              class="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent-teal"
+              class="inline-flex items-center justify-center rounded-[4px] border border-rail bg-white px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
             >
               See live benchmark data
             </a>
@@ -483,11 +539,11 @@ const faqs = [
             This report covers {stats.domains} unique domains audited by GeoReady between 10 June and 30 June 2026. When a domain was audited multiple times in the period, only the most recent audit is included — this prevents repeat users from inflating the cohort size and ensures each domain appears once at its best-known state.
           </p>
           <ul class="mt-4 space-y-2 list-disc pl-5 text-sm">
-            <li><strong class="text-text-primary">Engine version:</strong> GEO Optimizer 4.12.x, the open-source 100-point, 8-category rubric. <a href="https://github.com/Auriti-Labs/geo-optimizer-skill" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:underline">Source available on GitHub</a>.</li>
-            <li><strong class="text-text-primary">Audited sample:</strong> Sites that chose to audit with GeoReady — not a random sample of the web. The cohort skews toward teams already interested in AI visibility, so these figures likely overestimate average readiness across all websites.</li>
-            <li><strong class="text-text-primary">Anonymized:</strong> Domain names are stored as salted HMAC-SHA256 hashes in the benchmark dataset. No individual domain is identifiable in the public figures.</li>
-            <li><strong class="text-text-primary">Monitoring audits excluded:</strong> Only user-initiated audits (web, API, CLI) are included. Scheduled monitoring re-checks are excluded to avoid inflating the cohort with the same domains audited repeatedly.</li>
-            <li><strong class="text-text-primary">Consistent rubric:</strong> Every domain is scored with the same engine and the same weights. Category maxima: Robots 18, LLMs 18, Schema 16, Meta 14, Content 12, Brand & Entity 10, Signals 6, AI Discovery 6.</li>
+            <li><strong class="text-ink">Engine version:</strong> GEO Optimizer 4.12.x, the open-source 100-point, 8-category rubric. <a href="https://github.com/Auriti-Labs/geo-optimizer-skill" target="_blank" rel="noopener noreferrer" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">Source available on GitHub</a>.</li>
+            <li><strong class="text-ink">Audited sample:</strong> Sites that chose to audit with GeoReady — not a random sample of the web. The cohort skews toward teams already interested in AI visibility, so these figures likely overestimate average readiness across all websites.</li>
+            <li><strong class="text-ink">Anonymized:</strong> Domain names are stored as salted HMAC-SHA256 hashes in the benchmark dataset. No individual domain is identifiable in the public figures.</li>
+            <li><strong class="text-ink">Monitoring audits excluded:</strong> Only user-initiated audits (web, API, CLI) are included. Scheduled monitoring re-checks are excluded to avoid inflating the cohort with the same domains audited repeatedly.</li>
+            <li><strong class="text-ink">Consistent rubric:</strong> Every domain is scored with the same engine and the same weights. Category maxima: Robots 18, LLMs 18, Schema 16, Meta 14, Content 12, Brand & Entity 10, Signals 6, AI Discovery 6.</li>
           </ul>
           <p class="mt-4 text-sm">
             The underlying benchmark dataset is the <code class="text-sm font-mono">benchmark_audit_events</code> table in the GeoReady production database. The public API endpoint (<code class="text-sm font-mono">GET /api/public/benchmark</code>) returns aggregated figures only — no per-domain data is ever exposed.
@@ -518,32 +574,32 @@ const faqs = [
         </section>
 
         {/* ── 12. Final CTA ──────────────────────────────────────────────────── */}
-        <section class="rounded-2xl border border-border bg-bg-surface p-6 md:p-8">
+        <section class="rounded-[4px] border border-rail bg-white p-6 md:p-8">
           <h2>Beat the June 2026 average of 53.6</h2>
           <p class="mt-3">
             Run a free AI SEO audit to get your full GEO score, see which of the 8 categories is costing you the most points, and get a ranked action list. No account required for the baseline snapshot.
           </p>
-          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
               href="/ai-seo-audit/"
               data-cta="state_geo_june2026_final_audit"
-              class="inline-flex items-center justify-center rounded-full bg-accent-teal px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-teal-dark"
+              class="inline-flex items-center justify-center rounded-[4px] bg-pass-deep px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
             >
               Run your free AI SEO audit
             </a>
             <a
               href="/guides/generative-engine-optimization/"
               data-cta="state_geo_june2026_geo_guide"
-              class="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent-teal"
+              class="inline-flex items-center justify-center rounded-[4px] border border-rail bg-white px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
             >
               Read the full GEO guide
             </a>
           </div>
-          <p class="mt-4 text-xs text-text-muted">
+          <p class="mt-4 text-xs text-ink-mute">
             New to AI search readiness?
-            <a href="/ai-seo/" class="text-accent-teal hover:underline ml-1">What is AI SEO</a> ·
-            <a href="/guides/what-is-llms-txt/" class="text-accent-teal hover:underline ml-1">What is llms.txt</a> ·
-            <a href="/tools/llms-txt-generator/" class="text-accent-teal hover:underline ml-1">Free llms.txt generator</a>
+            <a href="/ai-seo/" class="ml-1 text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">What is AI SEO</a> ·
+            <a href="/guides/what-is-llms-txt/" class="ml-1 text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">What is llms.txt</a> ·
+            <a href="/tools/llms-txt-generator/" class="ml-1 text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">Free llms.txt generator</a>
           </p>
         </section>
 
