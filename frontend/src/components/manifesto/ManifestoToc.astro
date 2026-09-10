@@ -9,11 +9,11 @@ const { sections } = Astro.props;
 ---
 
 <nav
-  class="hidden lg:block sticky top-24 self-start w-64 shrink-0"
+  class="sticky top-24 hidden w-64 shrink-0 self-start lg:block"
   aria-label="Manifesto contents"
 >
-  <div class="rounded-xl border border-border bg-bg-surface p-5">
-    <p class="text-[10px] font-mono font-semibold uppercase tracking-wider text-text-muted mb-4">
+  <div class="border-l border-rail pl-5">
+    <p class="mb-4 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">
       Contents
     </p>
     <ol class="space-y-2.5">
@@ -21,12 +21,12 @@ const { sections } = Astro.props;
         <li>
           <a
             href={`#${s.id}`}
-            class="group flex items-start gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
+            class="group flex items-baseline gap-2.5 text-sm text-ink"
           >
-            <span class="font-mono text-[11px] text-accent-teal shrink-0 mt-0.5">
+            <span class="shrink-0 font-mono text-[11px] tabular-nums text-ink-mute">
               {s.number}
             </span>
-            <span class="leading-snug group-hover:underline underline-offset-2 decoration-border">
+            <span class="leading-snug underline decoration-rail underline-offset-4 transition-colors group-hover:decoration-pass-deep">
               {s.title}
             </span>
           </a>
@@ -37,25 +37,23 @@ const { sections } = Astro.props;
 </nav>
 
 <!-- Mobile TOC: visibile solo su schermi piccoli -->
-<nav class="lg:hidden mb-10" aria-label="Manifesto contents">
-  <div class="rounded-xl border border-border bg-bg-surface p-5">
-    <p class="text-[10px] font-mono font-semibold uppercase tracking-wider text-text-muted mb-4">
-      Contents
-    </p>
-    <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-      {sections.map((s) => (
-        <li>
-          <a
-            href={`#${s.id}`}
-            class="group flex items-start gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            <span class="font-mono text-[11px] text-accent-teal shrink-0">
-              {s.number}
-            </span>
-            <span class="leading-snug">{s.title}</span>
-          </a>
-        </li>
-      ))}
-    </ol>
-  </div>
+<nav class="mb-10 border-y border-rail py-5 lg:hidden" aria-label="Manifesto contents">
+  <p class="mb-4 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">
+    Contents
+  </p>
+  <ol class="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+    {sections.map((s) => (
+      <li>
+        <a
+          href={`#${s.id}`}
+          class="group flex items-baseline gap-2.5 text-sm text-ink"
+        >
+          <span class="shrink-0 font-mono text-[11px] tabular-nums text-ink-mute">
+            {s.number}
+          </span>
+          <span class="leading-snug underline decoration-rail underline-offset-4 transition-colors group-hover:decoration-pass-deep">{s.title}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
 </nav>

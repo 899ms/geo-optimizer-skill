@@ -123,14 +123,14 @@ export default function WaitlistForm() {
 
   if (state === "success") {
     return (
-      <div className="rounded-[--radius-lg] border border-border bg-bg-surface p-6 text-center">
-        <div className="w-10 h-10 rounded-full bg-accent-success/10 flex items-center justify-center mx-auto mb-4">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent-success">
+      <div className="rounded-[4px] border border-rail bg-white p-6 text-center">
+        <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-pass-wash">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-pass-deep">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <p className="text-base font-semibold text-text-primary">{message}</p>
-        <p className="mt-2 text-sm text-text-secondary">
+        <p className="text-base font-semibold text-ink">{message}</p>
+        <p className="mt-2 text-sm text-ink-soft">
           We'll email you about new features and GEO research. No spam.
         </p>
       </div>
@@ -169,8 +169,8 @@ export default function WaitlistForm() {
       </div>
 
       <div>
-        <label htmlFor="wl-email" className="block text-sm font-medium text-text-primary mb-1.5">
-          Email <span className="text-accent-danger">*</span>
+        <label htmlFor="wl-email" className="mb-1.5 block text-sm font-medium text-ink">
+          Email <span className="text-fail">*</span>
         </label>
         <input
           id="wl-email"
@@ -179,19 +179,19 @@ export default function WaitlistForm() {
           required
           autoComplete="email"
           placeholder="you@example.com"
-          className="w-full px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-teal/40 focus:border-accent-teal transition-colors"
+          className="w-full rounded-[4px] border border-ink/25 bg-white px-3 py-2.5 text-sm text-ink placeholder:text-ink-mute transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         />
       </div>
 
       <div>
-        <label htmlFor="wl-user-type" className="block text-sm font-medium text-text-primary mb-1.5">
-          What best describes you? <span className="text-accent-danger">*</span>
+        <label htmlFor="wl-user-type" className="mb-1.5 block text-sm font-medium text-ink">
+          What best describes you? <span className="text-fail">*</span>
         </label>
         <select
           id="wl-user-type"
           name="user_type"
           required
-          className="w-full px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-accent-teal/40 focus:border-accent-teal transition-colors"
+          className="w-full rounded-[4px] border border-ink/25 bg-white px-3 py-2.5 text-sm text-ink transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         >
           <option value="">Select…</option>
           {USER_TYPE_OPTIONS.map((o) => (
@@ -201,14 +201,14 @@ export default function WaitlistForm() {
       </div>
 
       <div>
-        <label htmlFor="wl-sites" className="block text-sm font-medium text-text-primary mb-1.5">
-          How many sites do you manage? <span className="text-accent-danger">*</span>
+        <label htmlFor="wl-sites" className="mb-1.5 block text-sm font-medium text-ink">
+          How many sites do you manage? <span className="text-fail">*</span>
         </label>
         <select
           id="wl-sites"
           name="managed_sites_range"
           required
-          className="w-full px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-accent-teal/40 focus:border-accent-teal transition-colors"
+          className="w-full rounded-[4px] border border-ink/25 bg-white px-3 py-2.5 text-sm text-ink transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         >
           <option value="">Select…</option>
           {SITES_RANGE_OPTIONS.map((o) => (
@@ -218,14 +218,14 @@ export default function WaitlistForm() {
       </div>
 
       <div>
-        <label htmlFor="wl-interest" className="block text-sm font-medium text-text-primary mb-1.5">
-          What's your main interest in GeoReady Pro? <span className="text-accent-danger">*</span>
+        <label htmlFor="wl-interest" className="mb-1.5 block text-sm font-medium text-ink">
+          What's your main interest in GeoReady Pro? <span className="text-fail">*</span>
         </label>
         <select
           id="wl-interest"
           name="main_interest"
           required
-          className="w-full px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-accent-teal/40 focus:border-accent-teal transition-colors"
+          className="w-full rounded-[4px] border border-ink/25 bg-white px-3 py-2.5 text-sm text-ink transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         >
           <option value="">Select…</option>
           {MAIN_INTEREST_OPTIONS.map((o) => (
@@ -240,11 +240,11 @@ export default function WaitlistForm() {
           name="consent"
           type="checkbox"
           required
-          className="mt-0.5 h-4 w-4 rounded border-border text-accent-teal focus:ring-accent-teal/40 cursor-pointer"
+          className="mt-0.5 h-4 w-4 cursor-pointer rounded-[2px] border-ink/25 text-pass-deep focus:ring-pass/30"
         />
-        <label htmlFor="wl-consent" className="text-sm text-text-secondary leading-relaxed cursor-pointer">
+        <label htmlFor="wl-consent" className="cursor-pointer text-sm leading-relaxed text-ink-soft">
           I agree to receive product updates about GeoReady. See our{" "}
-          <a href="/privacy/" className="text-accent-teal hover:underline">
+          <a href="/privacy/" className="text-pass-deep underline decoration-rail underline-offset-2 hover:decoration-pass-deep">
             Privacy Policy
           </a>
           . No newsletters, no spam.
@@ -252,15 +252,18 @@ export default function WaitlistForm() {
       </div>
 
       {state === "error" && (
-        <p role="alert" className="text-sm text-accent-danger bg-accent-danger/5 border border-accent-danger/20 rounded-[--radius-md] px-3 py-2">
-          {message}
-        </p>
+        <div role="alert" className="flex items-start gap-3 rounded-[4px] border border-fail/30 bg-fail-wash px-4 py-3 text-sm text-fail">
+          <span aria-hidden="true" className="mt-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+            err
+          </span>
+          <span>{message}</span>
+        </div>
       )}
 
       <button
         type="submit"
         disabled={state === "loading"}
-        className="w-full py-2.5 px-4 rounded-[--radius-md] bg-accent-teal text-white font-semibold text-sm hover:bg-accent-teal-dark transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full rounded-[4px] bg-pass-deep px-4 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass disabled:cursor-not-allowed disabled:opacity-60"
       >
         {state === "loading" ? "Subscribing…" : "Get product updates"}
       </button>

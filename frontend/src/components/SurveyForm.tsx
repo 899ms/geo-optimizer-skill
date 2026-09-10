@@ -92,14 +92,14 @@ export default function SurveyForm() {
 
   if (state === 'success') {
     return (
-      <div className="rounded-[--radius-lg] border border-border bg-bg-surface p-6 text-center">
-        <div className="w-10 h-10 rounded-full bg-accent-success/10 flex items-center justify-center mx-auto mb-4">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent-success">
+      <div className="rounded-[4px] border border-rail bg-white p-6 text-center">
+        <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-pass-wash">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-pass-deep">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <p className="text-base font-semibold text-text-primary">Thanks — feedback received.</p>
-        <p className="mt-2 text-sm text-text-secondary">
+        <p className="text-base font-semibold text-ink">Thanks — feedback received.</p>
+        <p className="mt-2 text-sm text-ink-soft">
           Your answers directly shape what we build first.
         </p>
       </div>
@@ -109,14 +109,14 @@ export default function SurveyForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-5" onChange={handleFirstInteraction}>
       <div>
-        <label htmlFor="sv-current-tool" className="block text-sm font-medium text-text-primary mb-1.5">
-          How do you currently check your site's AI visibility? <span className="text-accent-danger">*</span>
+        <label htmlFor="sv-current-tool" className="mb-1.5 block text-sm font-medium text-ink">
+          How do you currently check your site's AI visibility? <span className="text-fail">*</span>
         </label>
         <select
           id="sv-current-tool"
           name="current_tool"
           required
-          className="w-full px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-accent-teal/40 focus:border-accent-teal transition-colors"
+          className="w-full rounded-[4px] border border-ink/25 bg-white px-3 py-2.5 text-sm text-ink transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         >
           <option value="">Select…</option>
           {CURRENT_TOOL_OPTIONS.map((o) => (
@@ -126,14 +126,14 @@ export default function SurveyForm() {
       </div>
 
       <div>
-        <label htmlFor="sv-main-problem" className="block text-sm font-medium text-text-primary mb-1.5">
-          What's your main pain point with AI search visibility? <span className="text-accent-danger">*</span>
+        <label htmlFor="sv-main-problem" className="mb-1.5 block text-sm font-medium text-ink">
+          What's your main pain point with AI search visibility? <span className="text-fail">*</span>
         </label>
         <select
           id="sv-main-problem"
           name="main_problem"
           required
-          className="w-full px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-accent-teal/40 focus:border-accent-teal transition-colors"
+          className="w-full rounded-[4px] border border-ink/25 bg-white px-3 py-2.5 text-sm text-ink transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         >
           <option value="">Select…</option>
           {MAIN_PROBLEM_OPTIONS.map((o) => (
@@ -143,14 +143,14 @@ export default function SurveyForm() {
       </div>
 
       <div>
-        <label htmlFor="sv-wtp" className="block text-sm font-medium text-text-primary mb-1.5">
-          Would you pay $19/month for GeoReady Pro? <span className="text-accent-danger">*</span>
+        <label htmlFor="sv-wtp" className="mb-1.5 block text-sm font-medium text-ink">
+          Would you pay $19/month for GeoReady Pro? <span className="text-fail">*</span>
         </label>
         <select
           id="sv-wtp"
           name="wtp"
           required
-          className="w-full px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-accent-teal/40 focus:border-accent-teal transition-colors"
+          className="w-full rounded-[4px] border border-ink/25 bg-white px-3 py-2.5 text-sm text-ink transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         >
           <option value="">Select…</option>
           {WTP_OPTIONS.map((o) => (
@@ -160,14 +160,14 @@ export default function SurveyForm() {
       </div>
 
       <div>
-        <label htmlFor="sv-priority" className="block text-sm font-medium text-text-primary mb-1.5">
-          What feature would you use most? <span className="text-accent-danger">*</span>
+        <label htmlFor="sv-priority" className="mb-1.5 block text-sm font-medium text-ink">
+          What feature would you use most? <span className="text-fail">*</span>
         </label>
         <select
           id="sv-priority"
           name="priority_feature"
           required
-          className="w-full px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-accent-teal/40 focus:border-accent-teal transition-colors"
+          className="w-full rounded-[4px] border border-ink/25 bg-white px-3 py-2.5 text-sm text-ink transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         >
           <option value="">Select…</option>
           {PRIORITY_FEATURE_OPTIONS.map((o) => (
@@ -177,15 +177,18 @@ export default function SurveyForm() {
       </div>
 
       {state === 'error' && (
-        <p role="alert" className="text-sm text-accent-danger bg-accent-danger/5 border border-accent-danger/20 rounded-[--radius-md] px-3 py-2">
-          {errorMsg}
-        </p>
+        <div role="alert" className="flex items-start gap-3 rounded-[4px] border border-fail/30 bg-fail-wash px-4 py-3 text-sm text-fail">
+          <span aria-hidden="true" className="mt-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+            err
+          </span>
+          <span>{errorMsg}</span>
+        </div>
       )}
 
       <button
         type="submit"
         disabled={state === 'loading'}
-        className="w-full py-2.5 px-4 rounded-[--radius-md] bg-bg-subtle text-text-primary font-semibold text-sm border border-border hover:border-accent-teal/40 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full rounded-[4px] border border-rail bg-white px-4 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash disabled:cursor-not-allowed disabled:opacity-60"
       >
         {state === 'loading' ? 'Submitting…' : 'Submit answers'}
       </button>

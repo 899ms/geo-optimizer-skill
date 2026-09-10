@@ -1,58 +1,57 @@
 ---
-import type { RoadmapPhase as RoadmapPhaseType, RoadmapItem, RoadmapStatus } from '../../lib/roadmapContent';
+import type { RoadmapPhase as RoadmapPhaseType, RoadmapStatus } from '../../lib/roadmapContent';
 
 interface Props {
   phase: RoadmapPhaseType;
+  /** Posizione della fase nella sequenza (0-based) — resa come indice mono "01". */
+  index: number;
 }
 
-const { phase } = Astro.props;
+const { phase, index } = Astro.props;
 
-const statusConfig: Record<RoadmapStatus, { label: string; dot: string; bg: string }> = {
-  available: { label: 'Available', dot: 'bg-accent-success', bg: 'bg-accent-success/5' },
-  'in-progress': { label: 'In progress', dot: 'bg-accent-warning', bg: 'bg-accent-warning/5' },
-  planned: { label: 'Planned', dot: 'bg-accent-teal', bg: 'bg-accent-teal/5' },
-  exploring: { label: 'Exploring', dot: 'bg-text-muted', bg: 'bg-text-muted/5' },
+// Chip di stato in grammatica console: pass per ciò che è shipped, neutro per
+// il pianificato, queued per l'esplorativo. Le etichette restano quelle della pagina.
+const statusConfig: Record<RoadmapStatus, { label: string; chip: string }> = {
+  available: { label: 'Available', chip: 'bg-pass-wash text-pass-deep' },
+  'in-progress': { label: 'In progress', chip: 'border border-rail text-ink-mute' },
+  planned: { label: 'Planned', chip: 'border border-rail text-ink-mute' },
+  exploring: { label: 'Exploring', chip: 'border border-rail text-queued' },
 };
 
 // Progress aggregato della fase: quanti item sono già disponibili.
 const total = phase.items.length;
 const shipped = phase.items.filter((i) => i.status === 'available').length;
 const shippedPct = total > 0 ? Math.round((shipped / total) * 100) : 0;
+
+const phaseIndex = String(index + 1).padStart(2, '0');
 ---
 
-<section class="relative pl-6 md:pl-8">
-  {/* Timeline line */}
-  <div class="absolute left-0 top-0 bottom-0 w-px bg-border" aria-hidden="true"></div>
-
-  {/* Phase header dot */}
-  <div class={`absolute left-[-4px] top-1 w-2.5 h-2.5 rounded-full ring-2 ring-bg-base ${phase.statusColor.replace('border-', 'bg-')}`} aria-hidden="true"></div>
-
-  <div class="pb-2">
-    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-      <h2 class="font-display text-lg md:text-xl font-bold text-text-primary">{phase.label}</h2>
-      <span class="font-mono text-[11px] text-text-muted">{shipped} / {total} shipped</span>
-    </div>
-    <p class="mt-0.5 text-sm text-text-muted">{phase.subtitle}</p>
-    {shipped > 0 && (
-      <div class="mt-2 h-1 w-full max-w-xs rounded-full bg-border overflow-hidden" role="img" aria-label={`${shipped} of ${total} items available`}>
-        <div class="h-full rounded-full bg-accent-success" style={`width: ${shippedPct}%`}></div>
-      </div>
-    )}
+<section>
+  <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+    <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] md:text-3xl">
+      <span class="mr-3 align-middle font-mono text-[13px] font-medium tabular-nums text-ink-mute">{phaseIndex}</span>{phase.label}
+    </h2>
+    <span class="font-mono text-[12px] tabular-nums text-ink-mute">{shipped} / {total} shipped</span>
   </div>
+  <p class="mt-1 text-sm text-ink-soft">{phase.subtitle}</p>
+  {shipped > 0 && (
+    <div class="mt-3 h-1.5 w-full max-w-xs overflow-hidden rounded-[2px] border border-rail bg-white" role="img" aria-label={`${shipped} of ${total} items available`}>
+      <div class="h-full bg-pass" style={`width: ${shippedPct}%`}></div>
+    </div>
+  )}
 
-  <div class="mt-4 space-y-3">
+  <ul class="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] border border-rail bg-rail sm:grid-cols-2 lg:grid-cols-3">
     {phase.items.map((item) => {
       const cfg = statusConfig[item.status];
       return (
-        <div class={`rounded-xl border border-border p-4 transition-colors hover:border-accent-teal/20 ${cfg.bg}`}>
-          <div class="flex items-center gap-2 mb-1">
-            <span class={`w-2 h-2 rounded-full ${cfg.dot}`} aria-hidden="true"></span>
-            <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-text-muted">{cfg.label}</span>
+        <li class="bg-white p-4">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <h3 class="text-sm font-semibold text-ink">{item.title}</h3>
+            <span class={`rounded-[2px] px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] ${cfg.chip}`}>{cfg.label}</span>
           </div>
-          <h3 class="text-sm font-semibold text-text-primary">{item.title}</h3>
-          <p class="mt-1 text-sm text-text-secondary leading-relaxed">{item.description}</p>
-        </div>
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-soft">{item.description}</p>
+        </li>
       );
     })}
-  </div>
+  </ul>
 </section>
