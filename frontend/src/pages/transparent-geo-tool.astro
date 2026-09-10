@@ -93,6 +93,18 @@ const faqs = [
       'The engine is free and MIT licensed, with no feature held back — you can audit any number of sites from your own machine at no cost. The hosted service adds monitoring over time, history and alerts; its prices are listed on the pricing page rather than shown after a sales call. A public audit on geoready.dev requires no account and no email.',
   },
 ];
+
+// Righe della tabella "Where the 100 points go" — gli stessi interi di config.py.
+const WEIGHT_ROWS = [
+  ['robots.txt', 18, 'Gates everything downstream — an unreachable page is never scored on anything else.'],
+  ['llms.txt', 18, 'Points AI systems at the URLs worth citing instead of leaving them to guess.'],
+  ['Schema JSON-LD', 16, 'Lets an engine pull facts with confidence rather than by inference.'],
+  ['Meta tags', 14, 'Keeps the page identifiable and free of duplication when indexed.'],
+  ['Content', 12, 'Structure that makes individual passages quotable on their own.'],
+  ['Brand & entity', 10, 'Ties a set of pages to one recognisable entity.'],
+  ['Technical signals', 6, 'Language, RSS and freshness cues about how maintained the source is.'],
+  ['AI discovery', 6, 'Machine-readable endpoints that expose the site to AI tooling directly.'],
+] as const;
 ---
 
 <Shell
@@ -100,15 +112,17 @@ const faqs = [
   description="The scoring weights, the check logic and the test suite are public and MIT licensed. Reproduce any GEO Optimizer score on your own machine — plus what the score cannot tell you."
   canonical="https://geoready.dev/transparent-geo-tool/"
 >
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-16">
+  <div class="mx-auto max-w-4xl bg-paper px-4 py-10 font-text text-ink sm:px-6 md:py-16">
     <header>
-      <p class="text-[11px] font-mono font-semibold uppercase tracking-wider text-text-muted">
-        Transparency
-      </p>
-      <h1 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight text-text-primary">
-        Which GEO tool has a transparent methodology?
-      </h1>
-      <p class="mt-5 text-lg text-text-secondary leading-relaxed">
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h1 class="max-w-3xl font-head text-3xl font-extrabold leading-[1.05] tracking-[-0.03em] text-ink md:text-4xl">
+          Which GEO tool has a transparent methodology?
+        </h1>
+        <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">
+          Transparency
+        </p>
+      </div>
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-ink-soft">
         A visibility score you cannot inspect is a score you cannot argue with. Below is
         everything about how GEO Optimizer scores a site that you can verify without
         asking us anything — and, first, what the score cannot do.
@@ -116,15 +130,15 @@ const faqs = [
     </header>
 
     <section class="mt-12">
-      <h2 class="text-xl font-bold text-text-primary">What this score cannot tell you</h2>
-      <p class="mt-2 text-sm text-text-secondary">
+      <h2 class="font-head text-xl font-extrabold tracking-[-0.02em] text-ink">What this score cannot tell you</h2>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-ink-soft">
         This section comes before the claims on purpose. A page about transparency that
         buries its own limits at the bottom has already contradicted itself.
       </p>
       <ul class="mt-5 space-y-3">
         {LIMITS.map((limit) => (
-          <li class="flex gap-3 text-sm text-text-secondary leading-relaxed">
-            <span class="shrink-0 text-text-muted font-mono">—</span>
+          <li class="flex gap-3 text-sm leading-relaxed text-ink-soft">
+            <span class="shrink-0 font-mono text-ink-mute">—</span>
             <span>{limit}</span>
           </li>
         ))}
@@ -132,86 +146,96 @@ const faqs = [
     </section>
 
     <section class="mt-12">
-      <h2 class="text-xl font-bold text-text-primary">
+      <h2 class="font-head text-xl font-extrabold tracking-[-0.02em] text-ink">
         Six things you can check yourself
       </h2>
-      <div class="mt-6 space-y-6">
-        {VERIFIABLE.map((item) => (
-          <div class="p-5 rounded-xl border border-border bg-bg-surface">
-            <h3 class="text-base font-semibold text-text-primary">{item.claim}</h3>
-            <p class="mt-2 text-sm text-text-secondary leading-relaxed">{item.detail}</p>
-            <p class="mt-3 text-xs font-mono text-text-muted">
-              <span class="text-accent-teal">Verify:</span> {item.check}
-            </p>
+      <div class="mt-6 divide-y divide-rail overflow-hidden rounded-[4px] border border-rail bg-white">
+        {VERIFIABLE.map((item, i) => (
+          <div class="flex items-start gap-4 p-5">
+            <span class="font-mono text-[12px] font-medium tabular-nums text-ink-mute">{String(i + 1).padStart(2, '0')}</span>
+            <div class="min-w-0 flex-1">
+              <h3 class="text-base font-semibold text-ink">{item.claim}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-ink-soft">{item.detail}</p>
+              <p class="mt-3 font-mono text-xs text-ink-mute">
+                <span class="text-pass-deep">Verify:</span> {item.check}
+              </p>
+            </div>
           </div>
         ))}
       </div>
     </section>
 
     <section class="mt-12">
-      <h2 class="text-xl font-bold text-text-primary">Where the 100 points go</h2>
-      <p class="mt-2 text-sm text-text-secondary leading-relaxed">
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h2 class="font-head text-xl font-extrabold tracking-[-0.02em] text-ink">Where the 100 points go</h2>
+        <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">source: src/geo_optimizer/models/config.py · SCORING</p>
+      </div>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-ink-soft">
         These are the same integers you will find in
-        <code class="text-xs font-mono text-text-primary">config.py</code>. The full
+        <code class="font-mono text-xs text-ink">config.py</code>. The full
         derivation, including the score bands and the citability layer, is on the
-        <a href="/methodology/" class="text-accent-teal underline">methodology page</a>.
+        <a href="/methodology/" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">methodology page</a>.
       </p>
-      <div class="mt-5 overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-border text-left">
-              <th class="py-2 pr-4 font-mono text-[11px] uppercase tracking-wider text-text-muted">Category</th>
-              <th class="py-2 pr-4 font-mono text-[11px] uppercase tracking-wider text-text-muted">Points</th>
-              <th class="py-2 font-mono text-[11px] uppercase tracking-wider text-text-muted">Why it weighs what it does</th>
+      <div class="mt-5 overflow-x-auto rounded-[4px] border border-rail bg-white">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-paper">
+            <tr class="border-b border-rail">
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Category</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Points</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Why it weighs what it does</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">robots.txt</td><td class="py-2.5 pr-4 font-mono text-text-primary">18</td><td class="py-2.5 text-text-secondary">Gates everything downstream — an unreachable page is never scored on anything else.</td></tr>
-            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">llms.txt</td><td class="py-2.5 pr-4 font-mono text-text-primary">18</td><td class="py-2.5 text-text-secondary">Points AI systems at the URLs worth citing instead of leaving them to guess.</td></tr>
-            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Schema JSON-LD</td><td class="py-2.5 pr-4 font-mono text-text-primary">16</td><td class="py-2.5 text-text-secondary">Lets an engine pull facts with confidence rather than by inference.</td></tr>
-            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Meta tags</td><td class="py-2.5 pr-4 font-mono text-text-primary">14</td><td class="py-2.5 text-text-secondary">Keeps the page identifiable and free of duplication when indexed.</td></tr>
-            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Content</td><td class="py-2.5 pr-4 font-mono text-text-primary">12</td><td class="py-2.5 text-text-secondary">Structure that makes individual passages quotable on their own.</td></tr>
-            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Brand &amp; entity</td><td class="py-2.5 pr-4 font-mono text-text-primary">10</td><td class="py-2.5 text-text-secondary">Ties a set of pages to one recognisable entity.</td></tr>
-            <tr class="border-b border-border/60"><td class="py-2.5 pr-4 text-text-primary">Technical signals</td><td class="py-2.5 pr-4 font-mono text-text-primary">6</td><td class="py-2.5 text-text-secondary">Language, RSS and freshness cues about how maintained the source is.</td></tr>
-            <tr><td class="py-2.5 pr-4 text-text-primary">AI discovery</td><td class="py-2.5 pr-4 font-mono text-text-primary">6</td><td class="py-2.5 text-text-secondary">Machine-readable endpoints that expose the site to AI tooling directly.</td></tr>
+          <tbody class="divide-y divide-rail">
+            {WEIGHT_ROWS.map(([category, points, why]) => (
+              <tr class="align-top">
+                <th scope="row" class="whitespace-nowrap px-4 py-2.5 text-left font-text font-semibold text-ink">{category}</th>
+                <td class="px-4 py-2.5 font-mono tabular-nums text-pass-deep">{points}</td>
+                <td class="px-4 py-2.5 leading-relaxed text-ink-soft">{why}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
     </section>
 
     <section class="mt-12">
-      <h2 class="text-xl font-bold text-text-primary">Reproduce a score in one command</h2>
-      <p class="mt-2 text-sm text-text-secondary leading-relaxed">
+      <h2 class="font-head text-xl font-extrabold tracking-[-0.02em] text-ink">Reproduce a score in one command</h2>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-ink-soft">
         No account, no API key, no email. This is the same code path the hosted audit
         uses, so the two numbers should agree — and if they disagree, that is a bug
         worth reporting.
       </p>
-      <pre class="mt-4 p-4 rounded-xl border border-border bg-bg-subtle overflow-x-auto text-xs font-mono text-text-primary"><code>pip install geo-optimizer-skill
+      <div class="mt-4 overflow-hidden rounded-[4px] border border-rail bg-white">
+        <div class="border-b border-rail px-4 py-2.5">
+          <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">PyPI · geo-optimizer-skill</span>
+        </div>
+        <pre class="overflow-x-auto p-4 font-mono text-xs text-ink"><code>pip install geo-optimizer-skill
 geo audit --url https://your-site.com</code></pre>
+      </div>
     </section>
 
     <section class="mt-12">
-      <h2 class="text-xl font-bold text-text-primary">Frequently asked questions</h2>
-      <div class="mt-6 space-y-6">
+      <h2 class="font-head text-xl font-extrabold tracking-[-0.02em] text-ink">Frequently asked questions</h2>
+      <div class="mt-6">
         {faqs.map((faq) => (
-          <div>
-            <h3 class="text-base font-semibold text-text-primary">{faq.question}</h3>
-            <p class="mt-2 text-sm text-text-secondary leading-relaxed">{faq.answer}</p>
+          <div class="border-t border-rail py-5 first:border-t-0 first:pt-0">
+            <h3 class="text-base font-semibold text-ink">{faq.question}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft">{faq.answer}</p>
           </div>
         ))}
       </div>
     </section>
 
-    <section class="mt-12 p-6 rounded-xl border border-accent-teal/25 bg-accent-teal/5">
-      <h2 class="text-lg font-bold text-text-primary">See your own score</h2>
-      <p class="mt-2 text-sm text-text-secondary leading-relaxed">
+    <section class="mt-12 rounded-[4px] border border-rail bg-white p-6">
+      <h2 class="font-head text-lg font-extrabold tracking-[-0.02em] text-ink">See your own score</h2>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-ink-soft">
         Run a public audit on any URL — no account required — or read the
-        <a href="/methodology/" class="text-accent-teal underline">full methodology</a>
+        <a href="/methodology/" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">full methodology</a>
         first if you would rather check the rules before trusting the number.
       </p>
       <a
         href="/"
-        class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-accent-teal text-white text-sm font-semibold hover:bg-accent-teal-dark transition-colors"
+        class="mt-4 inline-flex items-center gap-2 rounded-[4px] bg-pass-deep px-6 py-2.5 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
       >
         Audit a site
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

@@ -77,57 +77,56 @@ const faqSchema = {
 
 <Shell title="The GEO Readiness Manual — A Technical Guide to AI Search Visibility" description="A 160-page technical manual for Generative Engine Optimization: how to make your site citable by ChatGPT, Perplexity, Claude, and Google AI Overviews. Built from audit data across 1000+ sites." canonical="https://geoready.dev/geo-readiness-manual/">
 
-  {/* ============ HERO — drenched dark, real cover mockup ============ */}
-  <section data-hero-bleed class="relative overflow-hidden bg-bg-dark text-text-inverse">
-    <div
-      aria-hidden="true"
-      class="absolute inset-0 opacity-45"
-      style="background-image: radial-gradient(circle at 14% 18%, rgba(94,234,212,0.16), transparent 38%), linear-gradient(rgba(148,163,184,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,0.08) 1px, transparent 1px); background-size: auto, 56px 56px, 56px 56px;"
-    />
-    <div class="relative max-w-7xl mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-28">
+  {/* ============ HERO — paper ground, real cover in a white rail panel ============
+      data-hero-bleed resta: ctaTracking.ts lo usa per attribuire il download
+      del preview all'hero (manual_hero_preview) e la navbar è una barra paper opaca. */}
+  <section data-hero-bleed class="bg-paper font-text text-ink">
+    <div class="mx-auto max-w-7xl px-6 pt-16 pb-20 md:pt-24 md:pb-28">
       <div class="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.62fr)]">
 
         {/* Copy column */}
         <div class="hero-in" style="animation-delay:0ms">
-          <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-teal-100">
-            <span class="inline-block h-1.5 w-1.5 rounded-full bg-teal-300"></span>
-            Free 160-page technical manual
-          </p>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+            <h1 class="font-head text-4xl font-extrabold leading-[1.05] tracking-[-0.03em] text-ink md:text-6xl">
+              The book on getting cited by AI search.
+            </h1>
+            <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">
+              Free 160-page technical manual
+            </p>
+          </div>
 
-          <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] text-wrap-balance">
-            The book on getting cited by AI search.
-          </h1>
-
-          <p class="mt-6 text-lg md:text-xl text-text-muted leading-relaxed max-w-xl">
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft md:text-xl">
             ChatGPT, Perplexity, and Google AI Overviews choose 3–7 sources before a user ever sees a link. This manual is the technical reference for being one of them — built from audit data across 1000+ sites, not theory.
           </p>
 
           <div class="mt-9 grid max-w-lg grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
             {stats.map(([num, label]) => (
-              <div class="border-l border-teal-300/30 pl-3.5">
-                <p class="font-display text-2xl font-bold text-white">{num}</p>
-                <p class="mt-0.5 text-xs text-text-muted leading-tight">{label}</p>
+              <div class="border-l border-rail pl-3.5">
+                <p class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink">{num}</p>
+                <p class="mt-0.5 text-xs leading-tight text-ink-mute">{label}</p>
               </div>
             ))}
           </div>
 
-          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-text-muted">
-            <span>By <span class="text-white font-medium">Juan Camilo Auriti</span></span>
-            <span class="w-1 h-1 rounded-full bg-text-muted"></span>
+          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-mute">
+            <span>By <span class="font-medium text-ink">Juan Camilo Auriti</span></span>
+            <span class="h-1 w-1 rounded-full bg-ink-mute"></span>
             <span>Version 1.1 — July 2026</span>
-            <span class="w-1 h-1 rounded-full bg-text-muted"></span>
-            <span class="text-teal-200">Free, no account required</span>
+            <span class="h-1 w-1 rounded-full bg-ink-mute"></span>
+            <span class="text-pass-deep">Free, no account required</span>
           </div>
 
           {/* Preview — no email gate */}
-          <div class="mt-7 rounded-xl border border-teal-300/25 bg-teal-300/5 p-4 max-w-lg">
-            <p class="text-sm text-text-inverse leading-relaxed">
-              <span class="font-semibold text-teal-200">Not sure yet?</span>
+          <div class="mt-7 max-w-lg rounded-[4px] border border-rail bg-white p-4">
+            <p class="text-sm leading-relaxed text-ink-soft">
+              <span class="font-semibold text-ink">Not sure yet?</span>
               Read a free 3-chapter preview — Chapter 0 (The Selection Layer), Chapter 4 (Access), and Chapter 7 (Quotability). No email required.
             </p>
-            <a href="/geo-readiness-manual-preview.pdf" class="mt-3 inline-flex items-center gap-2 rounded-lg border border-teal-300/40 bg-teal-300/10 px-4 py-2.5 text-sm font-medium text-teal-100 hover:bg-teal-300/20 transition-colors">
+            <a href="/geo-readiness-manual-preview.pdf" class="mt-3 inline-flex items-center gap-2 rounded-[4px] border border-rail bg-white px-4 py-2.5 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash">
               Download free preview (PDF, 27 pages)
-              <span aria-hidden="true">→</span>
+              <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+              </svg>
             </a>
           </div>
 
@@ -142,38 +141,40 @@ const faqSchema = {
                   name="email"
                   required
                   placeholder="you@company.com"
-                  class="manual-email flex-1 rounded-lg border border-white/15 bg-white/5 px-4 py-3.5 text-white placeholder-text-muted focus:border-teal-300 focus:outline-none focus:ring-1 focus:ring-teal-300 transition-colors"
+                  class="manual-email flex-1 rounded-[4px] border border-ink/25 bg-white px-4 py-3.5 text-ink placeholder:text-ink-mute transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
                 />
                 <button
                   type="submit"
-                  class="manual-submit inline-flex items-center justify-center gap-2 rounded-lg bg-accent-teal px-6 py-3.5 text-white font-semibold text-base hover:bg-accent-teal-dark transition-colors whitespace-nowrap"
+                  class="manual-submit inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[4px] bg-pass-deep px-6 py-3.5 font-mono text-[13px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
                 >
                   Get the PDF
-                  <span aria-hidden="true">→</span>
+                  <svg class="h-3 w-3" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                    <path d="M3 1.5 9.5 6 3 10.5V1.5Z" />
+                  </svg>
                 </button>
               </form>
-              <label class="mt-3 flex items-start gap-2.5 text-xs text-text-muted leading-relaxed cursor-pointer">
-                <input type="checkbox" name="marketing_consent" class="manual-marketing-consent mt-0.5 h-3.5 w-3.5 rounded border-white/30 bg-white/5 text-accent-teal focus:ring-accent-teal/40 cursor-pointer" />
+              <label class="mt-3 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-ink-mute">
+                <input type="checkbox" name="marketing_consent" class="manual-marketing-consent mt-0.5 h-3.5 w-3.5 cursor-pointer rounded-[2px] border-rail accent-pass-deep" />
                 <span>Also send me occasional GEO research updates (new benchmarks, guides). Unchecked, you'll only get this one download email.</span>
               </label>
-              <div class="manual-success hidden mt-4 rounded-lg border border-teal-300/25 bg-teal-300/5 p-4 text-sm">
-                <p class="text-white font-medium">Check your inbox.</p>
-                <p class="manual-success-msg mt-0.5 text-text-muted"></p>
+              <div class="manual-success hidden mt-4 rounded-[4px] border border-pass/30 bg-pass-wash p-4 text-sm">
+                <p class="font-medium text-ink">Check your inbox.</p>
+                <p class="manual-success-msg mt-0.5 text-ink-soft"></p>
               </div>
-              <div class="manual-error hidden mt-3 rounded-lg border border-red-500/25 bg-red-500/5 p-3 text-sm text-red-300">
+              <div class="manual-error hidden mt-3 rounded-[4px] border border-fail/30 bg-fail-wash px-4 py-3 text-sm text-fail">
+                <span aria-hidden="true" class="mr-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">err</span>
                 <span class="manual-error-msg"></span>
               </div>
-              <p class="mt-3 text-xs text-text-muted leading-relaxed">
-                No spam. By downloading, you agree to our <a href="/privacy/" class="text-teal-200 hover:underline">Privacy Policy</a>.
+              <p class="mt-3 text-xs leading-relaxed text-ink-mute">
+                No spam. By downloading, you agree to our <a href="/privacy/" class="text-pass-deep underline decoration-rail underline-offset-2 hover:decoration-pass-deep">Privacy Policy</a>.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Cover mockup column */}
-        <div class="hero-in relative flex justify-center lg:justify-end" style="animation-delay:120ms">
-          <div aria-hidden="true" class="pointer-events-none absolute -inset-x-10 -inset-y-16 -z-10 rounded-[48px] bg-accent-teal/20 blur-3xl"></div>
-          <div class="manual-cover-tilt w-[240px] sm:w-[280px]">
+        {/* Cover column — the book sits in a white panel with a 1px rail border (No-Lift) */}
+        <div class="hero-in flex justify-center lg:justify-end" style="animation-delay:120ms">
+          <div class="w-[240px] rounded-[4px] border border-rail bg-white p-4 sm:w-[280px]">
             <img
               src="/assets/manual/cover-500.webp"
               srcset="/assets/manual/cover-500.webp 500w, /assets/manual/cover-1400.webp 1400w"
@@ -184,7 +185,7 @@ const faqSchema = {
               loading="eager"
               fetchpriority="high"
               decoding="async"
-              class="w-full h-auto rounded-md shadow-[0_40px_80px_-20px_rgba(0,0,0,0.65)] ring-1 ring-white/10"
+              class="h-auto w-full rounded-[2px]"
             />
           </div>
         </div>
@@ -193,16 +194,16 @@ const faqSchema = {
   </section>
 
   {/* ============ DOWNLOAD PANEL — desktop-focused conversion block ============ */}
-  <section class="border-b border-border bg-bg-surface">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="hidden lg:flex items-center justify-between gap-10 py-8">
+  <section class="border-y border-rail bg-white font-text text-ink">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="hidden items-center justify-between gap-10 py-8 lg:flex">
         <div class="max-w-md">
-          <h2 class="font-display text-lg font-bold text-text-primary">Get the PDF in your inbox</h2>
-          <p class="mt-1 text-sm text-text-secondary leading-relaxed">
+          <h2 class="font-head text-lg font-extrabold tracking-[-0.02em] text-ink">Get the PDF in your inbox</h2>
+          <p class="mt-1 text-sm leading-relaxed text-ink-soft">
             Enter your email. We'll send a download link valid for 24 hours — no account, no credit card.
           </p>
         </div>
-        <div id="manual-download-form-desktop" class="manual-download-form flex-1 max-w-lg" data-api-base={import.meta.env.PUBLIC_API_BASE || '/api'}>
+        <div id="manual-download-form-desktop" class="manual-download-form max-w-lg flex-1" data-api-base={import.meta.env.PUBLIC_API_BASE || '/api'}>
           <form class="manual-form flex gap-3" novalidate>
             <label for="manual-email-desktop" class="sr-only">Email address</label>
             <input
@@ -211,25 +212,28 @@ const faqSchema = {
               name="email"
               required
               placeholder="you@company.com"
-              class="manual-email flex-1 rounded-lg border border-border bg-input px-4 py-3 text-text-primary placeholder-text-muted focus:border-accent-teal focus:outline-none focus:ring-1 focus:ring-accent-teal transition-colors"
+              class="manual-email flex-1 rounded-[4px] border border-ink/25 bg-white px-4 py-3 text-ink placeholder:text-ink-mute transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
             />
             <button
               type="submit"
-              class="manual-submit inline-flex items-center justify-center gap-2 rounded-lg bg-accent-teal px-6 py-3 text-white font-semibold text-sm hover:bg-accent-teal-dark transition-colors whitespace-nowrap"
+              class="manual-submit inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[4px] bg-pass-deep px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
             >
               Get the PDF
-              <span aria-hidden="true">→</span>
+              <svg class="h-3 w-3" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                <path d="M3 1.5 9.5 6 3 10.5V1.5Z" />
+              </svg>
             </button>
           </form>
-          <label class="mt-2.5 flex items-start gap-2.5 text-xs text-text-muted leading-relaxed cursor-pointer">
-            <input type="checkbox" name="marketing_consent" class="manual-marketing-consent mt-0.5 h-3.5 w-3.5 rounded border-border text-accent-teal focus:ring-accent-teal/40 cursor-pointer" />
+          <label class="mt-2.5 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-ink-mute">
+            <input type="checkbox" name="marketing_consent" class="manual-marketing-consent mt-0.5 h-3.5 w-3.5 cursor-pointer rounded-[2px] border-rail accent-pass-deep" />
             <span>Also send me occasional GEO research updates. Unchecked, you'll only get this one download email.</span>
           </label>
-          <div class="manual-success hidden mt-3 rounded-lg border border-accent-teal/25 bg-accent-teal/5 p-3 text-sm">
-            <p class="text-text-primary font-medium">Check your inbox.</p>
-            <p class="manual-success-msg mt-0.5 text-text-secondary"></p>
+          <div class="manual-success hidden mt-3 rounded-[4px] border border-pass/30 bg-pass-wash p-3 text-sm">
+            <p class="font-medium text-ink">Check your inbox.</p>
+            <p class="manual-success-msg mt-0.5 text-ink-soft"></p>
           </div>
-          <div class="manual-error hidden mt-3 rounded-lg border border-red-500/25 bg-red-500/5 p-3 text-sm text-red-500">
+          <div class="manual-error hidden mt-3 rounded-[4px] border border-fail/30 bg-fail-wash px-4 py-3 text-sm text-fail">
+            <span aria-hidden="true" class="mr-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">err</span>
             <span class="manual-error-msg"></span>
           </div>
         </div>
@@ -237,29 +241,29 @@ const faqSchema = {
     </div>
   </section>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20">
+  <div class="mx-auto max-w-7xl bg-paper px-4 py-16 font-text text-ink sm:px-6 md:py-20">
 
     {/* Bottom strip stats — moved from old hero, now a standalone row */}
-    <section class="mb-20 grid divide-y divide-border border border-border md:grid-cols-4 md:divide-x md:divide-y-0">
+    <section class="mb-20 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] border border-rail bg-rail md:grid-cols-4">
       {[
         ['Crawler access', '11 AI crawlers documented'],
         ['Schema deep dive', '12 types with JSON-LD templates'],
         ['Entity authority', 'Pillar-cluster architecture'],
         ['Measurement', 'Citation tracking workflow'],
       ].map(([label, text]) => (
-        <div class="p-5">
-          <p class="font-mono text-xs uppercase tracking-[0.16em] text-accent-teal">{label}</p>
-          <p class="mt-2 text-sm leading-relaxed text-text-secondary">{text}</p>
+        <div class="bg-white p-5">
+          <p class="text-sm font-semibold text-ink">{label}</p>
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-soft">{text}</p>
         </div>
       ))}
     </section>
 
     {/* The problem */}
     <section class="mb-20 max-w-4xl">
-      <h2 class="font-display text-2xl md:text-3xl font-bold text-text-primary mb-6 text-wrap-balance">
+      <h2 class="mb-6 font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">
         AI search doesn't rank you. It selects you.
       </h2>
-      <div class="space-y-5 text-text-secondary text-lg leading-relaxed">
+      <div class="space-y-5 text-lg leading-relaxed text-ink-soft">
         <p>
           Traditional search returns ten links and asks the user to choose. AI answer engines choose first — synthesizing a single answer from 3-7 sources — then show the user the result. If your site isn't one of those sources, you're not on page two. You're absent from the answer entirely.
         </p>
@@ -269,7 +273,7 @@ const faqSchema = {
         <p>
           This is not a traffic problem. It's a selection problem. And the rules of selection are different from the rules of ranking. Keywords don't work the same way. Backlinks don't work the same way. Meta descriptions don't work the same way. The infrastructure that got you to page one on Google may be invisible to ChatGPT.
         </p>
-        <p class="text-text-primary font-medium">
+        <p class="font-medium text-ink">
           This manual is the technical guide to being selected.
         </p>
       </div>
@@ -277,36 +281,36 @@ const faqSchema = {
 
     {/* The four-layer model */}
     <section class="mb-20">
-      <h2 class="font-display text-2xl md:text-3xl font-bold text-text-primary mb-4">
+      <h2 class="mb-4 font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">
         The four-layer model
       </h2>
-      <p class="text-text-secondary text-base leading-relaxed mb-8 max-w-3xl">
+      <p class="mb-8 max-w-3xl text-base leading-relaxed text-ink-soft">
         Everything in the manual reduces to four layers, applied in order — plus entity authority as a multiplier. Fix access before orientation. Fix orientation before schema. Fix schema before quotability. Build entity authority alongside all of them. Measure at the end, not the beginning.
       </p>
 
-      <div class="space-y-3 max-w-3xl">
+      <ol class="max-w-3xl divide-y divide-rail overflow-hidden rounded-[4px] border border-rail bg-white">
         {layers.map((layer) => (
-          <div class="flex items-start gap-4 rounded-lg border border-border bg-surface p-4 md:p-5 hover:border-accent-teal/20 transition-colors">
-            <span class="font-mono text-sm text-accent-teal font-bold pt-0.5">{layer.num}</span>
+          <li class="flex items-start gap-4 p-4 md:p-5">
+            <span class="pt-0.5 font-mono text-[12px] font-medium tabular-nums text-ink-mute">{layer.num}</span>
             <div class="flex-1">
-              <span class="text-text-primary font-semibold text-base">{layer.title}</span>
-              <p class="text-text-muted text-sm mt-0.5">{layer.desc}</p>
+              <span class="text-base font-semibold text-ink">{layer.title}</span>
+              <p class="mt-0.5 text-sm text-ink-soft">{layer.desc}</p>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ol>
     </section>
 
     {/* Sample pages — proof it's a real document, not a placeholder */}
     <section class="mb-20">
-      <h2 class="font-display text-2xl md:text-3xl font-bold text-text-primary mb-3">
+      <h2 class="mb-3 font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">
         Inside the manual
       </h2>
-      <p class="text-text-secondary text-base leading-relaxed mb-8 max-w-2xl">
+      <p class="mb-8 max-w-2xl text-base leading-relaxed text-ink-soft">
         Two real spreads — server log commands for verifying AI crawler access, and the site-speed factors that shrink your crawl budget.
       </p>
-      <div class="grid gap-6 sm:grid-cols-2 max-w-3xl">
-        <figure class="group overflow-hidden rounded-xl border border-border bg-bg-surface">
+      <div class="grid max-w-3xl gap-6 sm:grid-cols-2">
+        <figure class="overflow-hidden rounded-[4px] border border-rail bg-white">
           <img
             src="/assets/manual/page-sample-1.webp"
             alt="Manual page 25: how to verify which AI crawlers access your site, with grep commands for Nginx and Apache access logs"
@@ -314,11 +318,11 @@ const faqSchema = {
             height="1273"
             loading="lazy"
             decoding="async"
-            class="w-full h-auto transition-transform duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]"
+            class="h-auto w-full"
           />
-          <figcaption class="px-4 py-3 text-xs text-text-muted border-t border-border">Page 25 — verifying AI crawler access via server logs</figcaption>
+          <figcaption class="border-t border-rail px-4 py-3 font-mono text-[11px] text-ink-mute">Page 25 — verifying AI crawler access via server logs</figcaption>
         </figure>
-        <figure class="group overflow-hidden rounded-xl border border-border bg-bg-surface">
+        <figure class="overflow-hidden rounded-[4px] border border-rail bg-white">
           <img
             src="/assets/manual/page-sample-2.webp"
             alt="Manual page 45: site speed and crawl accessibility, covering TTFB targets, page weight limits, and internal linking depth"
@@ -326,23 +330,23 @@ const faqSchema = {
             height="1273"
             loading="lazy"
             decoding="async"
-            class="w-full h-auto transition-transform duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]"
+            class="h-auto w-full"
           />
-          <figcaption class="px-4 py-3 text-xs text-text-muted border-t border-border">Page 45 — TTFB targets and crawl budget</figcaption>
+          <figcaption class="border-t border-rail px-4 py-3 font-mono text-[11px] text-ink-mute">Page 45 — TTFB targets and crawl budget</figcaption>
         </figure>
       </div>
     </section>
 
     {/* What's inside */}
     <section class="mb-20">
-      <h2 class="font-display text-2xl md:text-3xl font-bold text-text-primary mb-8">
+      <h2 class="mb-8 font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">
         What's inside
       </h2>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl">
+      <div class="grid max-w-6xl grid-cols-1 gap-px overflow-hidden rounded-[4px] border border-rail bg-rail sm:grid-cols-2 lg:grid-cols-3">
         {whatInside.map((item) => (
-          <div class="rounded-xl border border-border bg-surface p-5 hover:border-accent-teal/30 transition-colors">
-            <h3 class="font-semibold text-text-primary text-base mb-2">{item.title}</h3>
-            <p class="text-text-muted text-sm leading-relaxed">{item.desc}</p>
+          <div class="bg-white p-5">
+            <h3 class="mb-2 text-base font-semibold text-ink">{item.title}</h3>
+            <p class="text-sm leading-relaxed text-ink-soft">{item.desc}</p>
           </div>
         ))}
       </div>
@@ -350,19 +354,19 @@ const faqSchema = {
 
     {/* Who this is for */}
     <section class="mb-20">
-      <h2 class="font-display text-2xl md:text-3xl font-bold text-text-primary mb-8">
+      <h2 class="mb-8 font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">
         Who this is for
       </h2>
-      <div class="grid gap-4 sm:grid-cols-2 max-w-4xl">
+      <div class="grid max-w-4xl grid-cols-1 gap-px overflow-hidden rounded-[4px] border border-rail bg-rail sm:grid-cols-2">
         {whoFor.map((item) => (
-          <div class="rounded-xl border border-border bg-surface p-5">
+          <div class="bg-white p-5">
             <div class="flex items-start gap-3">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent-teal flex-shrink-0 mt-0.5">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 flex-shrink-0 text-ink-mute" aria-hidden="true">
                 <path d={item.icon} />
               </svg>
               <div>
-                <h3 class="font-semibold text-text-primary text-base mb-1">{item.title}</h3>
-                <p class="text-text-muted text-sm leading-relaxed">{item.desc}</p>
+                <h3 class="mb-1 text-base font-semibold text-ink">{item.title}</h3>
+                <p class="text-sm leading-relaxed text-ink-soft">{item.desc}</p>
               </div>
             </div>
           </div>
@@ -372,26 +376,26 @@ const faqSchema = {
 
     {/* Table of contents */}
     <section class="mb-20">
-      <h2 class="font-display text-2xl md:text-3xl font-bold text-text-primary mb-8">
+      <h2 class="mb-8 font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">
         Table of contents
       </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2 max-w-4xl">
+      <div class="grid max-w-4xl grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">
         {chapters.map((ch) => (
-          <div class="flex items-baseline gap-3 py-2 border-b border-border/50">
-            <span class="font-mono text-xs text-text-muted w-8 flex-shrink-0">Ch.{ch.num}</span>
-            <span class="text-text-secondary text-sm leading-snug">{ch.title}</span>
+          <div class="flex items-baseline gap-3 border-b border-rail py-2">
+            <span class="w-8 flex-shrink-0 font-mono text-xs tabular-nums text-ink-mute">Ch.{ch.num}</span>
+            <span class="text-sm leading-snug text-ink-soft">{ch.title}</span>
           </div>
         ))}
       </div>
 
       <div class="mt-6 max-w-4xl">
-        <p class="font-mono text-xs text-text-muted uppercase tracking-wider mb-3">Appendices</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
+        <p class="mb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Appendices</p>
+        <div class="grid grid-cols-1 gap-x-12 gap-y-2 md:grid-cols-2">
           {appendices.map((ap) => (
-            <div class="flex items-baseline gap-3 py-2 border-b border-border/50">
-              <span class="font-mono text-xs text-text-muted w-8 flex-shrink-0">App.{ap.charAt(0)}</span>
-              <span class="text-text-secondary text-sm leading-snug">{ap}</span>
+            <div class="flex items-baseline gap-3 border-b border-rail py-2">
+              <span class="w-8 flex-shrink-0 font-mono text-xs text-ink-mute">App.{ap.charAt(0)}</span>
+              <span class="text-sm leading-snug text-ink-soft">{ap}</span>
             </div>
           ))}
         </div>
@@ -400,29 +404,29 @@ const faqSchema = {
 
     {/* FAQ */}
     <section class="mb-20 max-w-3xl">
-      <h2 class="font-display text-2xl md:text-3xl font-bold text-text-primary mb-8">
+      <h2 class="mb-8 font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">
         FAQ
       </h2>
       <div class="space-y-6">
         {faqs.map((faq) => (
-          <div class="border-b border-border/50 pb-5">
-            <h3 class="font-semibold text-text-primary text-base mb-2">{faq.q}</h3>
-            <p class="text-text-muted text-sm leading-relaxed">{faq.a}</p>
+          <div class="border-b border-rail pb-5">
+            <h3 class="mb-2 text-base font-semibold text-ink">{faq.q}</h3>
+            <p class="text-sm leading-relaxed text-ink-soft">{faq.a}</p>
           </div>
         ))}
       </div>
     </section>
 
     {/* Final CTA — repeats the download form so bottom-of-page readers convert without scrolling back */}
-    <section class="border-t border-border pt-10">
-      <div class="rounded-2xl border border-accent-teal/20 bg-accent-teal/5 p-6 md:p-10 max-w-2xl mx-auto text-center">
-        <h2 class="font-display text-2xl font-bold text-text-primary mb-3">
+    <section class="border-t border-rail pt-10">
+      <div class="mx-auto max-w-2xl rounded-[4px] border border-rail bg-white p-6 text-center md:p-10">
+        <h2 class="mb-3 font-head text-2xl font-extrabold tracking-[-0.02em] text-ink">
           Get the manual, free.
         </h2>
-        <p class="text-text-secondary text-base leading-relaxed mb-6 max-w-xl mx-auto">
+        <p class="mx-auto mb-6 max-w-xl text-base leading-relaxed text-ink-soft">
           160 pages, delivered to your inbox in under a minute. Then run a free audit to see exactly where your own site stands.
         </p>
-        <div id="manual-download-form-footer" class="manual-download-form max-w-md mx-auto text-left" data-api-base={import.meta.env.PUBLIC_API_BASE || '/api'}>
+        <div id="manual-download-form-footer" class="manual-download-form mx-auto max-w-md text-left" data-api-base={import.meta.env.PUBLIC_API_BASE || '/api'}>
           <form class="manual-form flex flex-col sm:flex-row gap-3" novalidate>
             <label for="manual-email-footer" class="sr-only">Email address</label>
             <input
@@ -431,46 +435,54 @@ const faqSchema = {
               name="email"
               required
               placeholder="you@company.com"
-              class="manual-email flex-1 rounded-lg border border-border bg-input px-4 py-3 text-text-primary placeholder-text-muted focus:border-accent-teal focus:outline-none focus:ring-1 focus:ring-accent-teal transition-colors"
+              class="manual-email flex-1 rounded-[4px] border border-ink/25 bg-white px-4 py-3 text-ink placeholder:text-ink-mute transition-shadow focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
             />
             <button
               type="submit"
-              class="manual-submit inline-flex items-center justify-center gap-2 rounded-lg bg-accent-teal px-6 py-3 text-white font-semibold text-sm hover:bg-accent-teal-dark transition-colors whitespace-nowrap"
+              class="manual-submit inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[4px] bg-pass-deep px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
             >
               Get the PDF
-              <span aria-hidden="true">→</span>
+              <svg class="h-3 w-3" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+                <path d="M3 1.5 9.5 6 3 10.5V1.5Z" />
+              </svg>
             </button>
           </form>
-          <label class="mt-2.5 flex items-start gap-2.5 text-xs text-text-muted leading-relaxed cursor-pointer">
-            <input type="checkbox" name="marketing_consent" class="manual-marketing-consent mt-0.5 h-3.5 w-3.5 rounded border-border text-accent-teal focus:ring-accent-teal/40 cursor-pointer" />
+          <label class="mt-2.5 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-ink-mute">
+            <input type="checkbox" name="marketing_consent" class="manual-marketing-consent mt-0.5 h-3.5 w-3.5 cursor-pointer rounded-[2px] border-rail accent-pass-deep" />
             <span>Also send me occasional GEO research updates. Unchecked, you'll only get this one download email.</span>
           </label>
-          <div class="manual-success hidden mt-3 rounded-lg border border-accent-teal/25 bg-accent-teal/5 p-3 text-sm">
-            <p class="text-text-primary font-medium">Check your inbox.</p>
-            <p class="manual-success-msg mt-0.5 text-text-secondary"></p>
+          <div class="manual-success hidden mt-3 rounded-[4px] border border-pass/30 bg-pass-wash p-3 text-sm">
+            <p class="font-medium text-ink">Check your inbox.</p>
+            <p class="manual-success-msg mt-0.5 text-ink-soft"></p>
           </div>
-          <div class="manual-error hidden mt-3 rounded-lg border border-red-500/25 bg-red-500/5 p-3 text-sm text-red-500">
+          <div class="manual-error hidden mt-3 rounded-[4px] border border-fail/30 bg-fail-wash px-4 py-3 text-sm text-fail">
+            <span aria-hidden="true" class="mr-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">err</span>
             <span class="manual-error-msg"></span>
           </div>
-          <p class="mt-3 text-xs text-text-muted leading-relaxed">
-            Unsubscribe anytime. By downloading, you agree to our <a href="/privacy/" class="text-accent-teal hover:underline">Privacy Policy</a>.
+          <p class="mt-3 text-xs leading-relaxed text-ink-mute">
+            Unsubscribe anytime. By downloading, you agree to our <a href="/privacy/" class="text-pass-deep underline decoration-rail underline-offset-2 hover:decoration-pass-deep">Privacy Policy</a>.
           </p>
         </div>
 
         {/* Preview — no email gate */}
-        <div class="mt-6 rounded-lg border border-border bg-bg-surface px-6 py-4 max-w-md mx-auto">
-          <p class="text-sm text-text-secondary leading-relaxed mb-3">
+        <div class="mx-auto mt-6 max-w-md rounded-[4px] border border-rail bg-paper px-6 py-4">
+          <p class="mb-3 text-sm leading-relaxed text-ink-soft">
             Prefer to read first? Download a free 3-chapter preview — no email required.
           </p>
-          <a href="/geo-readiness-manual-preview.pdf" class="inline-flex items-center gap-2 rounded-lg border border-accent-teal/40 bg-accent-teal/10 px-4 py-2 text-sm font-medium text-accent-teal hover:bg-accent-teal/20 transition-colors">
+          <a href="/geo-readiness-manual-preview.pdf" class="inline-flex items-center gap-2 rounded-[4px] border border-rail bg-white px-4 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash">
             Get the free preview (PDF, 27 pages)
-            <span aria-hidden="true">→</span>
+            <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
           </a>
         </div>
 
         <p class="mt-6 text-sm">
-          <a href="/ai-seo-audit/" data-cta="manual_footer_ai_seo_audit" class="text-accent-teal hover:text-accent-teal-dark font-medium transition-colors">
-            Or run a free GEO audit first →
+          <a href="/ai-seo-audit/" data-cta="manual_footer_ai_seo_audit" class="inline-flex items-center gap-2 font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 transition-colors hover:decoration-pass-deep">
+            Or run a free GEO audit first
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </svg>
           </a>
         </p>
       </div>
@@ -561,6 +573,8 @@ const faqSchema = {
   </script>
 
   <style>
+    /* L'unico momento di moto orchestrato della pagina: l'ingresso dell'hero,
+       già presente e disattivato sotto prefers-reduced-motion. */
     @media (prefers-reduced-motion: no-preference) {
       .hero-in {
         opacity: 0;
@@ -570,24 +584,10 @@ const faqSchema = {
         from { opacity: 0; transform: translateY(14px); }
         to { opacity: 1; transform: translateY(0); }
       }
-      .manual-cover-tilt {
-        transform: perspective(1200px) rotateY(-10deg) rotateX(2deg);
-        animation: manual-cover-settle 900ms 120ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .manual-cover-tilt:hover {
-        transform: perspective(1200px) rotateY(-4deg) rotateX(1deg) scale(1.015);
-      }
-      @keyframes manual-cover-settle {
-        from { transform: perspective(1200px) rotateY(-22deg) rotateX(6deg) translateY(18px); opacity: 0; }
-        to { opacity: 1; }
-      }
     }
     @media (prefers-reduced-motion: reduce) {
       .hero-in { opacity: 1; }
-      .manual-cover-tilt { transform: perspective(1200px) rotateY(-10deg) rotateX(2deg); }
     }
-    .text-wrap-balance { text-wrap: balance; }
   </style>
 
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
