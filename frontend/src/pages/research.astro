@@ -6,101 +6,96 @@ import { researchSources, researchClosing } from '../lib/researchContent';
 ---
 
 <Shell title="GEO Research — Papers Behind AI Search Visibility" description="The research behind AI visibility scoring: the Princeton GEO paper, the 2026 GEO survey, engine audits, and benchmarks like C-SEO Bench and E-GEO." canonical="https://geoready.dev/research/">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16">
-    {/* Header */}
-    <header class="mb-14 overflow-hidden rounded-[--radius-2xl] border border-border bg-bg-surface md:mb-20">
-      <div class="grid lg:grid-cols-[minmax(0,0.88fr)_minmax(420px,0.82fr)]">
-      <div class="p-6 md:p-10 lg:p-12">
-        <div class="flex items-center gap-2 text-[10px] font-mono text-text-muted uppercase tracking-wider">
-          <span>GEO Optimizer</span>
-          <span class="w-1 h-1 rounded-full bg-text-muted" />
-          <span>Research</span>
+  {/* Hero — paper band, annotation on the heading's baseline row */}
+  <section class="bg-paper">
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-20">
+      <header class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(420px,0.82fr)] lg:items-center">
+        <div>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+            <h1 class="max-w-3xl font-head text-4xl font-extrabold leading-[1.05] tracking-[-0.03em] text-ink md:text-5xl">
+              The research foundation behind AI visibility scoring.
+            </h1>
+            <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">GEO Optimizer · Research</p>
+          </div>
+
+          <p class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
+            Built on peer-reviewed science, not marketing claims. Every signal maps to peer-reviewed research or our own documented analysis.
+          </p>
+          <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">Last updated: September 2026</p>
+
+          <div class="mt-8 grid gap-px overflow-hidden rounded-[4px] border border-rail bg-rail sm:grid-cols-3">
+            {[
+              ['Papers', 'Research patterns that shape the scoring model.'],
+              ['Benchmarks', 'Evidence from retrieval and answer behavior.'],
+              ['Rules', 'Auditable checks that map evidence to action.'],
+            ].map(([label, text]) => (
+              <div class="bg-white p-5">
+                <p class="text-sm font-semibold text-ink">{label}</p>
+                <p class="mt-1 text-sm leading-relaxed text-ink-soft">{text}</p>
+              </div>
+            ))}
+          </div>
+
+          <p class="mt-8 max-w-3xl text-sm text-ink-soft">
+            To turn this research into practice, see
+            <a href="/guides/what-is-generative-engine-optimization/" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">what Generative Engine Optimization is</a>,
+            the <a href="/guides/ai-visibility-checklist/" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">AI visibility checklist</a>,
+            the <a href="/guides/geo-vs-seo/" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">GEO vs SEO comparison</a>, and the
+            <a href="/guides/llms-txt-wordpress/" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">llms.txt implementation guide</a>.
+            To see how this evidence becomes the published scoring weights, read the
+            <a href="/methodology/" class="text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep">scoring methodology</a>.
+          </p>
         </div>
 
-        <h1 class="mt-4 max-w-3xl font-display text-4xl md:text-5xl font-bold text-text-primary leading-tight tracking-tight">
-          The research foundation behind AI visibility scoring.
-        </h1>
-
-        <p class="mt-5 text-base md:text-lg text-text-secondary leading-relaxed max-w-2xl">
-          Built on peer-reviewed science, not marketing claims. Every signal maps to peer-reviewed research or our own documented analysis.
-        </p>
-        <p class="mt-2 text-xs text-text-muted font-mono">Last updated: September 2026</p>
-
-        <div class="mt-8 grid gap-3 sm:grid-cols-3">
-          {[
-            ['Papers', 'Research patterns that shape the scoring model.'],
-            ['Benchmarks', 'Evidence from retrieval and answer behavior.'],
-            ['Rules', 'Auditable checks that map evidence to action.'],
-          ].map(([label, text]) => (
-            <div class="border-l border-accent-teal/30 pl-4">
-              <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accent-teal">{label}</p>
-              <p class="mt-1 text-sm leading-relaxed text-text-secondary">{text}</p>
-            </div>
-          ))}
+        <div class="flex items-center rounded-[4px] border border-rail bg-white p-6 lg:p-8">
+          <ResearchSurface variant="light" class="w-full" />
         </div>
+      </header>
+    </div>
+  </section>
 
-        <p class="mt-8 text-sm text-text-secondary">
-          To turn this research into practice, see
-          <a href="/guides/what-is-generative-engine-optimization/" class="text-accent-teal hover:underline">what Generative Engine Optimization is</a>,
-          the <a href="/guides/ai-visibility-checklist/" class="text-accent-teal hover:underline">AI visibility checklist</a>,
-          the <a href="/guides/geo-vs-seo/" class="text-accent-teal hover:underline">GEO vs SEO comparison</a>, and the
-          <a href="/guides/llms-txt-wordpress/" class="text-accent-teal hover:underline">llms.txt implementation guide</a>.
-          To see how this evidence becomes the published scoring weights, read the
-          <a href="/methodology/" class="text-accent-teal hover:underline">scoring methodology</a>.
-        </p>
+  {/* Sources */}
+  <section class="border-t border-rail bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 md:py-16">
+      {/* Type legend — i quattro valori reali del campo `type` in researchContent.ts */}
+      <div class="mb-8 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-[4px] border border-rail bg-paper px-4 py-3">
+        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">src/lib/researchContent.ts · type</span>
+        {[
+          'Peer-reviewed paper',
+          'Benchmark',
+          'Industry report',
+          'Internal analysis',
+        ].map((label) => (
+          <span class="rounded-[2px] border border-rail bg-white px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-mute">{label}</span>
+        ))}
       </div>
 
-      <div class="flex items-center border-t border-border bg-bg-subtle p-8 lg:border-l lg:border-t-0">
-        <ResearchSurface variant="light" class="w-full" />
+      <div class="mb-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">Sources and findings</h2>
+          <span class="rounded-[2px] border border-rail px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-mute">Traceable scoring</span>
+        </div>
+        <a href="/manifesto/" class="text-sm font-medium text-pass-deep underline decoration-rail underline-offset-4 transition-colors hover:decoration-pass-deep">
+          Read the manifesto
+        </a>
       </div>
+
+      <div class="space-y-6">
+        {researchSources.map((source) => (
+          <ResearchCard source={source} />
+        ))}
       </div>
-    </header>
 
-    {/* Type filter legend */}
-    <div class="mb-8 flex flex-wrap items-center gap-3 rounded-[--radius-lg] border border-border bg-bg-surface px-4 py-3 text-[11px] font-mono text-text-muted">
-      <span class="inline-flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-accent-teal" />
-        Peer-reviewed paper
-      </span>
-      <span class="inline-flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-accent-warning" />
-        Benchmark
-      </span>
-      <span class="inline-flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-text-muted" />
-        Industry report
-      </span>
-      <span class="inline-flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-accent-success" />
-        Internal analysis
-      </span>
-    </div>
-
-    <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-      <div>
-        <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-accent-teal">Traceable scoring</p>
-        <h2 class="mt-2 text-xl md:text-2xl font-bold text-text-primary">Sources and findings</h2>
+      {/* Closing statement */}
+      <div class="mt-14 max-w-2xl md:mt-20">
+        <blockquote class="border-l-2 border-rail pl-5" cite="https://geoready.dev/research/">
+          <p class="text-sm font-medium italic leading-relaxed text-ink">
+            {researchClosing.statement}
+          </p>
+        </blockquote>
       </div>
-      <a href="/manifesto/" class="text-sm text-accent-teal hover:text-accent-teal-dark transition-colors">
-        Read the manifesto
-      </a>
     </div>
-
-    <div class="space-y-6">
-      {researchSources.map((source) => (
-        <ResearchCard source={source} />
-      ))}
-    </div>
-
-    {/* Closing statement */}
-    <div class="mt-14 md:mt-20 max-w-2xl">
-      <blockquote class="pl-5 border-l-2 border-accent-teal" cite="https://geoready.dev/research/">
-        <p class="text-sm font-medium text-text-primary italic leading-relaxed">
-          {researchClosing.statement}
-        </p>
-      </blockquote>
-    </div>
-  </div>
+  </section>
 
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",

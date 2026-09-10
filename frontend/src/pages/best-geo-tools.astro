@@ -153,24 +153,24 @@ const faqs = [
     a: 'The terms are often used interchangeably, and in practice they describe overlapping categories. GEO tools — short for Generative Engine Optimization tools — help you structure a site so AI answer engines like ChatGPT and Perplexity can more easily find, understand, and evaluate its content. AI visibility tools is the broader label some vendors use for the same category, sometimes extending to citation monitoring and brand-mention tracking. When comparing products, check what the tool actually measures: a one-off readiness audit, ongoing citation monitoring, or both.',
   },
 ];
+
+// Classe condivisa dei link nel corpo del testo (ricetta console).
+const PROSE_LINK = 'text-pass-deep underline decoration-rail underline-offset-4 hover:decoration-pass-deep';
 ---
 
 <Shell title={title} description={description} canonical={canonical}>
-  <article class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-text-primary [&_h2]:leading-tight [&_h2]:tracking-tight [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-text-primary [&_p]:text-text-secondary [&_p]:leading-relaxed [&_li]:text-text-secondary [&_li]:leading-relaxed">
+  <article class="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-16">
 
     {/* Header — answer-first, visible to crawlers */}
     <header class="mb-12 md:mb-16">
-      <div class="flex items-center gap-2 text-[10px] font-mono text-text-muted uppercase tracking-wider">
-        <span>GEO Optimizer</span>
-        <span class="w-1 h-1 rounded-full bg-text-muted" />
-        <span>Tools</span>
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h1 class="max-w-3xl font-head text-3xl font-extrabold leading-[1.05] tracking-[-0.03em] text-ink md:text-4xl">
+          Best GEO Tools for AI Search Visibility
+        </h1>
+        <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">GEO Optimizer · Tools</p>
       </div>
 
-      <h1 class="mt-3 font-display text-3xl md:text-4xl font-bold text-text-primary leading-tight tracking-tight">
-        Best GEO Tools for AI Search Visibility
-      </h1>
-
-      <p class="mt-4 text-base md:text-lg text-text-secondary leading-relaxed">
+      <p class="mt-4 max-w-3xl text-base leading-relaxed text-ink-soft md:text-lg">
         The honest answer to "what is the best GEO tool" is that it depends on
         what you are trying to measure. The category is new, vendors define
         "AI visibility" differently, and a score is only useful if you can see how
@@ -181,17 +181,17 @@ const faqs = [
         using only facts published in its repository.
       </p>
 
-      <p class="mt-4 text-sm text-text-secondary leading-relaxed">
+      <p class="mt-4 max-w-3xl text-sm leading-relaxed text-ink-soft">
         GEO here means Generative Engine Optimization, not geographic or local SEO.
       </p>
 
-      <p class="mt-3 text-sm text-text-muted leading-relaxed">
+      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-ink-mute">
         This comparison is criteria-based and evolving. The GEO tooling landscape
         changes quickly; treat the criteria below as the durable part and any specific
         product as a snapshot to re-verify before you buy.
       </p>
 
-      <p class="mt-4 text-xs text-text-muted font-mono">
+      <p class="mt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">
         Published June 16, 2026 · Last updated June 17, 2026 · 8 min read
       </p>
     </header>
@@ -205,8 +205,8 @@ const faqs = [
 
     {/* What "best" means in a new category */}
     <section class="mb-12 md:mb-16">
-      <h2>What "best" means in a category this young</h2>
-      <p class="mt-4">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">What "best" means in a category this young</h2>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Generative Engine Optimization is the practice of structuring a site so AI
         answer engines like ChatGPT, Perplexity, Claude, and Gemini can crawl it,
         understand it, and cite it. The discipline is only a couple of years old, the
@@ -215,7 +215,7 @@ const faqs = [
         rankings rest on methodologies that are rarely published and on outcomes no
         vendor can guarantee.
       </p>
-      <p class="mt-4">
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         A more durable approach is to evaluate tools against fixed criteria and pick the
         one that fits your workflow. The sections below give you those criteria, then
         describe the categories of tool you will encounter so you know what each is
@@ -225,31 +225,31 @@ const faqs = [
 
     {/* Evaluation criteria table */}
     <section class="mb-12 md:mb-16">
-      <h2>How to evaluate a GEO tool</h2>
-      <p class="mt-4">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">How to evaluate a GEO tool</h2>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Score any candidate against these seven criteria. Each is a question you can
         answer by reading documentation or running a trial — not a claim you have to
         take on faith.
       </p>
-      <div class="mt-6 overflow-x-auto rounded-2xl border border-border bg-bg-surface">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="border-b border-border text-text-muted">
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">Criterion</th>
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">Question to ask</th>
+      <div class="mt-6 overflow-x-auto rounded-[4px] border border-rail bg-white">
+        <table class="w-full min-w-[560px] text-left text-sm">
+          <thead class="bg-paper">
+            <tr class="border-b border-rail">
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Criterion</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Question to ask</th>
             </tr>
           </thead>
           <tbody>
             {EVALUATION_CRITERIA.map(([name, detail]) => (
-              <tr class="border-b border-border/60 last:border-0 align-top">
-                <th scope="row" class="px-4 py-3 font-display font-semibold text-text-primary whitespace-nowrap">{name}</th>
-                <td class="px-4 py-3 text-text-secondary leading-relaxed">{detail}</td>
+              <tr class="border-b border-rail/60 align-top last:border-0">
+                <th scope="row" class="whitespace-nowrap px-4 py-3 font-semibold text-ink">{name}</th>
+                <td class="px-4 py-3 leading-relaxed text-ink-soft">{detail}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p class="mt-4">
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Methodology transparency sits at the top for a reason: if you cannot see how a
         score is calculated, you cannot reproduce it, contest it, or learn from it. A
         published scoring model turns a number into a checklist you can act on.
@@ -258,40 +258,47 @@ const faqs = [
 
     {/* First-party benchmark — what the audited cohort actually scores.
         Own measurements, not vendor claims: this is the part of the comparison no
-        competitor can restate, and it gives an answer engine something quotable. */}
+        competitor can restate, and it gives an answer engine something quotable.
+        Reso come "log well": l'unico materiale scuro della pagina. */}
     <section class="mb-12 md:mb-16">
-      <h2>What sites actually score, measured</h2>
-      <p class="mt-4">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">What sites actually score, measured</h2>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Criteria tell you how to judge a tool. They do not tell you how much room a
         typical site has to gain. We measured that: our data shows what sites score when
         the same open-source 100-point rubric is applied to every site audited through
         GeoReady. The baseline below is measurement, not estimation.
       </p>
-      <figure class="mt-6 rounded-2xl border border-border bg-bg-surface p-6">
-        <blockquote class="border-l-2 border-accent pl-4">
-          <p class="text-lg text-text-primary leading-relaxed">
-            The average audited site scores <strong>{BENCHMARK.average} out of 100</strong>,
-            with a median of {BENCHMARK.median}. Only {BENCHMARK.llmsTxtAdoption} publish
-            an llms.txt file and {BENCHMARK.schemaAdoption} ship JSON-LD schema, which
-            makes {BENCHMARK.biggestGap} the single largest readiness gap in the sample.
-          </p>
-        </blockquote>
-        <figcaption class="mt-4 text-sm text-text-muted">
-          GeoReady benchmark, {BENCHMARK.sampleLabel}, measured {BENCHMARK.measuredOn}.
-          Latest audit per domain, aggregates only.
-          <a href="/state-of-geo/" class="underline hover:no-underline">See the live benchmark</a>
-          and the <a href="/methodology/" class="underline hover:no-underline">scoring methodology</a>.
-        </figcaption>
-      </figure>
-      <p class="mt-4">
+      <div class="mt-6 overflow-hidden rounded-[4px] bg-well text-well-ink">
+        <div class="flex items-center justify-between gap-3 border-b border-well-ink/15 px-6 py-3">
+          <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-well-mute">GeoReady benchmark · GET /api/public/benchmark</p>
+          <span class="font-mono text-[11px] tracking-[0.08em] text-pass">exit 0</span>
+        </div>
+        <figure class="px-6 py-6 md:px-8">
+          <blockquote>
+            <p class="max-w-3xl text-lg leading-relaxed">
+              The average audited site scores <strong class="font-semibold text-white">{BENCHMARK.average} out of 100</strong>,
+              with a median of {BENCHMARK.median}. Only {BENCHMARK.llmsTxtAdoption} publish
+              an llms.txt file and {BENCHMARK.schemaAdoption} ship JSON-LD schema, which
+              makes {BENCHMARK.biggestGap} the single largest readiness gap in the sample.
+            </p>
+          </blockquote>
+          <figcaption class="mt-4 font-mono text-[12px] leading-relaxed text-well-mute">
+            GeoReady benchmark, {BENCHMARK.sampleLabel}, measured {BENCHMARK.measuredOn}.
+            Latest audit per domain, aggregates only.
+            <a href="/state-of-geo/" class="underline underline-offset-2 hover:text-well-ink">See the live benchmark</a>
+            and the <a href="/methodology/" class="underline underline-offset-2 hover:text-well-ink">scoring methodology</a>.
+          </figcaption>
+        </figure>
+      </div>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Two things follow. First, a score in the fifties is ordinary rather than alarming
         — most sites are in the same position. Second, the gaps concentrate in signals a
         tool can find mechanically: a missing orientation file or absent structured data
         is a specific, fixable defect, not a matter of judgment. That is what an audit
         should hand you.
       </p>
-      <h3 class="mt-8">Methodology</h3>
-      <p class="mt-3">
+      <h3 class="mt-8 font-head text-lg font-extrabold tracking-[-0.01em] text-ink">Methodology</h3>
+      <p class="mt-3 max-w-3xl leading-relaxed text-ink-soft">
         Every figure above comes from one audit per domain — the most recent, with
         scheduled re-audits excluded so an actively monitored site cannot weight the
         average. Each site is scored with the same published 100-point, 8-category rubric,
@@ -299,7 +306,7 @@ const faqs = [
         of methods. Only aggregates are published: no domain, URL, or identifier leaves
         the sample.
       </p>
-      <p class="mt-3">
+      <p class="mt-3 max-w-3xl leading-relaxed text-ink-soft">
         The limits are worth stating plainly. This is a benchmark of sites audited by
         GeoReady, not a survey of the whole web, and the sample skews toward teams already
         curious about AI visibility — a site whose owner ran an audit is not a random site.
@@ -317,21 +324,21 @@ const faqs = [
 
     {/* Tool categories */}
     <section class="mb-12 md:mb-16">
-      <h2>The main categories of GEO and AI visibility tools</h2>
-      <p class="mt-4">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">The main categories of GEO and AI visibility tools</h2>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Tools in this space fall into a few broad categories. Most teams end up using
         more than one, because readiness and outcome are different things and few
         products do both well.
       </p>
-      <div class="mt-6 space-y-4">
+      <div class="mt-6 grid gap-px overflow-hidden rounded-[4px] border border-rail bg-rail sm:grid-cols-2">
         {TOOL_CATEGORIES.map(([name, detail]) => (
-          <div class="rounded-xl border border-border bg-bg-surface p-5">
-            <h3>{name}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-text-secondary">{detail}</p>
+          <div class="bg-white p-5">
+            <h3 class="font-head text-lg font-extrabold tracking-[-0.01em] text-ink">{name}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft">{detail}</p>
           </div>
         ))}
       </div>
-      <p class="mt-4">
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         When you compare specific products, place each one in a category first. A
         citation monitor and an audit tool are not really competitors: they answer
         different questions, and judging one by the other's strengths is how
@@ -341,41 +348,41 @@ const faqs = [
 
     {/* Category comparison matrix — category-level only, no vendor claims */}
     <section class="mb-12 md:mb-16">
-      <h2>GEO tools compared, by category</h2>
-      <p class="mt-4">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">GEO tools compared, by category</h2>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         This matrix compares the categories, not individual products, so it stays
         true as vendors come and go. Use it to decide which kind of tool fits your
         question, then verify any specific product against the criteria above before
         you buy. "Varies" means the answer depends on the vendor and is worth
         checking yourself.
       </p>
-      <div class="mt-6 overflow-x-auto rounded-2xl border border-border bg-bg-surface">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="border-b border-border text-text-muted">
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">Tool category</th>
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">Best at</th>
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">Audit vs monitoring</th>
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">Answer-engine querying</th>
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">CI/CD</th>
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">Pricing</th>
+      <div class="mt-6 overflow-x-auto rounded-[4px] border border-rail bg-white">
+        <table class="w-full min-w-[760px] text-left text-sm">
+          <thead class="bg-paper">
+            <tr class="border-b border-rail">
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Tool category</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Best at</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Audit vs monitoring</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Answer-engine querying</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">CI/CD</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Pricing</th>
             </tr>
           </thead>
           <tbody>
             {CATEGORY_MATRIX.map((row) => (
-              <tr class="border-b border-border/60 last:border-0 align-top">
-                <th scope="row" class="px-4 py-3 font-display font-semibold text-text-primary">{row.category}</th>
-                <td class="px-4 py-3 text-text-secondary leading-relaxed">{row.bestAt}</td>
-                <td class="px-4 py-3 text-text-secondary leading-relaxed">{row.audit}</td>
-                <td class="px-4 py-3 text-text-secondary leading-relaxed">{row.query}</td>
-                <td class="px-4 py-3 text-text-secondary leading-relaxed">{row.cicd}</td>
-                <td class="px-4 py-3 text-text-secondary leading-relaxed">{row.pricing}</td>
+              <tr class="border-b border-rail/60 align-top last:border-0">
+                <th scope="row" class="px-4 py-3 font-semibold text-ink">{row.category}</th>
+                <td class="px-4 py-3 leading-relaxed text-ink-soft">{row.bestAt}</td>
+                <td class="px-4 py-3 leading-relaxed text-ink-soft">{row.audit}</td>
+                <td class="px-4 py-3 leading-relaxed text-ink-soft">{row.query}</td>
+                <td class="px-4 py-3 leading-relaxed text-ink-soft">{row.cicd}</td>
+                <td class="px-4 py-3 leading-relaxed text-ink-soft">{row.pricing}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p class="mt-4">
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Most teams end up using more than one category, because readiness and outcome
         are different questions. The pattern that holds across all of them: the tool
         whose methodology you can read is the one you can trust the result from.
@@ -391,62 +398,65 @@ const faqs = [
 
     {/* GEO Optimizer feature block — verifiable repo facts only */}
     <section class="mb-12 md:mb-16">
-      <h2>GEO Optimizer: an open-source option, by the facts</h2>
-      <p class="mt-4">
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">GEO Optimizer: an open-source option, by the facts</h2>
+        <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">github.com/Auriti-Labs/geo-optimizer-skill · MIT</p>
+      </div>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         GEO Optimizer is the toolkit behind GeoReady, and the one we can describe
         without asking you to trust a marketing claim, because everything below is
         verifiable in its public repository under an MIT license. We list it here as a
         worked example of the criteria above, not as a verdict that it beats tools we
         have not audited.
       </p>
-      <div class="mt-6 overflow-x-auto rounded-2xl border border-border bg-bg-surface">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="border-b border-border text-text-muted">
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">Capability</th>
-              <th scope="col" class="px-4 py-3 font-mono text-[11px] uppercase tracking-wider">What it provides</th>
+      <div class="mt-6 overflow-x-auto rounded-[4px] border border-rail bg-white">
+        <table class="w-full min-w-[560px] text-left text-sm">
+          <thead class="bg-paper">
+            <tr class="border-b border-rail">
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Capability</th>
+              <th scope="col" class="px-4 py-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">What it provides</th>
             </tr>
           </thead>
           <tbody>
             {GEO_OPTIMIZER_FEATURES.map(([name, detail]) => (
-              <tr class="border-b border-border/60 last:border-0 align-top">
-                <th scope="row" class="px-4 py-3 font-display font-semibold text-text-primary whitespace-nowrap">{name}</th>
-                <td class="px-4 py-3 text-text-secondary leading-relaxed">{detail}</td>
+              <tr class="border-b border-rail/60 align-top last:border-0">
+                <th scope="row" class="whitespace-nowrap px-4 py-3 font-semibold text-ink">{name}</th>
+                <td class="px-4 py-3 leading-relaxed text-ink-soft">{detail}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <p class="mt-4">
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Against the criteria: the methodology is transparent because the 8 scoring
         categories and their weights are published; it is open-source under MIT; it
         does both auditing and, through the citations command, answer-engine querying;
         it runs in CI/CD via a GitHub Action; and its methods are grounded in published
         research. The hosted layer is freemium — the
         {' '}
-        <a href="/ai-seo-audit/" data-cta="best_geo_tools_body_ai_seo_audit" class="text-accent-teal hover:underline">audit</a>,
+        <a href="/ai-seo-audit/" data-cta="best_geo_tools_body_ai_seo_audit" class={PROSE_LINK}>audit</a>,
         {' '}
-        <a href="/compare/" class="text-accent-teal hover:underline">two-site comparison</a>, and a free
+        <a href="/compare/" class={PROSE_LINK}>two-site comparison</a>, and a free
         {' '}
-        <a href="/tools/ai-citation-checker/" class="text-accent-teal hover:underline">AI citation checker</a>
+        <a href="/tools/ai-citation-checker/" class={PROSE_LINK}>AI citation checker</a>
         {' '}run without an account, while saving history and ongoing monitoring are paid features.
-        See <a href="/pricing/" class="text-accent-teal hover:underline">pricing</a> for the tiers.
+        See <a href="/pricing/" class={PROSE_LINK}>pricing</a> for the tiers.
       </p>
-      <p class="mt-4">
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         The source, scoring weights, and research references are in the
         {' '}
-        <a href="https://github.com/Auriti-Labs/geo-optimizer-skill" class="text-accent-teal hover:underline" rel="noopener">public repository on GitHub</a>,
+        <a href="https://github.com/Auriti-Labs/geo-optimizer-skill" class={PROSE_LINK} rel="noopener">public repository on GitHub</a>,
         {' '}with full documentation in the
         {' '}
-        <a href="https://auriti-labs.github.io/geo-optimizer-skill/" class="text-accent-teal hover:underline" rel="noopener">project docs</a>.
+        <a href="https://auriti-labs.github.io/geo-optimizer-skill/" class={PROSE_LINK} rel="noopener">project docs</a>.
         Because it is open-source, you can verify every claim in the table above yourself.
       </p>
     </section>
 
     {/* The research it scores against */}
     <section class="mb-12 md:mb-16">
-      <h2>Why research backing matters</h2>
-      <p class="mt-4">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">Why research backing matters</h2>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         "Research-backed" is easy to assert and harder to demonstrate. The standard to
         hold a tool to is whether it names the work it relies on. GEO Optimizer's 47
         citability methods trace to two papers you can read: the Princeton GEO study
@@ -455,55 +465,55 @@ const faqs = [
         work documents citation-lift signals such as +41% from adding quotations and +33%
         from adding statistics.
       </p>
-      <p class="mt-4">
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         You do not have to take those numbers as guarantees for your own site — model
         behavior varies — but a tool that points to specific, citable research is one you
         can interrogate. A tool that asserts "AI-optimized" with no source is not.
         For the underlying discipline, the
         {' '}
-        <a href="/guides/generative-engine-optimization/" class="text-accent-teal hover:underline">GEO guide</a>
+        <a href="/guides/generative-engine-optimization/" class={PROSE_LINK}>GEO guide</a>
         {' '}explains what these signals do, and the
         {' '}
-        <a href="/guides/geo-vs-seo/" class="text-accent-teal hover:underline">GEO vs SEO guide</a>
+        <a href="/guides/geo-vs-seo/" class={PROSE_LINK}>GEO vs SEO guide</a>
         {' '}covers what changes when the interface is an answer rather than a list of links.
       </p>
     </section>
 
     {/* How to choose */}
     <section class="mb-12 md:mb-16">
-      <h2>How to choose, in practice</h2>
-      <p class="mt-4">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">How to choose, in practice</h2>
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Start from the question you actually need answered, then pick the category that
         answers it:
       </p>
-      <ul class="mt-4 ml-5 list-disc space-y-2">
-        <li>
-          <strong class="text-text-primary">"Where does my site stand and what do I fix first?"</strong>
+      <ul class="ml-5 mt-4 max-w-3xl list-disc space-y-2">
+        <li class="leading-relaxed text-ink-soft">
+          <strong class="text-ink">"Where does my site stand and what do I fix first?"</strong>
           {' '}Use an audit tool with a transparent scoring model so the fix list is reproducible.
         </li>
-        <li>
-          <strong class="text-text-primary">"Am I actually being cited, and by whom over time?"</strong>
+        <li class="leading-relaxed text-ink-soft">
+          <strong class="text-ink">"Am I actually being cited, and by whom over time?"</strong>
           {' '}Use citation monitoring that queries real answer engines, and accept that results move as models retrain. See
-          {' '}<a href="/guides/ai-citations-check/" class="text-accent-teal hover:underline">how to check AI citations</a>
+          {' '}<a href="/guides/ai-citations-check/" class={PROSE_LINK}>how to check AI citations</a>
           {' '}to get started.
         </li>
-        <li>
-          <strong class="text-text-primary">"How do I stack up against my competitors?"</strong>
+        <li class="leading-relaxed text-ink-soft">
+          <strong class="text-ink">"How do I stack up against my competitors?"</strong>
           {' '}Benchmark several domains at once with
-          {' '}<a href="/analyze-competitors/" class="text-accent-teal hover:underline">competitor AI visibility analysis</a>
+          {' '}<a href="/analyze-competitors/" class={PROSE_LINK}>competitor AI visibility analysis</a>
           {' '}to see where a whole category sits, then drill into one rival with a
-          {' '}<a href="/compare/" class="text-accent-teal hover:underline">head-to-head comparison</a>.
+          {' '}<a href="/compare/" class={PROSE_LINK}>head-to-head comparison</a>.
         </li>
-        <li>
-          <strong class="text-text-primary">"How do I stop regressions in a pipeline?"</strong>
+        <li class="leading-relaxed text-ink-soft">
+          <strong class="text-ink">"How do I stop regressions in a pipeline?"</strong>
           {' '}Require CI/CD support — a tool you can run on every deploy and fail a build below a threshold.
         </li>
-        <li>
-          <strong class="text-text-primary">"I already run an SEO suite."</strong>
+        <li class="leading-relaxed text-ink-soft">
+          <strong class="text-ink">"I already run an SEO suite."</strong>
           {' '}Check whether its GEO score is computed transparently before you rely on it; if not, pair it with a tool that publishes its method.
         </li>
       </ul>
-      <p class="mt-4">
+      <p class="mt-4 max-w-3xl leading-relaxed text-ink-soft">
         Two warnings hold across every category. First, distrust any tool that promises a
         citation — none can deliver it, because the decision lives inside models you do not
         control. Second, prefer the tool whose methodology you can read; in a field this
@@ -512,25 +522,25 @@ const faqs = [
     </section>
 
     {/* CTA band */}
-    <section class="mb-12 rounded-2xl border border-border bg-bg-surface p-6 md:mb-16 md:p-8">
-      <h2>See where your site stands first</h2>
-      <p class="mt-3">
+    <section class="mb-12 rounded-[4px] border border-rail bg-white p-6 md:mb-16 md:p-8">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">See where your site stands first</h2>
+      <p class="mt-3 max-w-3xl leading-relaxed text-ink-soft">
         Before you choose a tool, get a baseline. The free GEO audit scores your
         site 0 to 100 across 8 categories and returns a prioritized fix list, with
         no account required. It is the open-source methodology described above,
         running on your URL.
       </p>
-      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row">
         <a
           href="/ai-seo-audit/"
           data-cta="best_geo_tools_cta_ai_seo_audit"
-          class="inline-flex items-center justify-center rounded-full bg-accent-teal px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-teal-dark"
+          class="inline-flex items-center justify-center rounded-[4px] bg-pass-deep px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
         >
           Run the free GEO audit
         </a>
         <a
           href="/pricing/"
-          class="inline-flex items-center justify-center rounded-full border border-border px-6 py-3 text-sm font-medium text-text-primary transition-colors hover:border-accent-teal"
+          class="inline-flex items-center justify-center rounded-[4px] border border-rail bg-white px-6 py-3 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
         >
           See pricing
         </a>
@@ -539,12 +549,12 @@ const faqs = [
 
     {/* FAQ */}
     <section>
-      <h2>Frequently asked questions</h2>
-      <div class="mt-6 space-y-6">
+      <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] text-ink md:text-3xl">Frequently asked questions</h2>
+      <div class="mt-6 max-w-3xl">
         {faqs.map((faq) => (
-          <div>
-            <h3>{faq.q}</h3>
-            <p class="mt-2">{faq.a}</p>
+          <div class="border-t border-rail py-5 first:border-t-0 first:pt-0">
+            <h3 class="text-base font-semibold text-ink">{faq.q}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft">{faq.a}</p>
           </div>
         ))}
       </div>
@@ -552,21 +562,21 @@ const faqs = [
 
     {/* Author attribution — an E-E-A-T signal, and the page's own advice applied:
         a comparison that asks who computed a score should say who wrote it. */}
-    <section class="mt-12 border-t border-border pt-8 md:mt-16">
+    <section class="mt-12 border-t border-rail pt-8 md:mt-16">
       <h2 class="sr-only">About the author</h2>
-      <div class="rounded-2xl border border-border bg-bg-surface p-6">
-        <p class="font-display font-semibold text-text-primary">Juan Camilo Auriti</p>
-        <p class="mt-2 text-sm">
+      <div class="rounded-[4px] border border-rail bg-white p-6">
+        <p class="font-semibold text-ink">Juan Camilo Auriti</p>
+        <p class="mt-2 max-w-3xl text-sm leading-relaxed text-ink-soft">
           Founder of Auriti Labs and author of GEO Optimizer, the MIT-licensed engine
           whose scoring weights and 47 citability methods are published in the
-          <a href="https://github.com/Auriti-Labs/geo-optimizer-skill" class="text-accent-teal hover:underline" rel="noopener">public repository</a>.
+          <a href="https://github.com/Auriti-Labs/geo-optimizer-skill" class={PROSE_LINK} rel="noopener">public repository</a>.
           The benchmark figures on this page come from that engine, run across every
           site audited through GeoReady.
         </p>
-        <p class="mt-3 text-sm text-text-muted">
+        <p class="mt-3 text-sm text-ink-mute">
           Reviewed and updated {BENCHMARK.measuredOn} ·
-          <a href="/methodology/" class="underline hover:no-underline">Methodology</a> ·
-          <a href="/about/" class="underline hover:no-underline">About</a>
+          <a href="/methodology/" class="underline underline-offset-2 hover:text-ink">Methodology</a> ·
+          <a href="/about/" class="underline underline-offset-2 hover:text-ink">About</a>
         </p>
       </div>
     </section>
