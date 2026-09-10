@@ -36,10 +36,9 @@ const src = urlForImage({ asset }).width(renderWidth).fit('max').quality(90).aut
     height={renderHeight}
     loading="lazy"
     decoding="async"
-    class="w-full h-auto rounded-lg border"
-    style="border-color: var(--color-border, #333);"
+    class="w-full h-auto rounded-[4px] border border-rail"
   />
   {caption && (
-    <figcaption class="mt-2 text-center text-sm text-text-muted">{caption}</figcaption>
+    <figcaption class="mt-2 text-center text-sm text-ink-mute">{caption}</figcaption>
   )}
 </figure>

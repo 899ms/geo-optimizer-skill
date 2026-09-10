@@ -44,46 +44,52 @@ export default function NewsletterSignup({
 
   if (status === 'done') {
     return (
-      <div className="rounded-xl border border-accent-teal/40 bg-accent-teal/5 px-5 py-4 text-sm text-text-primary">
-        ✅ You're on the list. The next monthly issue will land in your inbox.
+      <div className="flex items-start gap-2.5 rounded-[4px] border border-pass/50 bg-pass-wash px-5 py-4 text-sm text-ink">
+        <svg aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0 text-pass-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        <span>You're on the list. The next monthly issue will land in your inbox.</span>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-border bg-bg-surface px-5 py-5">
-      <p className="font-display text-lg font-semibold text-text-primary">{title}</p>
-      <p className="mt-1 text-sm text-text-secondary">{detail}</p>
-      <form onSubmit={handleSubmit} className="mt-4 flex flex-col sm:flex-row gap-2">
+    <div className="rounded-[4px] border border-rail bg-white px-5 py-5">
+      <p className="text-base font-semibold text-ink">{title}</p>
+      <p className="mt-1 text-sm text-ink-soft">{detail}</p>
+      <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-2 sm:flex-row">
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@company.com"
-          className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent-teal focus:outline-none"
+          className="flex-1 rounded-[4px] border border-ink/25 bg-white px-3 py-2 font-mono text-sm text-ink placeholder:text-ink-mute focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
         />
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="rounded-lg bg-accent-teal px-5 py-2 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50"
+          className="rounded-[4px] bg-pass-deep px-5 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass disabled:opacity-50"
         >
           {status === 'loading' ? 'Subscribing…' : 'Notify me'}
         </button>
       </form>
       {/* Must mirror STATE_OF_GEO_CONSENT_PURPOSE (geoready-newsletter-monthly-2026-v1)
           recorded server-side on capture — change both together. */}
-      <p className="mt-2 text-xs text-text-muted">
+      <p className="mt-2 text-xs text-ink-mute">
         By submitting, you agree to receive the monthly GeoReady newsletter: benchmark data from the
         State of GEO dataset, practical GEO guidance, and product updates. You can unsubscribe
         anytime. See our{' '}
-        <a href="https://geoready.dev/privacy/" className="underline hover:text-text-secondary">
+        <a href="https://geoready.dev/privacy/" className="underline decoration-rail underline-offset-2 hover:text-ink">
           Privacy Policy
         </a>
         .
       </p>
       {status === 'error' && (
-        <p className="mt-2 text-xs text-red-500">Something went wrong — check the email and try again.</p>
+        <p className="mt-2 flex items-start gap-2 text-xs text-fail">
+          <span aria-hidden="true" className="font-mono font-semibold uppercase tracking-[0.1em]">err</span>
+          <span>Something went wrong — check the email and try again.</span>
+        </p>
       )}
     </div>
   );

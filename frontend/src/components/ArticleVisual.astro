@@ -18,7 +18,7 @@ const {
 } = Astro.props;
 ---
 
-<figure class={`my-8 md:my-10 max-w-3xl rounded-2xl border border-border bg-bg-surface p-4 md:p-6 overflow-hidden ${className}`}>
+<figure class={`my-8 md:my-10 max-w-3xl rounded-[4px] border border-rail bg-white p-4 md:p-6 overflow-hidden ${className}`}>
   <img
     src={src}
     alt={alt}
@@ -26,9 +26,9 @@ const {
     height={height}
     loading="lazy"
     decoding="async"
-    class="block w-full h-auto rounded-xl bg-bg-subtle"
+    class="block w-full h-auto rounded-[2px] bg-paper"
   />
-  <figcaption class="mt-3 text-xs text-text-muted text-center font-mono">
+  <figcaption class="mt-3 text-center font-mono text-[11px] text-ink-mute">
     {caption}
   </figcaption>
 </figure>
