@@ -8,6 +8,14 @@
 @import "@fontsource/newsreader/400.css";
 @import "@fontsource/newsreader/400-italic.css";
 @import "@fontsource/newsreader/700.css";
+/* Console world (homepage redesign): non-critical weights via @import; the two
+   critical faces (Archivo 800 display, Public Sans 400 body) are self-hosted
+   below with font-display: optional + preload in Layout.astro, same CLS-zero
+   mechanism as Space Grotesk/Geist. */
+@import "@fontsource/archivo/700.css";
+@import "@fontsource/public-sans/500.css";
+@import "@fontsource/public-sans/600.css";
+@import "@fontsource/public-sans/700.css";
 
 /* Font self-hosted da /public/fonts con font-display: optional per eliminare lo swap
    tardivo che causava CLS ~0.11 su mobile (rete lenta) su /pricing/ e /best-geo-tools/.
@@ -81,11 +89,65 @@
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 800;
+  src: url(/fonts/archivo-latin-800-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 800;
+  src: url(/fonts/archivo-latin-ext-800-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 400;
+  src: url(/fonts/public-sans-latin-400-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 400;
+  src: url(/fonts/public-sans-latin-ext-400-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
 @theme {
   --font-display: "Space Grotesk", sans-serif;
   --font-body: "Geist", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
   --font-editorial: "Newsreader", serif;
+
+  /* Console world (homepage redesign wave 1) */
+  --font-head: "Archivo", sans-serif;
+  --font-text: "Public Sans", sans-serif;
+
+  --color-paper: #F4F5F2;
+  --color-ink: #0D110E;
+  --color-ink-soft: #3D453F;
+  --color-ink-mute: #5C665F;
+  --color-rail: #D9DED6;
+  --color-pass: #0E8345;
+  --color-pass-deep: #096236;
+  --color-pass-wash: #E7F3EB;
+  --color-fail: #C93A2E;
+  --color-fail-wash: #FAEDEA;
+  --color-warn: #9C6A06;
+  --color-warn-wash: #F7F0DF;
+  --color-well: #10140F;
+  --color-well-ink: #DCE5DC;
+  --color-well-mute: #9FAB9F;
+  --color-queued: #6B746D;
 
   --color-bg-base: #F7F5F0;
   --color-bg-surface: #FFFFFF;
