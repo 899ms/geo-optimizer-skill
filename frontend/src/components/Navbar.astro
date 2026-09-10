@@ -44,31 +44,29 @@ const navGroups: NavGroup[] = [
 const featuredLink = { label: "Pricing", href: "/pricing/" };
 ---
 
-<nav id="floating-nav" data-theme="light" class="fixed inset-x-0 top-0 z-50 pt-3 pb-2 transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div id="nav-pill" class="nav-pill h-14 pl-4 pr-2 sm:pl-5 sm:pr-3 flex items-center justify-between gap-3 rounded-full backdrop-blur-2xl backdrop-saturate-150 transition-all duration-300">
+<nav id="site-nav" class="fixed inset-x-0 top-0 z-50 border-b border-rail bg-paper" aria-label="Main navigation">
+  <div class="mx-auto flex h-[59px] max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
 
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-2.5 shrink-0">
-      <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="48" height="48" rx="11" fill="#0D9488"/>
+    <a href="/" class="flex shrink-0 items-center gap-2.5">
+      <svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="48" height="48" rx="4" fill="#096236"/>
         <path d="M11.74 13.71 A16 16 0 1 1 11.74 34.29" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
         <path d="M8 24 C12 14 18 34 24 24 C30 14 36 34 40 24" stroke="white" stroke-width="2.1" stroke-linecap="round" stroke-opacity="0.72"/>
       </svg>
-      <span class="font-display font-bold text-base tracking-tight">
-        <span class="logo-geo">Geo</span><span class="logo-ready">Ready</span>
+      <span class="font-head text-base font-extrabold tracking-tight">
+        <span class="text-pass-deep">Geo</span><span class="text-ink">Ready</span>
       </span>
-      <span class="version-badge hidden sm:inline font-mono text-[10px] px-1.5 py-0.5 rounded">{version}</span>
+      <span class="hidden rounded-[2px] border border-rail px-1.5 py-0.5 font-mono text-[10px] text-ink-mute sm:inline">{version}</span>
     </a>
 
     <!-- Desktop nav -->
-    <div class="hidden md:flex items-center gap-0.5">
-      <!-- Grouped dropdowns -->
+    <div class="hidden items-center gap-0.5 md:flex">
       {navGroups.map((g) => (
         <div class="relative" data-nav-group>
           <button
             id={`${g.id}-menu-btn`}
-            class="more-btn px-3 py-1.5 rounded-full text-[13px] font-medium transition-colors flex items-center gap-1"
+            class="nav-item flex items-center gap-1 rounded-[2px] px-3 py-1.5 text-[13px] font-medium text-ink-soft transition-colors hover:bg-pass-wash hover:text-ink"
             aria-expanded="false"
             aria-controls={`${g.id}-menu`}
           >
@@ -79,43 +77,42 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
           </button>
           <div
             id={`${g.id}-menu`}
-            class="more-menu absolute top-full left-0 mt-3 w-72 backdrop-blur-2xl backdrop-saturate-150 rounded-2xl opacity-0 invisible translate-y-1 transition-all duration-200 overflow-hidden p-1"
+            class="more-menu invisible absolute left-0 top-full mt-2 w-72 translate-y-1 rounded-[4px] border border-rail bg-white p-1 opacity-0 transition-all duration-200"
           >
             {g.links.map((l) => (
               <a
                 href={l.href}
                 data-nav-link
-                class="more-item flex flex-col gap-0.5 px-3 py-2.5 rounded-xl text-sm transition-colors"
+                class="flex flex-col gap-0.5 rounded-[2px] px-3 py-2.5 text-sm transition-colors hover:bg-pass-wash/60"
               >
-                <span class="more-item-title font-medium">{l.label}</span>
-                <span class="more-item-desc text-xs">{l.desc}</span>
+                <span class="font-medium text-ink">{l.label}</span>
+                <span class="text-xs text-ink-mute">{l.desc}</span>
               </a>
             ))}
           </div>
         </div>
       ))}
 
-      <!-- Featured: Pricing pill -->
+      <!-- Featured: Pricing -->
       <a
         href={featuredLink.href}
         data-nav-link
-        class="nav-link nav-link-featured ml-1 px-3 py-1.5 rounded-full text-[13px] font-medium transition-colors flex items-center gap-1.5"
+        class="nav-item ml-1 rounded-[2px] px-3 py-1.5 text-[13px] font-semibold text-ink-soft transition-colors hover:bg-pass-wash hover:text-ink"
       >
-        <span class="w-1.5 h-1.5 rounded-full bg-accent-teal animate-pulse"></span>
-        <span class="relative z-10">{featuredLink.label}</span>
+        {featuredLink.label}
       </a>
 
       <!-- Divider -->
-      <span class="nav-divider mx-2 h-5 w-px" aria-hidden="true"></span>
+      <span class="mx-2 h-5 w-px bg-rail" aria-hidden="true"></span>
 
       <!-- Right cluster -->
-      <div class="flex items-center gap-1.5">
+      <div class="flex items-center gap-2">
         <a
           href="https://github.com/Auriti-Labs/geo-optimizer-skill"
           target="_blank"
           rel="noopener"
           aria-label="GitHub repository"
-          class="nav-icon-btn w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+          class="flex h-8 w-8 items-center justify-center rounded-[2px] text-ink-soft transition-colors hover:bg-pass-wash hover:text-ink"
         >
           <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -123,10 +120,10 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
         </a>
         <a
           href="https://app.geoready.dev/signup"
-          class="group px-3.5 py-1.5 rounded-full bg-accent-teal text-white text-[13px] font-semibold hover:bg-accent-teal-dark transition-all shadow-[0_4px_12px_-2px_rgba(13,148,136,0.45)] hover:shadow-[0_6px_16px_-2px_rgba(13,148,136,0.55)] hover:-translate-y-px flex items-center gap-1.5"
+          class="group flex items-center gap-1.5 rounded-[4px] bg-pass-deep px-4 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
         >
           <span>Get started</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
             <line x1="5" y1="12" x2="19" y2="12"/>
             <polyline points="12 5 19 12 12 19"/>
           </svg>
@@ -134,10 +131,10 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
       </div>
     </div>
 
-    <!-- Mobile burger — Pulse-themed: arc + wave morphing into X -->
+    <!-- Mobile burger — arc + wave morphing into X -->
     <button
       id="mobile-menu-btn"
-      class="md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg text-text-primary hover:bg-bg-subtle transition-colors"
+      class="relative flex h-10 w-10 items-center justify-center rounded-[2px] text-ink transition-colors hover:bg-pass-wash md:hidden"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -147,42 +144,35 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
         <!-- Arc (top) — morphs to X stroke 1 -->
         <path id="burger-arc" d="M5 8 A 7 7 0 0 1 19 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" class="transition-all duration-300"/>
         <!-- Wave (middle) — fades out -->
-        <path id="burger-wave" d="M4 13 C 7 10 9 16 12 13 C 15 10 17 16 20 13" stroke="#0D9488" stroke-width="2" stroke-linecap="round" fill="none" class="transition-all duration-300"/>
+        <path id="burger-wave" d="M4 13 C 7 10 9 16 12 13 C 15 10 17 16 20 13" stroke="#096236" stroke-width="2" stroke-linecap="round" fill="none" class="transition-all duration-300"/>
         <!-- Bottom line — morphs to X stroke 2 -->
         <line id="burger-base" x1="6" y1="18" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="transition-all duration-300"/>
       </svg>
     </button>
-    </div>
   </div>
-
-  <!-- end inner container -->
 </nav>
 
-<!-- Mobile fullscreen overlay — OUTSIDE nav to avoid backdrop-filter containing block bug -->
+<!-- Mobile fullscreen overlay -->
 <div
   id="mobile-menu"
-  class="md:hidden hidden fixed inset-x-0 top-[76px] bottom-0 z-[60] bg-bg-base overflow-y-auto overscroll-contain"
+  class="fixed inset-x-0 bottom-0 top-[60px] z-[60] hidden overflow-y-auto overscroll-contain bg-paper md:hidden"
   role="navigation"
   aria-label="Mobile navigation"
   aria-hidden="true"
 >
-    <div class="px-5 pt-5 pb-10">
+    <div class="px-5 pb-10 pt-5">
 
-      <!-- Featured CTA -->
+      <!-- Pricing, promoted out of the groups -->
       <a
         href="/pricing/"
         data-mobile-link
-        class="group flex items-center justify-between gap-3 rounded-xl border border-accent-teal/30 bg-accent-teal/10 px-4 py-3.5 mb-5 hover:border-accent-teal/60 transition-colors"
+        class="group mb-5 flex items-center justify-between gap-3 rounded-[4px] border border-rail bg-white px-4 py-3.5 transition-colors hover:border-pass/50"
       >
         <div class="min-w-0">
-          <div class="flex items-center gap-1.5 mb-0.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-accent-teal animate-pulse"></span>
-            <span class="text-[9px] font-mono uppercase tracking-[0.15em] text-accent-teal">Featured</span>
-          </div>
-          <p class="font-display text-[15px] font-semibold text-text-primary leading-tight">Pricing — plans from $0</p>
-          <p class="text-[11px] text-text-secondary mt-0.5 truncate">Free audit · Pro · Studio · Agency</p>
+          <p class="text-[15px] font-semibold leading-tight text-ink">Pricing — plans from $0</p>
+          <p class="mt-0.5 truncate text-[11px] text-ink-mute">Free audit · Pro · Studio · Agency</p>
         </div>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-accent-teal group-hover:translate-x-0.5 transition-transform" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-pass-deep transition-transform group-hover:translate-x-0.5" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12"/>
           <polyline points="12 5 19 12 12 19"/>
         </svg>
@@ -190,16 +180,16 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
 
       {navGroups.map((g) => (
         <div>
-          <p class="text-[10px] font-mono uppercase tracking-[0.15em] text-text-muted mb-1.5 mt-5 px-1">{g.label}</p>
-          <div class="flex flex-col mb-2">
+          <p class="mb-1.5 mt-5 px-1 font-mono text-[10px] uppercase tracking-[0.15em] text-ink-mute">{g.label}</p>
+          <div class="mb-2 flex flex-col">
             {g.links.map((l) => (
               <a
                 href={l.href}
                 data-mobile-link
-                class="flex flex-col gap-0.5 py-3 px-1 border-b border-border last:border-0 hover:bg-bg-subtle/50 transition-colors"
+                class="flex flex-col gap-0.5 border-b border-rail px-1 py-3 transition-colors last:border-0 hover:bg-pass-wash/50"
               >
-                <span class="text-[15px] font-medium text-text-primary">{l.label}</span>
-                <span class="text-[11px] text-text-secondary">{l.desc}</span>
+                <span class="text-[15px] font-medium text-ink">{l.label}</span>
+                <span class="text-[11px] text-ink-mute">{l.desc}</span>
               </a>
             ))}
           </div>
@@ -207,18 +197,18 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
       ))}
 
       <!-- Bottom CTAs -->
-      <div class="flex flex-col gap-2.5 mt-7 pt-5 border-t border-border">
+      <div class="mt-7 flex flex-col gap-2.5 border-t border-rail pt-5">
         <a
           href="https://app.geoready.dev/signup"
           data-mobile-link
-          class="w-full text-center py-3 rounded-lg bg-accent-teal text-white font-semibold text-sm hover:bg-accent-teal-dark transition-colors"
+          class="w-full rounded-[4px] bg-pass-deep py-3 text-center font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
         >
           Get started — free
         </a>
         <a
           href="https://app.geoready.dev/login"
           data-mobile-link
-          class="w-full text-center py-3 rounded-lg border border-border text-text-primary font-semibold text-sm hover:bg-bg-subtle transition-colors"
+          class="w-full rounded-[4px] border border-rail bg-white py-3 text-center font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
         >
           Log in
         </a>
@@ -226,7 +216,7 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
           href="https://github.com/Auriti-Labs/geo-optimizer-skill"
           target="_blank"
           rel="noopener"
-          class="flex items-center justify-center gap-2 py-2.5 text-xs text-text-secondary hover:text-text-primary transition-colors"
+          class="flex items-center justify-center gap-2 py-2.5 text-xs text-ink-soft transition-colors hover:text-ink"
         >
           <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -241,7 +231,6 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
   // ─── Mobile fullscreen menu ─────────────────────────────────────────────────
   const burgerBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
-  const burgerIcon = document.getElementById('burger-icon');
 
   function setBurgerOpen(open: boolean) {
     const arc = document.getElementById('burger-arc') as SVGPathElement | null;
@@ -308,7 +297,7 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
   });
 
   // ─── Desktop grouped dropdowns ───────────────────────────────────
-  // The bar now has two menus ("Tools", "Learn"), so opening one has to close the
+  // The bar has two menus ("Tools", "Learn"), so opening one has to close the
   // other, and moving focus out of one has to close it too — otherwise it stays
   // open over the page while focus is already somewhere else.
   const navGroupEls = Array.from(document.querySelectorAll<HTMLElement>('[data-nav-group]'));
@@ -371,70 +360,7 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
     if (!inside) closeAllGroups();
   });
 
-  // ─── Floating pill scroll-shrink ─────────────────────────────────────────────
-  const floatNav = document.getElementById('floating-nav');
-  const navPill = document.getElementById('nav-pill');
-
-  function updateNavScroll() {
-    if (!floatNav || !navPill) return;
-    const scrolled = window.scrollY > 8;
-    if (scrolled) {
-      floatNav.classList.remove('pt-3');
-      floatNav.classList.add('pt-2');
-      navPill.classList.remove('h-14');
-      navPill.classList.add('h-12');
-      navPill.dataset.scrolled = 'true';
-    } else {
-      floatNav.classList.add('pt-3');
-      floatNav.classList.remove('pt-2');
-      navPill.classList.add('h-14');
-      navPill.classList.remove('h-12');
-      navPill.dataset.scrolled = 'false';
-    }
-  }
-
-  updateNavScroll();
-  window.addEventListener('scroll', updateNavScroll, { passive: true });
-
-  // ─── Auto contrast via IntersectionObserver ─────────────────────────────────
-  // Sections with class .nav-dark or [data-nav-theme="dark"] flip nav to dark theme
-  // when they cross under the navbar. Detection point: top of viewport + nav height.
-  const darkSections = document.querySelectorAll<HTMLElement>(
-    '.nav-dark, [data-nav-theme="dark"], .bg-bg-dark, [class*="bg-bg-dark"]'
-  );
-
-  if (darkSections.length && floatNav) {
-    const NAV_OFFSET = 80; // approx nav height + padding
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Find any dark section currently intersecting the nav line
-        let inDark = false;
-        document.querySelectorAll<HTMLElement>(
-          '.nav-dark, [data-nav-theme="dark"], .bg-bg-dark, [class*="bg-bg-dark"]'
-        ).forEach((sec) => {
-          const rect = sec.getBoundingClientRect();
-          if (rect.top <= NAV_OFFSET && rect.bottom >= NAV_OFFSET) {
-            inDark = true;
-          }
-        });
-        floatNav.dataset.theme = inDark ? 'dark' : 'light';
-      },
-      { rootMargin: `-${NAV_OFFSET}px 0px 0px 0px`, threshold: [0, 1] }
-    );
-    darkSections.forEach((s) => observer.observe(s));
-
-    // Also check on scroll (covers sections taller than viewport)
-    window.addEventListener('scroll', () => {
-      let inDark = false;
-      darkSections.forEach((sec) => {
-        const rect = sec.getBoundingClientRect();
-        if (rect.top <= NAV_OFFSET && rect.bottom >= NAV_OFFSET) inDark = true;
-      });
-      floatNav.dataset.theme = inDark ? 'dark' : 'light';
-    }, { passive: true });
-  }
-
-  // ─── Active link highlight (current page pill) ───────────────────────────────
+  // ─── Active link highlight (current page) ───────────────────────────────────
   const navLinks = document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
   const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
   navLinks.forEach((link) => {
@@ -445,7 +371,7 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
     }
   });
 
-  // The current page usually sits inside a dropdown now, so mark its group button
+  // The current page usually sits inside a dropdown, so mark its group button
   // too — otherwise nothing in the visible bar reflects where the user is.
   navGroupEls.forEach((group) => {
     if (group.querySelector('.nav-link-active')) {
@@ -455,105 +381,12 @@ const featuredLink = { label: "Pricing", href: "/pricing/" };
 </script>
 
 <style>
-  /* Version badge — readable on glass, both themes */
-  .version-badge {
-    background: color-mix(in srgb, white 35%, transparent);
-    border: 1px solid color-mix(in srgb, white 45%, transparent);
-    color: rgba(20, 20, 20, 0.78);
-    backdrop-filter: blur(4px);
+  /* Current page: ink text over a pass-wash chip — state, reported in green. */
+  .nav-item.nav-link-active {
+    color: var(--color-ink);
+    background: var(--color-pass-wash);
   }
-  #floating-nav[data-theme="dark"] .version-badge {
-    background: color-mix(in srgb, white 14%, transparent);
-    border-color: color-mix(in srgb, white 22%, transparent);
-    color: rgba(255, 255, 255, 0.85);
+  .more-menu a.nav-link-active {
+    background: var(--color-pass-wash);
   }
-
-  /* Glassmorphism pill — true translucency, no opaque fill */
-  .nav-pill {
-    background: color-mix(in srgb, white 18%, transparent);
-    border: 1px solid color-mix(in srgb, white 35%, transparent);
-    box-shadow:
-      0 1px 0 0 color-mix(in srgb, white 50%, transparent) inset,
-      0 4px 24px -8px rgba(0, 0, 0, 0.12),
-      0 2px 6px -2px rgba(0, 0, 0, 0.06);
-  }
-  .nav-pill[data-scrolled="true"] {
-    background: color-mix(in srgb, white 28%, transparent);
-    box-shadow:
-      0 1px 0 0 color-mix(in srgb, white 60%, transparent) inset,
-      0 10px 32px -10px rgba(0, 0, 0, 0.22),
-      0 4px 12px -4px rgba(0, 0, 0, 0.10);
-  }
-
-  /* Dark theme — nav over dark sections (auto-flipped by JS) */
-  #floating-nav[data-theme="dark"] .nav-pill {
-    background: color-mix(in srgb, black 28%, transparent);
-    border-color: color-mix(in srgb, white 18%, transparent);
-    box-shadow:
-      0 1px 0 0 color-mix(in srgb, white 12%, transparent) inset,
-      0 6px 28px -10px rgba(0, 0, 0, 0.45);
-  }
-  #floating-nav[data-theme="dark"] .nav-pill[data-scrolled="true"] {
-    background: color-mix(in srgb, black 42%, transparent);
-  }
-
-  /* ─── Primary nav links ──────────────────────────────────────────────────── */
-  #floating-nav[data-theme="light"] .nav-link { color: rgba(20, 20, 20, 0.68); }
-  #floating-nav[data-theme="light"] .nav-link:hover { color: rgba(20, 20, 20, 0.95); background: rgba(0, 0, 0, 0.05); }
-  #floating-nav[data-theme="dark"] .nav-link { color: rgba(255, 255, 255, 0.78); }
-  #floating-nav[data-theme="dark"] .nav-link:hover { color: white; background: rgba(255, 255, 255, 0.08); }
-
-  /* Active page link */
-  #floating-nav[data-theme="light"] .nav-link-active { background: rgba(0, 0, 0, 0.06); color: rgba(20, 20, 20, 0.95); }
-  #floating-nav[data-theme="dark"] .nav-link-active { background: rgba(255, 255, 255, 0.10); color: white; }
-
-  /* Featured (Pricing) — accent teal both themes */
-  #floating-nav[data-theme="light"] .nav-link-featured { color: #115E59; }
-  #floating-nav[data-theme="light"] .nav-link-featured:hover { background: rgba(17, 94, 89, 0.12); }
-  #floating-nav[data-theme="dark"] .nav-link-featured { color: #5EEAD4; }
-  #floating-nav[data-theme="dark"] .nav-link-featured:hover { background: rgba(94, 234, 212, 0.12); }
-
-  /* More button (same as nav-link styling) */
-  #floating-nav[data-theme="light"] .more-btn { color: rgba(20, 20, 20, 0.68); }
-  #floating-nav[data-theme="light"] .more-btn:hover { color: rgba(20, 20, 20, 0.95); background: rgba(0, 0, 0, 0.05); }
-  #floating-nav[data-theme="dark"] .more-btn { color: rgba(255, 255, 255, 0.78); }
-  #floating-nav[data-theme="dark"] .more-btn:hover { color: white; background: rgba(255, 255, 255, 0.08); }
-
-  /* Divider */
-  #floating-nav[data-theme="light"] .nav-divider { background: rgba(0, 0, 0, 0.12); }
-  #floating-nav[data-theme="dark"] .nav-divider { background: rgba(255, 255, 255, 0.18); }
-
-  /* Icon button (GitHub) */
-  #floating-nav[data-theme="light"] .nav-icon-btn { color: rgba(20, 20, 20, 0.65); }
-  #floating-nav[data-theme="light"] .nav-icon-btn:hover { color: rgba(20, 20, 20, 0.95); background: rgba(0, 0, 0, 0.05); }
-  #floating-nav[data-theme="dark"] .nav-icon-btn { color: rgba(255, 255, 255, 0.75); }
-  #floating-nav[data-theme="dark"] .nav-icon-btn:hover { color: white; background: rgba(255, 255, 255, 0.08); }
-
-  /* ─── More dropdown menu ─────────────────────────────────────────────────── */
-  #floating-nav[data-theme="light"] .more-menu {
-    background: color-mix(in srgb, white 78%, transparent);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.18), 0 4px 12px -4px rgba(0, 0, 0, 0.08);
-  }
-  #floating-nav[data-theme="dark"] .more-menu {
-    background: color-mix(in srgb, #0a0a0a 72%, transparent);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.45), 0 4px 12px -4px rgba(0, 0, 0, 0.35);
-  }
-
-  /* Dropdown items */
-  #floating-nav[data-theme="light"] .more-item-title { color: rgba(20, 20, 20, 0.95); }
-  #floating-nav[data-theme="light"] .more-item-desc { color: rgba(20, 20, 20, 0.55); }
-  #floating-nav[data-theme="light"] .more-item:hover { background: rgba(0, 0, 0, 0.05); }
-  #floating-nav[data-theme="dark"] .more-item-title { color: white; }
-  #floating-nav[data-theme="dark"] .more-item-desc { color: rgba(255, 255, 255, 0.62); }
-  #floating-nav[data-theme="dark"] .more-item:hover { background: rgba(255, 255, 255, 0.08); }
-
-  /* More chevron color follows theme via currentColor on the parent button — already handled */
-
-  /* ─── Logo wordmark ──────────────────────────────────────────────────────── */
-  #floating-nav[data-theme="light"] .logo-geo { color: #115E59; }
-  #floating-nav[data-theme="light"] .logo-ready { color: rgba(20, 20, 20, 0.95); }
-  #floating-nav[data-theme="dark"] .logo-geo { color: #5EEAD4; }
-  #floating-nav[data-theme="dark"] .logo-ready { color: white; }
 </style>

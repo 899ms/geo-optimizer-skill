@@ -33,12 +33,13 @@ const { title, description, canonical, robots, ogImage, twitterImage } = Astro.p
 </script>
 
 <style is:global>
-  /* Reserve space for fixed navbar */
-  .site-main { padding-top: 76px; }
-  /* Hero sections opt into bleeding under the glass nav: cancel main padding,
-     re-add it inside the hero so its background extends to viewport top. */
+  /* Reserve space for the fixed navbar (59px bar + 1px rail border) */
+  .site-main { padding-top: 60px; }
+  /* Legacy opt-in from the glass-nav era: heroes that bled under the pill
+     cancel the main padding and re-add it inside, so their band background
+     still reaches the top edge behind the opaque bar. */
   .site-main > section:first-child[data-hero-bleed] {
-    margin-top: -76px;
-    padding-top: 76px;
+    margin-top: -60px;
+    padding-top: 60px;
   }
 </style>
