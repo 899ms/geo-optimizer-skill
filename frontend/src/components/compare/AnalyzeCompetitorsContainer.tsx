@@ -15,60 +15,60 @@ function readQueryParam(): string {
 }
 
 function CompactCompetitorCard({ report, index }: { report: AuditReport; index: number }) {
-  const colors = ['text-accent-teal', 'text-accent-warning', 'text-accent-success', 'text-accent-danger', 'text-text-primary'];
-  const labelColor = colors[index % colors.length];
   const criticalCount = report.recommendations.filter((r) => r.priority === 'critical').length;
 
   return (
-    <div className="rounded-xl border border-border bg-bg-surface p-5">
-      <div className="mb-4 pb-3 border-b border-border">
-        <span className={`text-[10px] font-mono font-semibold uppercase tracking-wider ${labelColor}`}>
+    // Solid-vs-Dashed: every card in this batch is labelled "Competitor N",
+    // so all of them are reference data and drawn dashed.
+    <div className="rounded-[4px] border border-dashed border-ink-mute/60 bg-white p-5">
+      <div className="mb-4 border-b border-rail pb-3">
+        <span className="rounded-[2px] border border-dashed border-ink-mute/60 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink-mute">
           Competitor {index + 1}
         </span>
-        <p className="mt-1 text-sm text-text-primary font-medium truncate">{report.url}</p>
+        <p className="mt-2 truncate text-sm font-medium text-ink">{report.url}</p>
       </div>
 
-      <div className="flex flex-col items-center mb-4">
+      <div className="mb-4 flex flex-col items-center">
         <ScoreGauge score={report.geoScore} label="GEO Score" />
       </div>
 
       <div className="space-y-2 text-sm">
         <div className="flex items-center justify-between">
-          <span className="text-text-muted">Citability</span>
-          <span className="font-mono font-semibold text-text-primary">{report.citabilityScore}/100</span>
+          <span className="text-ink-mute">Citability</span>
+          <span className="font-mono font-semibold tabular-nums text-ink">{report.citabilityScore}/100</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-text-muted">Grade</span>
-          <span className="font-mono font-semibold text-text-primary uppercase">{report.grade}</span>
+          <span className="text-ink-mute">Grade</span>
+          <span className="font-mono font-semibold uppercase text-ink">{report.grade}</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-text-muted">Categories active</span>
-          <span className="font-mono font-semibold text-text-primary">{report.categories.filter((c) => c.score > 0).length}/{report.categories.length}</span>
+          <span className="text-ink-mute">Categories active</span>
+          <span className="font-mono font-semibold tabular-nums text-ink">{report.categories.filter((c) => c.score > 0).length}/{report.categories.length}</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-text-muted">Recommendations</span>
-          <span className="font-mono font-semibold text-text-primary">{report.recommendations.length}</span>
+          <span className="text-ink-mute">Recommendations</span>
+          <span className="font-mono font-semibold tabular-nums text-ink">{report.recommendations.length}</span>
         </div>
         {criticalCount > 0 && (
           <div className="flex items-center justify-between">
-            <span className="text-text-muted">Critical</span>
-            <span className="font-mono font-semibold text-accent-danger">{criticalCount}</span>
+            <span className="text-ink-mute">Critical</span>
+            <span className="font-mono font-semibold tabular-nums text-fail">{criticalCount}</span>
           </div>
         )}
       </div>
 
-      <div className="mt-4 pt-3 border-t border-border">
-        <h3 className="text-[10px] font-mono font-semibold uppercase tracking-wider text-text-muted mb-2">Top issues</h3>
+      <div className="mt-4 border-t border-rail pt-3">
+        <h3 className="mb-2 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Top issues</h3>
         <ul className="space-y-1.5">
           {report.recommendations.slice(0, 3).map((rec) => (
-            <li key={rec.id} className="text-xs text-text-secondary leading-snug">
+            <li key={rec.id} className="text-xs leading-snug text-ink-soft">
               <span
-                className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 align-middle ${
+                className={`mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle ${
                   rec.priority === 'critical'
-                    ? 'bg-accent-danger'
+                    ? 'bg-fail'
                     : rec.priority === 'high'
-                      ? 'bg-accent-warning'
-                      : 'bg-text-muted'
+                      ? 'bg-warn'
+                      : 'bg-ink-mute'
                 }`}
               />
               {rec.title}
@@ -132,9 +132,9 @@ export default function AnalyzeCompetitorsContainer() {
 
   if (state.status === 'loading') {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 text-center">
-        <div className="inline-flex items-center gap-2 text-sm text-text-muted">
-          <svg className="animate-spin w-4 h-4 text-accent-teal" viewBox="0 0 24 24" fill="none">
+      <div className="mx-auto max-w-7xl px-4 py-12 text-center sm:px-6">
+        <div className="inline-flex items-center gap-2 text-sm text-ink-soft">
+          <svg className="h-4 w-4 animate-spin text-pass-deep" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-20" />
             <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
           </svg>
@@ -146,14 +146,22 @@ export default function AnalyzeCompetitorsContainer() {
 
   if (state.status === 'error') {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="p-5 rounded-xl border border-accent-danger/20 bg-accent-danger/5 text-accent-danger text-sm">
-          <div className="font-semibold mb-1">Analysis failed</div>
-          {state.message}
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+        <div
+          role="alert"
+          className="flex items-start gap-3 rounded-[4px] border border-fail/30 bg-fail-wash px-4 py-3 text-sm text-fail"
+        >
+          <span aria-hidden="true" className="mt-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+            err
+          </span>
+          <div>
+            <div className="mb-1 font-semibold">Analysis failed</div>
+            {state.message}
+          </div>
         </div>
         <button
           onClick={() => setState({ status: 'idle' })}
-          className="mt-4 inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-text-primary hover:border-accent-teal/30 transition-colors"
+          className="mt-4 inline-flex items-center gap-2 rounded-[4px] border border-rail bg-white px-4 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
         >
           Back to form
         </button>
@@ -163,22 +171,25 @@ export default function AnalyzeCompetitorsContainer() {
 
   if (state.status === 'ready') {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8 space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-lg font-bold text-text-primary">Competitor analysis</h2>
+      <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 md:py-8">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <h2 className="font-head text-lg font-extrabold tracking-[-0.01em] text-ink">Competitor analysis</h2>
+            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">POST /api/public/audits × {state.reports.length}</span>
+          </div>
           <button
             onClick={() => {
               const u = new URL(window.location.href);
               u.search = '';
               window.location.href = u.toString();
             }}
-            className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-text-secondary hover:text-text-primary hover:border-accent-teal/30 transition-colors"
+            className="inline-flex items-center gap-2 rounded-[4px] border border-rail bg-white px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:bg-pass-wash"
           >
             New analysis
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {state.reports.map((report, i) => (
             <CompactCompetitorCard key={report.id} report={report} index={i} />
           ))}
@@ -188,11 +199,15 @@ export default function AnalyzeCompetitorsContainer() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6">
-      <div className="p-6 md:p-8 rounded-xl border border-border bg-bg-surface">
-        <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="overflow-hidden rounded-[4px] border border-rail bg-white">
+        <div className="flex items-center justify-between gap-3 border-b border-rail px-6 py-2.5 md:px-8">
+          <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">POST /api/public/audits · per domain</span>
+          <span className="rounded-[2px] border border-rail px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-mute">idle</span>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-6 p-6 md:p-8">
           <div>
-            <label htmlFor="urls" className="block text-sm font-medium mb-2">Competitor URLs (comma-separated, max 5)</label>
+            <label htmlFor="urls" className="mb-2 block text-sm font-medium text-ink">Competitor URLs (comma-separated, max 5)</label>
             <input
               id="urls"
               type="text"
@@ -200,13 +215,13 @@ export default function AnalyzeCompetitorsContainer() {
               placeholder="https://competitor1.com, https://competitor2.com"
               value={urlsInput}
               onChange={(e) => setUrlsInput(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-border bg-bg-base text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-teal transition-shadow"
+              className="w-full rounded-[4px] border border-ink/25 bg-white px-4 py-3 font-mono text-[15px] text-ink caret-pass-deep transition-shadow placeholder:text-ink-mute focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
             />
-            <p className="mt-1.5 text-xs text-text-muted">Enter one or more URLs separated by commas.</p>
+            <p className="mt-1.5 text-xs text-ink-mute">Enter one or more URLs separated by commas.</p>
           </div>
           <button
             type="submit"
-            className="px-6 py-3 rounded-lg bg-accent-teal text-white font-medium text-sm hover:bg-accent-teal-dark transition-colors"
+            className="rounded-[4px] bg-pass-deep px-7 py-3.5 font-mono text-[13px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-pass"
           >
             Analyze
           </button>
