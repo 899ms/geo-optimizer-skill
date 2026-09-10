@@ -1,49 +1,69 @@
 ---
 /**
- * RetrievalPath — the Access → Meaning → Citation path as a real, borderless
- * diagram (no screenshot). Three connected stages, each with live signal chips.
+ * RetrievalPath — the Access → Meaning → Citation path as a console-world
+ * diagram: flat white panel, mono stage indexes as near-square plates, signal
+ * chips with 2px radii, and drawn SVG marks instead of glyphs. Pass green
+ * appears only on verified-access checks (status).
  */
 interface Props {
   variant?: 'dark' | 'light';
   class?: string;
 }
-const { variant = 'light', class: className = '' } = Astro.props;
-const isDark = variant === 'dark';
-const ink = isDark ? 'text-white' : 'text-text-primary';
-const muted = isDark ? 'text-slate-400' : 'text-text-muted';
-const line = isDark ? 'bg-white/10' : 'bg-border';
+// `variant` is kept for interface compatibility: the console world is
+// daylight-only, so it no longer changes the rendering.
+const { variant: _variant = 'light', class: className = '' } = Astro.props;
 
 const stages = [
-  { n: '01', title: 'Access', signals: ['GPTBot ✓', 'ClaudeBot ✓', 'SSR ✓'] },
-  { n: '02', title: 'Meaning', signals: ['llms.txt', 'JSON-LD', 'headings'] },
-  { n: '03', title: 'Citation', signals: ['answer blocks', 'statistics', 'sources'] },
+  { n: '01', title: 'Access', signals: [
+    { label: 'GPTBot', ok: true },
+    { label: 'ClaudeBot', ok: true },
+    { label: 'SSR', ok: true },
+  ] },
+  { n: '02', title: 'Meaning', signals: [
+    { label: 'llms.txt', ok: false },
+    { label: 'JSON-LD', ok: false },
+    { label: 'headings', ok: false },
+  ] },
+  { n: '03', title: 'Citation', signals: [
+    { label: 'answer blocks', ok: false },
+    { label: 'statistics', ok: false },
+    { label: 'sources', ok: false },
+  ] },
 ];
 ---
 
-<div class={`relative ${className}`}>
-  <div aria-hidden="true" class="pointer-events-none absolute -inset-10 -z-10 rounded-[40px] bg-accent-teal/10 blur-3xl"></div>
-
+<div class={`rounded-[4px] border border-rail bg-white p-4 text-ink ${className}`}>
   <div class="space-y-3">
     {stages.map((s, i) => (
       <>
         <div class="flex items-start gap-4">
-          <div class="flex flex-col items-center">
-            <span class={`flex h-9 w-9 items-center justify-center rounded-full font-mono text-xs ${isDark ? 'bg-white/10 text-teal-100' : 'bg-accent-teal/10 text-accent-teal'}`}>{s.n}</span>
-          </div>
-          <div class="flex-1 pt-1">
-            <h3 class={`font-display text-base font-semibold ${ink}`}>{s.title}</h3>
+          <span class="mt-0.5 inline-flex rounded-[2px] border border-rail px-1.5 py-0.5 font-mono text-[11px] font-medium tabular-nums text-ink-mute">{s.n}</span>
+          <div class="flex-1">
+            <h3 class="font-head text-base font-extrabold tracking-[-0.01em] text-ink">{s.title}</h3>
             <div class="mt-2 flex flex-wrap gap-1.5">
               {s.signals.map((sig) => (
-                <span class={`rounded-full px-2.5 py-1 font-mono text-[11px] ${isDark ? 'bg-white/5 text-slate-300' : 'bg-bg-subtle text-text-secondary'}`}>{sig}</span>
+                <span class="inline-flex items-center gap-1 rounded-[2px] border border-rail px-2 py-0.5 font-mono text-[11px] text-ink-soft">
+                  {sig.label}
+                  {sig.ok && (
+                    <svg class="h-2.5 w-2.5 text-pass-deep" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="verified">
+                      <path d="M2.5 6.5 5 9l4.5-6" />
+                    </svg>
+                  )}
+                </span>
               ))}
             </div>
           </div>
-          <span class={`mt-1 font-mono text-xs ${muted}`}>{['+34', '+40', '+26'][i]}</span>
+          <span class="mt-1 font-mono text-[12px] tabular-nums text-ink-mute">{['+34', '+40', '+26'][i]}</span>
         </div>
         {i < stages.length - 1 && (
-          <div class="ml-[18px] flex items-center gap-2">
-            <span class={`h-6 w-px ${line}`}></span>
-            <span class={`font-mono text-[10px] uppercase tracking-[0.16em] ${muted}`}>retrieves ↓</span>
+          <div class="ml-[11px] flex items-center gap-2">
+            <span class="h-6 w-px bg-rail" aria-hidden="true"></span>
+            <span class="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-mute">
+              retrieves
+              <svg class="h-2.5 w-2.5" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 2v8" /><path d="M2.5 6.5 6 10l3.5-3.5" />
+              </svg>
+            </span>
           </div>
         )}
       </>

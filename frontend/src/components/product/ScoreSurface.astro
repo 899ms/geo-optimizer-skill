@@ -1,8 +1,9 @@
 ---
 /**
- * ScoreSurface — a real, borderless "product surface": a GEO score ring plus
- * live-looking recommendation rows. Renders in pure HTML/CSS/SVG (no screenshot,
- * no faux-browser chrome). Floats on the page with a soft glow.
+ * ScoreSurface — a stylized GEO-score readout rendered in the console world:
+ * a flat white panel with a rail header strip, the score as a mono figure over
+ * a solid bar (the visitor's own data is drawn solid), and per-category rows
+ * where color appears only as status. No shadows, no gradients, no ring chart.
  */
 interface Row {
   label: string;
@@ -28,69 +29,50 @@ const {
     { label: 'AI bot access', delta: '+18', state: 'good' },
     { label: 'Meta description', delta: '-3', state: 'warn' },
   ],
-  variant = 'dark',
-  glow = true,
+  // `variant` and `glow` are kept for interface compatibility: the console
+  // world is daylight-only and flat, so they no longer change the rendering.
+  variant: _variant = 'dark',
+  glow: _glow = true,
   class: className = '',
 } = Astro.props;
 
-const isDark = variant === 'dark';
-const ink = isDark ? 'text-white' : 'text-text-primary';
-const muted = isDark ? 'text-slate-400' : 'text-text-muted';
-const rowBorder = isDark ? 'border-white/8' : 'border-border';
-
-// Ring geometry
-const R = 52;
-const C = 2 * Math.PI * R;
-const pct = Math.max(0, Math.min(100, score)) / 100;
-const dash = `${(C * pct).toFixed(1)} ${C.toFixed(1)}`;
+const pct = Math.max(0, Math.min(100, score));
 
 const dot = {
-  good: 'bg-emerald-400',
-  up: 'bg-accent-teal',
-  warn: 'bg-amber-400',
+  good: 'bg-pass',
+  up: 'bg-pass',
+  warn: 'bg-warn',
 };
 ---
 
-<div class={`relative ${className}`}>
-  {glow && (
-    <div aria-hidden="true" class="pointer-events-none absolute -inset-10 -z-10 rounded-[40px] bg-accent-teal/15 blur-3xl"></div>
-  )}
+<div class={`overflow-hidden rounded-[4px] border border-rail bg-white text-ink ${className}`}>
+  <div class="flex items-center justify-between gap-3 border-b border-rail px-4 py-2.5">
+    <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">GEO score</span>
+    <span class="rounded-[2px] bg-pass-wash px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-pass-deep">{band}</span>
+  </div>
 
-  <div class={`grid gap-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center ${ink}`}>
-    {/* Score ring */}
-    <div class="relative mx-auto sm:mx-0 h-[136px] w-[136px]">
-      <svg viewBox="0 0 128 128" class="h-full w-full -rotate-90">
-        <circle cx="64" cy="64" r={R} fill="none" stroke-width="9"
-          class={isDark ? 'stroke-white/10' : 'stroke-border'} />
-        <circle cx="64" cy="64" r={R} fill="none" stroke-width="9" stroke-linecap="round"
-          stroke-dasharray={dash} class="stroke-accent-teal" />
-      </svg>
-      <div class="absolute inset-0 flex flex-col items-center justify-center">
-        <span class={`text-4xl font-bold tracking-tight ${ink}`}>{score}</span>
-        <span class={`font-mono text-[10px] uppercase tracking-[0.18em] ${muted}`}>/ 100</span>
-      </div>
+  <div class="px-4 py-4">
+    <div class="flex items-baseline justify-between gap-3">
+      <p class="flex items-baseline gap-1.5">
+        <span class="font-mono text-4xl font-semibold tabular-nums text-ink">{score}</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">/ 100</span>
+      </p>
+      <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">8 categories</span>
+    </div>
+    <div class="mt-2 h-2.5 rounded-[2px] border border-ink/40 bg-paper" aria-hidden="true">
+      <div class="h-full bg-ink/60" style={`width:${pct}%`}></div>
     </div>
 
-    {/* Heading + band + rows */}
-    <div>
-      <p class={`font-mono text-[10px] uppercase tracking-[0.2em] ${muted}`}>GEO score</p>
-      <p class="mt-1 flex items-center gap-2">
-        <span class="inline-block h-2 w-2 rounded-full bg-accent-teal"></span>
-        <span class={`text-sm font-semibold uppercase tracking-wide ${ink}`}>{band}</span>
-        <span class={`text-sm ${muted}`}>· 8 categories</span>
-      </p>
-
-      <div class="mt-4 space-y-px">
-        {rows.map((row) => (
-          <div class={`flex items-center justify-between gap-3 border-b ${rowBorder} py-2`}>
-            <span class="flex items-center gap-2.5">
-              <span class={`inline-block h-1.5 w-1.5 rounded-full ${dot[row.state]}`}></span>
-              <span class={`text-sm ${ink}`}>{row.label}</span>
-            </span>
-            <span class={`font-mono text-xs ${row.state === 'warn' ? 'text-amber-400' : 'text-accent-teal'}`}>{row.delta}</span>
-          </div>
-        ))}
-      </div>
+    <div class="mt-4 divide-y divide-rail border-t border-rail">
+      {rows.map((row) => (
+        <div class="flex items-center justify-between gap-3 py-2">
+          <span class="flex items-center gap-2.5">
+            <span class={`inline-block h-1.5 w-1.5 rounded-full ${dot[row.state]}`} aria-hidden="true"></span>
+            <span class="text-sm text-ink">{row.label}</span>
+          </span>
+          <span class={`font-mono text-[12px] tabular-nums ${row.state === 'warn' ? 'text-warn' : 'text-pass-deep'}`}>{row.delta}</span>
+        </div>
+      ))}
     </div>
   </div>
 </div>

@@ -101,10 +101,15 @@ const faqs = [
 >
   <div slot="heroAside" class="w-full space-y-5">
     <CitationSurface mode="sov" variant="light" class="w-full" />
-    <section id="audit-form" class="rounded-[--radius-lg] border border-border bg-bg-base p-4" aria-label="Run a ChatGPT visibility audit">
-      <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.18em] text-accent-teal">Free audit</p>
-      <AuditForm client:load />
-      <p class="mt-3 text-xs leading-relaxed text-text-muted">Use the URL you want ChatGPT-style answers to cite.</p>
+    <section id="audit-form" class="overflow-hidden rounded-[4px] border border-rail bg-white" aria-label="Run a ChatGPT visibility audit">
+      <div class="flex items-center justify-between gap-3 border-b border-rail px-4 py-2.5">
+        <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Free audit</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">POST /api/audit</span>
+      </div>
+      <div class="p-4">
+        <AuditForm client:load variant="console" />
+        <p class="mt-3 text-xs leading-relaxed text-ink-mute">Use the URL you want ChatGPT-style answers to cite.</p>
+      </div>
     </section>
   </div>
 
@@ -124,7 +129,7 @@ const faqs = [
       Start by fixing the weakest audit category. Then rewrite the target page so each major section answers a real buyer question in the first sentence. Add product facts, pricing facts, comparison criteria, and schema that identifies the page type.
     </p>
     <p class="mt-4">
-      After the fix, run a source-backed check with the <a href="/perplexity-citation-checker/" class="text-accent-teal hover:underline">Perplexity citation checker</a>. It will not guarantee ChatGPT behavior, but it gives a verifiable citation snapshot and a practical measurement loop.
+      After the fix, run a source-backed check with the <a href="/perplexity-citation-checker/" class="text-pass-deep underline underline-offset-4 decoration-rail hover:decoration-pass-deep">Perplexity citation checker</a>. It will not guarantee ChatGPT behavior, but it gives a verifiable citation snapshot and a practical measurement loop.
     </p>
   </section>
 </IntentLanding>

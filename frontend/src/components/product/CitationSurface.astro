@@ -1,19 +1,19 @@
 ---
 /**
- * CitationSurface — a real, borderless AI-citation readout. Two modes:
- *   - 'verdict': brand mention + domain citation rates with a verdict badge
- *   - 'sov': share-of-voice — which domains AI cites for your category
+ * CitationSurface — a stylized AI-citation readout in the console world: flat
+ * white panel, rail header strip, mono figures. Two modes:
+ *   - 'verdict': brand mention + domain citation rates with a verdict chip
+ *   - 'sov': share-of-voice — competitor rows drawn dashed (reference data),
+ *     the visitor's row drawn solid, warn amber only where it reports state.
  */
 interface Props {
   mode?: 'verdict' | 'sov';
   variant?: 'dark' | 'light';
   class?: string;
 }
-const { mode = 'verdict', variant = 'light', class: className = '' } = Astro.props;
-const isDark = variant === 'dark';
-const ink = isDark ? 'text-white' : 'text-text-primary';
-const muted = isDark ? 'text-slate-400' : 'text-text-muted';
-const track = isDark ? 'bg-white/10' : 'bg-bg-subtle';
+// `variant` is kept for interface compatibility: the console world is
+// daylight-only, so it no longer changes the rendering.
+const { mode = 'verdict', variant: _variant = 'light', class: className = '' } = Astro.props;
 
 const sov = [
   { name: 'otterly.ai', cites: 4 },
@@ -23,51 +23,54 @@ const sov = [
 const maxCites = 4;
 ---
 
-<div class={`relative ${className}`}>
-  <div aria-hidden="true" class="pointer-events-none absolute -inset-10 -z-10 rounded-[40px] bg-accent-teal/12 blur-3xl"></div>
-
+<div class={`overflow-hidden rounded-[4px] border border-rail bg-white text-ink ${className}`}>
   {mode === 'verdict' ? (
-    <div class={ink}>
-      <p class={`font-mono text-[10px] uppercase tracking-[0.2em] ${muted}`}>AI citation check</p>
-      <p class="mt-2 inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1">
-        <span class="text-amber-400">●</span>
-        <span class="text-sm font-semibold uppercase tracking-wide text-amber-300">Mentioned, not cited</span>
-      </p>
-      <div class="mt-4 grid grid-cols-2 gap-3">
-        <div>
-          <p class={`font-mono text-[10px] uppercase tracking-[0.14em] ${muted}`}>Brand mentioned</p>
-          <p class={`mt-1 text-2xl font-bold ${ink}`}>67%</p>
-        </div>
-        <div>
-          <p class={`font-mono text-[10px] uppercase tracking-[0.14em] ${muted}`}>Domain cited</p>
-          <p class="mt-1 text-2xl font-bold text-amber-400">0%</p>
-        </div>
+    <>
+      <div class="flex items-center justify-between gap-3 border-b border-rail px-4 py-2.5">
+        <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">AI citation check</span>
+        <span class="rounded-[2px] bg-warn-wash px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-warn">Mentioned, not cited</span>
       </div>
-      <div class={`mt-4 border-t ${isDark ? 'border-white/10' : 'border-border'} pt-3`}>
-        <p class={`text-xs ${muted}`}>Cited instead of you, for "GEO audit tools":</p>
-        <p class="mt-1 font-mono text-xs text-accent-teal">otterly.ai · geoptie.com · insites.com</p>
-      </div>
-    </div>
-  ) : (
-    <div class={ink}>
-      <div class="flex items-baseline justify-between gap-3">
-        <p class={`font-mono text-[10px] uppercase tracking-[0.2em] ${muted}`}>Share of AI citations</p>
-        <span class={`rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] ${isDark ? 'bg-white/10 text-teal-100' : 'bg-accent-teal/10 text-accent-teal'}`}>Perplexity</span>
-      </div>
-      <div class="mt-4 space-y-3">
-        {sov.map((s) => (
-          <div>
-            <div class="flex items-center justify-between gap-3">
-              <span class={`text-sm ${s.you ? 'font-semibold text-amber-400' : ink}`}>{s.name}{s.you && ' · you'}</span>
-              <span class={`font-mono text-xs ${s.you ? 'text-amber-400' : muted}`}>{s.cites} citations</span>
-            </div>
-            <div class={`mt-1.5 h-2 w-full overflow-hidden rounded-full ${track}`}>
-              <div class={`h-full rounded-full ${s.you ? 'bg-amber-400/60' : 'bg-accent-teal'}`} style={`width:${Math.max(4, (s.cites / maxCites) * 100)}%`}></div>
-            </div>
+      <div class="px-4 py-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="border-l border-rail pl-3">
+            <p class="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-mute">Brand mentioned</p>
+            <p class="mt-1 font-mono text-2xl font-semibold tabular-nums text-ink">67%</p>
           </div>
-        ))}
+          <div class="border-l border-rail pl-3">
+            <p class="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-mute">Domain cited</p>
+            <p class="mt-1 font-mono text-2xl font-semibold tabular-nums text-warn">0%</p>
+          </div>
+        </div>
+        <div class="mt-4 border-t border-rail pt-3">
+          <p class="text-xs text-ink-mute">Cited instead of you, for "GEO audit tools":</p>
+          <p class="mt-1 font-mono text-xs text-ink-soft">otterly.ai · geoptie.com · insites.com</p>
+        </div>
       </div>
-      <p class={`mt-4 text-xs leading-relaxed ${muted}`}>When customers ask AI about your category, these domains get cited — and you don’t.</p>
-    </div>
+    </>
+  ) : (
+    <>
+      <div class="flex items-center justify-between gap-3 border-b border-rail px-4 py-2.5">
+        <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Share of AI citations</span>
+        <span class="rounded-[2px] border border-rail px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.1em] text-ink-mute">Perplexity</span>
+      </div>
+      <div class="px-4 py-4">
+        <div class="space-y-3">
+          {sov.map((s) => (
+            <div>
+              <div class="flex items-baseline justify-between gap-3">
+                <span class={`text-sm ${s.you ? 'font-semibold text-ink' : 'text-ink-soft'}`}>{s.name}{s.you && ' · you'}</span>
+                <span class={`font-mono text-[12px] tabular-nums ${s.you ? 'text-warn' : 'text-ink-soft'}`}>{s.cites} citations</span>
+              </div>
+              <div class={`mt-1.5 h-2.5 rounded-[2px] ${s.you ? 'border border-ink/40 bg-paper' : 'border border-dashed border-ink-mute/60'}`} aria-hidden="true">
+                {s.cites > 0 && (
+                  <div class={`h-full ${s.you ? 'bg-ink/60' : 'bg-ink-mute/25'}`} style={`width:${(s.cites / maxCites) * 100}%`}></div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="mt-4 text-xs leading-relaxed text-ink-mute">When customers ask AI about your category, these domains get cited — and you don’t.</p>
+      </div>
+    </>
   )}
 </div>

@@ -117,18 +117,18 @@ const faqs = [
     <p class="mt-4">
       A page can rank in Google and still fail in AI answers. Common reasons are blocked AI crawlers, thin schema, ambiguous brand naming, content that hides the direct answer too low on the page, and claims that are too vague to quote. AI systems often need one clear block that answers the prompt and names the entity directly.
     </p>
-    <ul class="mt-5 grid gap-3 md:grid-cols-2" role="list">
-      <li class="rounded-[--radius-lg] border border-border bg-bg-surface p-4">If robots.txt blocks AI crawlers, the page can be technically invisible.</li>
-      <li class="rounded-[--radius-lg] border border-border bg-bg-surface p-4">If schema and sameAs signals are weak, the model may not connect the page to the right entity.</li>
-      <li class="rounded-[--radius-lg] border border-border bg-bg-surface p-4">If the text is generic, a competing page with a sharper answer block can win retrieval.</li>
-      <li class="rounded-[--radius-lg] border border-border bg-bg-surface p-4">If third-party pages explain the product better than your site, the AI may cite them instead.</li>
+    <ul class="mt-5 grid gap-px overflow-hidden rounded-[4px] border border-rail bg-rail md:grid-cols-2" role="list">
+      <li class="bg-white p-4">If robots.txt blocks AI crawlers, the page can be technically invisible.</li>
+      <li class="bg-white p-4">If schema and sameAs signals are weak, the model may not connect the page to the right entity.</li>
+      <li class="bg-white p-4">If the text is generic, a competing page with a sharper answer block can win retrieval.</li>
+      <li class="bg-white p-4">If third-party pages explain the product better than your site, the AI may cite them instead.</li>
     </ul>
   </section>
 
   <section>
     <h2>How to use GeoReady for ChatGPT visibility work</h2>
     <p class="mt-4">
-      Start with the <a href="/ai-seo-audit/" class="text-accent-teal hover:underline">free AI SEO audit</a> to find the weakest technical or content signal. Then use the <a href="/tools/ai-citation-checker/" class="text-accent-teal hover:underline">AI Citation Checker</a> to inspect source-backed answers and see whether AI engines cite your own domain, mention your brand without citing you, or cite competitors instead.
+      Start with the <a href="/ai-seo-audit/" class="text-pass-deep underline underline-offset-4 decoration-rail hover:decoration-pass-deep">free AI SEO audit</a> to find the weakest technical or content signal. Then use the <a href="/tools/ai-citation-checker/" class="text-pass-deep underline underline-offset-4 decoration-rail hover:decoration-pass-deep">AI Citation Checker</a> to inspect source-backed answers and see whether AI engines cite your own domain, mention your brand without citing you, or cite competitors instead.
     </p>
     <p class="mt-4">
       For ongoing work, define a fixed prompt pool around your product category and measure Share of Mentions every week. The goal is not one lucky answer. The goal is a repeatable pattern where answer engines name the brand and cite your own pages when the query matches your offer.

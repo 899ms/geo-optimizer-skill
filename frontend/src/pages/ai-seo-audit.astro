@@ -101,12 +101,17 @@ const faqs = [
 >
   <div slot="heroAside" class="w-full space-y-5">
     <ScoreSurface variant="light" class="w-full" />
-    <section id="audit-form" class="rounded-[--radius-lg] border border-border bg-bg-base p-4" aria-label="Run a free AI SEO audit">
-      <p class="mb-3 font-mono text-[11px] uppercase tracking-[0.18em] text-accent-teal">Free audit</p>
-      <AuditForm client:load />
-      <p class="mt-3 text-xs leading-relaxed text-text-muted">
-        The report opens immediately. No email, no account, no card.
-      </p>
+    <section id="audit-form" class="overflow-hidden rounded-[4px] border border-rail bg-white" aria-label="Run a free AI SEO audit">
+      <div class="flex items-center justify-between gap-3 border-b border-rail px-4 py-2.5">
+        <span class="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-mute">Free audit</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">POST /api/audit</span>
+      </div>
+      <div class="p-4">
+        <AuditForm client:load variant="console" />
+        <p class="mt-3 text-xs leading-relaxed text-ink-mute">
+          The report opens immediately. No email, no account, no card.
+        </p>
+      </div>
     </section>
   </div>
 
@@ -115,10 +120,10 @@ const faqs = [
     <p class="mt-4">
       GeoReady checks the technical and content surfaces that decide whether an answer engine can use a page. The audit starts with access: robots.txt, status codes, blocking headers, and AI crawler directives. It then checks machine clarity: canonical URL, title, meta description, Open Graph, JSON-LD schema, llms.txt, and AI discovery files. Finally, it checks citability: whether the page has self-contained sections, concrete claims, lists, tables, and enough structure for retrieval systems to extract a useful passage.
     </p>
-    <ul class="mt-5 grid gap-3 md:grid-cols-3" role="list">
-      <li class="rounded-[--radius-lg] border border-border bg-bg-surface p-4"><strong class="text-text-primary">Access first.</strong> A blocked page cannot be cited, even if the writing is strong.</li>
-      <li class="rounded-[--radius-lg] border border-border bg-bg-surface p-4"><strong class="text-text-primary">Structure second.</strong> Machines need canonical URLs, schema, headings, and extractable HTML.</li>
-      <li class="rounded-[--radius-lg] border border-border bg-bg-surface p-4"><strong class="text-text-primary">Evidence third.</strong> Answer engines prefer pages with specific claims they can summarize or cite.</li>
+    <ul class="mt-5 grid gap-px overflow-hidden rounded-[4px] border border-rail bg-rail md:grid-cols-3" role="list">
+      <li class="bg-white p-4"><strong class="text-ink">Access first.</strong> A blocked page cannot be cited, even if the writing is strong.</li>
+      <li class="bg-white p-4"><strong class="text-ink">Structure second.</strong> Machines need canonical URLs, schema, headings, and extractable HTML.</li>
+      <li class="bg-white p-4"><strong class="text-ink">Evidence third.</strong> Answer engines prefer pages with specific claims they can summarize or cite.</li>
     </ul>
   </section>
 
@@ -128,7 +133,7 @@ const faqs = [
       Run an AI SEO audit before a migration, after a CMS template change, before publishing a commercial landing page, and whenever organic traffic looks stable but AI assistants do not mention the brand. The audit is most useful before rewriting content, because it separates technical invisibility from weak citability.
     </p>
     <p class="mt-4">
-      If the score is low because of robots.txt, schema, metadata, or missing discovery files, fix the foundation before editing copy. If the foundation is sound but content quality or brand entity signals are weak, rewrite the page into answer-first blocks and add stronger proof. The <a href="/geo-readiness-manual/" class="text-accent-teal hover:underline">GEO Readiness Manual</a> explains the full repair order.
+      If the score is low because of robots.txt, schema, metadata, or missing discovery files, fix the foundation before editing copy. If the foundation is sound but content quality or brand entity signals are weak, rewrite the page into answer-first blocks and add stronger proof. The <a href="/geo-readiness-manual/" class="text-pass-deep underline underline-offset-4 decoration-rail hover:decoration-pass-deep">GEO Readiness Manual</a> explains the full repair order.
     </p>
   </section>
 
@@ -138,7 +143,7 @@ const faqs = [
       A free AI SEO audit should answer one question: what is the highest-impact gap on this URL today? The paid funnel should answer the next question: will that gap stay fixed next week and will AI engines cite the domain after the fix? That is why GeoReady keeps the free audit complete and sells monitoring, history, alerts, exports, and citation tracking rather than hiding the diagnosis.
     </p>
     <p class="mt-4">
-      For one domain, start with <a href="/pricing/" class="text-accent-teal hover:underline">Pro monitoring</a>. For AI citation tracking, competitor comparison, and client reporting, use Studio. The <a href="/report/demo/" class="text-accent-teal hover:underline">demo report</a> shows how the free result becomes the next-step recommendation.
+      For one domain, start with <a href="/pricing/" class="text-pass-deep underline underline-offset-4 decoration-rail hover:decoration-pass-deep">Pro monitoring</a>. For AI citation tracking, competitor comparison, and client reporting, use Studio. The <a href="/report/demo/" class="text-pass-deep underline underline-offset-4 decoration-rail hover:decoration-pass-deep">demo report</a> shows how the free result becomes the next-step recommendation.
     </p>
   </section>
 </IntentLanding>
