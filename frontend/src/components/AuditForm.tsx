@@ -58,7 +58,7 @@ export default function AuditForm({ variant = 'default' }: AuditFormProps) {
                 if (errorMsg) setErrorMsg('');
               }}
               disabled={isLoading}
-              className="w-full min-w-0 flex-1 bg-transparent py-3.5 pr-4 font-mono text-[15px] text-ink caret-pass-deep placeholder:text-ink-mute/70 focus:outline-none disabled:opacity-60"
+              className="w-full min-w-0 flex-1 bg-transparent py-3.5 pr-4 font-mono text-[15px] text-ink caret-pass-deep placeholder:text-ink-mute focus:outline-none disabled:opacity-60"
               aria-describedby={errorMsg ? 'audit-error' : undefined}
             />
           </div>
