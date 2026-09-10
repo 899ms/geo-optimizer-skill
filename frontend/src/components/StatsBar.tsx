@@ -20,12 +20,14 @@ interface StatsBarProps {
   initial?: Stats;
   /** true = i valori iniziali vengono dall'endpoint, non da un fallback hardcoded. */
   initialIsLive?: boolean;
+  /** "console" is the homepage CI-run world; default keeps the incumbent look. */
+  variant?: 'default' | 'console';
 }
 
 // Usato solo se la pagina non passa nulla (nessun chiamante oggi lo fa).
 const FALLBACK: Stats = { github_stars: 767, pypi_downloads_month: 71997, audits_run: 1912 };
 
-export default function StatsBar({ initial, initialIsLive = false }: StatsBarProps) {
+export default function StatsBar({ initial, initialIsLive = false, variant = 'default' }: StatsBarProps) {
   const [stats, setStats] = useState<Stats>(initial ?? FALLBACK);
   const [live, setLive] = useState(initialIsLive);
 
@@ -40,6 +42,36 @@ export default function StatsBar({ initial, initialIsLive = false }: StatsBarPro
       })
       .catch(() => {});
   }, []);
+
+  if (variant === 'console') {
+    const rows: Array<[string, string]> = [
+      [fmt(stats.github_stars), 'GitHub stars'],
+      [fmt(stats.pypi_downloads_month), 'downloads/mo'],
+      [fmt(stats.audits_run), 'audits run'],
+    ];
+    return (
+      <div>
+        <dl className="mt-8 flex flex-wrap items-stretch gap-y-2 divide-x divide-rail">
+          {rows.map(([value, label]) => (
+            <div key={label} className="flex items-baseline gap-2 pr-5 pl-5 first:pl-0">
+              <dd className="font-mono text-base font-semibold tabular-nums text-ink">{value}</dd>
+              <dt className="text-[13px] text-ink-mute">{label}</dt>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">
+          {live ? (
+            <>
+              <span aria-hidden="true" className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-pass align-middle" />
+              live · GET /api/stats
+            </>
+          ) : (
+            'snapshot — counters could not be refreshed'
+          )}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
