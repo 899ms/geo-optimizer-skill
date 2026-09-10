@@ -41,9 +41,9 @@ export default function PricingObjectionSurvey() {
 
   if (submitted) {
     return (
-      <div className="p-6 rounded-[--radius-lg] border border-border bg-bg-surface text-center">
-        <p className="text-sm font-semibold text-text-primary">Thanks — that helps.</p>
-        <p className="mt-1 text-sm text-text-secondary">
+      <div className="rounded-[4px] border border-rail bg-white p-6 text-center">
+        <p className="text-sm font-semibold text-ink">Thanks — that helps.</p>
+        <p className="mt-1 text-sm text-ink-soft">
           Your answer directly shapes what we improve on this page.
         </p>
       </div>
@@ -51,13 +51,15 @@ export default function PricingObjectionSurvey() {
   }
 
   return (
-    <div className="p-6 md:p-8 rounded-[--radius-lg] border border-border bg-bg-surface">
-      <p className="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-2">
-        One quick question
-      </p>
-      <p className="text-base font-semibold text-text-primary">
-        Not ready yet? What's stopping you today?
-      </p>
+    <div className="rounded-[4px] border border-rail bg-white p-6 md:p-8">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+        <p className="text-base font-semibold text-ink">
+          Not ready yet? What's stopping you today?
+        </p>
+        <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">
+          One quick question
+        </p>
+      </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
         {REASONS.map((r) => (
@@ -66,10 +68,10 @@ export default function PricingObjectionSurvey() {
             type="button"
             onClick={() => handleReasonClick(r.value)}
             aria-pressed={selected === r.value}
-            className={`px-4 py-2 rounded-full border text-sm transition-colors ${
+            className={`rounded-[2px] border px-4 py-2 text-sm transition-colors ${
               selected === r.value
-                ? 'border-accent-teal bg-accent-teal/10 text-accent-teal font-semibold'
-                : 'border-border text-text-secondary hover:border-accent-teal/50 hover:text-text-primary'
+                ? 'border-pass/50 bg-pass-wash font-semibold text-pass-deep'
+                : 'border-rail bg-white text-ink-soft hover:bg-pass-wash/50 hover:text-ink'
             }`}
           >
             {r.label}
@@ -85,18 +87,18 @@ export default function PricingObjectionSurvey() {
             maxLength={MAX_NOTE_LENGTH}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Anything else? (optional)"
-            className="flex-1 px-3 py-2 rounded-[--radius-md] border border-border bg-bg-surface text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-teal focus:ring-1 focus:ring-accent-teal/30"
+            className="flex-1 rounded-[4px] border border-ink/25 bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-mute focus:border-pass-deep focus:outline-none focus:ring-2 focus:ring-pass/30"
           />
           <button
             type="submit"
-            className="shrink-0 px-4 py-2 rounded-[--radius-md] border border-border text-sm font-semibold text-text-primary hover:bg-bg-subtle transition-colors"
+            className="shrink-0 rounded-[4px] border border-rail bg-white px-4 py-2 font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
           >
             Send
           </button>
         </form>
       )}
 
-      <p className="mt-3 text-[10px] text-text-muted">
+      <p className="mt-3 text-[11px] text-ink-mute">
         Anonymous — used only to improve this page. No email required.
       </p>
     </div>
