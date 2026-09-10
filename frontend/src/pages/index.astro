@@ -515,10 +515,12 @@ const medPct = Math.max(0, Math.min(100, Number(BENCHMARK.median) || 0));
   {/* Verdict band */}
   <section class="world-console bg-pass-deep font-text text-white">
     <div class="mx-auto max-w-7xl px-6 py-16 md:py-20">
-      <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-pass-wash/80">Verdict · your site: not yet run</p>
-      <h2 class="mt-4 max-w-3xl font-head text-3xl font-extrabold tracking-[-0.02em] md:text-5xl">
-        AI search is already deciding which sites get cited.
-      </h2>
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3">
+        <h2 class="max-w-3xl font-head text-3xl font-extrabold tracking-[-0.02em] md:text-5xl">
+          AI search is already deciding which sites get cited.
+        </h2>
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-pass-wash/80">Verdict · your site: not yet run</p>
+      </div>
       <p class="mt-5 max-w-2xl leading-relaxed text-pass-wash">
         The signals are documented, the research is published, and the tool is free.
         GeoReady exists to make AI visibility auditable and accessible to every developer.
