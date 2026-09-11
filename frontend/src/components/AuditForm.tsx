@@ -42,8 +42,8 @@ export default function AuditForm({ variant: _variant = 'console' }: AuditFormPr
           <label htmlFor="audit-url" className="sr-only">
             Website URL to audit
           </label>
-          <div className="flex min-w-0 flex-1 items-center gap-3 rounded-[4px] border border-ink/25 bg-white pl-4 transition-shadow focus-within:border-pass-deep focus-within:ring-2 focus-within:ring-pass/30">
-            <span aria-hidden="true" className="hidden shrink-0 rounded-[3px] bg-ink/5 px-2 py-1 font-mono text-[13px] font-medium text-ink-mute md:inline whitespace-nowrap select-none">
+          <div className="flex min-w-0 flex-1 items-stretch overflow-hidden rounded-[4px] border border-ink/25 bg-white transition-shadow focus-within:border-pass-deep focus-within:ring-2 focus-within:ring-pass/30">
+            <span aria-hidden="true" className="hidden shrink-0 items-center border-r border-ink/10 bg-ink/5 px-4 font-mono text-[13px] font-medium text-ink-mute md:flex whitespace-nowrap select-none">
               $ geo audit
             </span>
             <input
@@ -58,7 +58,7 @@ export default function AuditForm({ variant: _variant = 'console' }: AuditFormPr
                 if (errorMsg) setErrorMsg('');
               }}
               disabled={isLoading}
-              className="w-full min-w-0 flex-1 bg-transparent py-3.5 pr-4 font-mono text-[15px] text-ink caret-pass-deep placeholder:text-ink-mute focus:outline-none disabled:opacity-60"
+              className="w-full min-w-0 flex-1 bg-transparent py-3.5 pl-4 pr-4 font-mono text-[15px] text-ink caret-pass-deep placeholder:text-ink-mute focus:outline-none disabled:opacity-60"
               aria-describedby={errorMsg ? 'audit-error' : undefined}
             />
           </div>
