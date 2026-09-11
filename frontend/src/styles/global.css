@@ -58,9 +58,9 @@
   --color-ink-soft: #3D453F;
   --color-ink-mute: #5C665F;
   --color-rail: #D9DED6;
-  --color-pass: #0E8345;
-  --color-pass-deep: #096236;
-  --color-pass-wash: #E7F3EB;
+  --color-pass: #0B8076;
+  --color-pass-deep: #0F766E;
+  --color-pass-wash: #E4F3F0;
   --color-fail: #C93A2E;
   --color-fail-wash: #FAEDEA;
   --color-warn: #9C6A06;
@@ -86,17 +86,17 @@
   --color-text-muted: #5C665F;
   --color-text-inverse: #DCE5DC;
 
-  --color-accent-teal: #096236;
-  --color-accent-teal-dark: #0E8345;
+  --color-accent-teal: #0F766E;
+  --color-accent-teal-dark: #0B8076;
   --color-accent-electric: #0D110E;
   --color-accent-violet: #0D110E;
-  --color-accent-success: #096236;
+  --color-accent-success: #0F766E;
   --color-accent-warning: #9C6A06;
   --color-accent-danger: #C93A2E;
 
   --color-border: #D9DED6;
   --color-border-dark: #2A312A;
-  --color-border-accent: #0E8345;
+  --color-border-accent: #0B8076;
 
   /* Near-square geometry: the legacy 8–36px ramp is out of this world. */
   --radius-sm: 2px;
@@ -141,7 +141,7 @@ body {
 
 .bg-bg-dark .text-accent-teal,
 [data-hero-bleed].bg-bg-dark .text-accent-teal {
-  color: #7CC69B;
+  color: #5EEAD4;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -175,6 +175,6 @@ input, textarea {
 }
 
 ::selection {
-  background-color: rgba(14, 131, 69, 0.16);
+  background-color: rgba(15, 118, 110, 0.16);
   color: var(--color-ink);
 }
