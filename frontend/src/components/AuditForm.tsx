@@ -43,7 +43,7 @@ export default function AuditForm({ variant: _variant = 'console' }: AuditFormPr
             Website URL to audit
           </label>
           <div className="flex min-w-0 flex-1 items-stretch overflow-hidden rounded-[4px] border border-ink/25 bg-white transition-shadow focus-within:border-pass-deep focus-within:ring-2 focus-within:ring-pass/30">
-            <span aria-hidden="true" className="hidden shrink-0 items-center border-r border-ink/10 bg-ink/5 px-4 font-mono text-[13px] font-medium text-ink-mute md:flex whitespace-nowrap select-none">
+            <span aria-hidden="true" className="hidden shrink-0 items-center border-r border-pass/15 bg-pass/10 px-4 font-mono text-[13px] font-medium text-ink-mute md:flex whitespace-nowrap select-none">
               $ geo audit
             </span>
             <input
