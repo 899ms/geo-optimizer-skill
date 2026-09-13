@@ -7,9 +7,10 @@
 #### Audit, optimize, and track whether **ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews** can crawl, understand, and **cite** your website.
 
 [![PyPI](https://img.shields.io/pypi/v/geo-optimizer-skill?style=flat-square&color=3b82f6)](https://pypi.org/project/geo-optimizer-skill/)
+[![Downloads/month](https://img.shields.io/pypi/dm/geo-optimizer-skill?style=flat-square&color=3b82f6&label=downloads%2Fmonth)](https://pypi.org/project/geo-optimizer-skill/)
+[![GitHub Stars](https://img.shields.io/github/stars/auriti-labs/geo-optimizer-skill?style=flat-square&color=facc15&logo=github&label=stars)](https://github.com/auriti-labs/geo-optimizer-skill/stargazers)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-3776ab?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![CI](https://github.com/auriti-labs/geo-optimizer-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/auriti-labs/geo-optimizer-skill/actions)
-[![Tests](https://img.shields.io/badge/tests-1960%20passed-22c55e?style=flat-square)](https://github.com/Auriti-Labs/geo-optimizer-skill/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
 [![MCP Compatible](https://img.shields.io/badge/MCP-compatible-8b5cf6?style=flat-square)](https://modelcontextprotocol.io)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-FFDD00?style=flat-square&logo=buymeacoffee&logoColor=000000)](https://buymeacoffee.com/auritidesign)
@@ -20,7 +21,7 @@
 
 <img src="assets/demo.gif" alt="geo audit demo — AI visibility score 0-100 with prioritized fixes in one command" width="800"/>
 
-**16 CLI commands** · **8 scoring categories** · **47 research-backed methods** · **7 output formats** · **1,960 tests** · academic foundation ([KDD 2024](https://arxiv.org/abs/2311.09735), [ICLR 2026](https://arxiv.org/abs/2510.11438)) · runs in CI/CD, as a [Python library](#python-api), an [MCP server](#mcp-server), or an [Astro integration](#astro-integration)
+**16 CLI commands** · **8 scoring categories** · **47 research-backed methods** · **7 output formats** · **1,900+ tests** · academic foundation ([KDD 2024](https://arxiv.org/abs/2311.09735), [ICLR 2026](https://arxiv.org/abs/2510.11438)) · runs in CI/CD, as a [Python library](#python-api), an [MCP server](#mcp-server), or an [Astro integration](#astro-integration)
 
 </div>
 
@@ -28,9 +29,9 @@
 
 ## What is GEO Optimizer?
 
-**GEO Optimizer** is a free, open-source command-line tool (and Python library, MCP server, and [Astro integration](#astro-integration)) that measures how visible your website is to **AI answer engines** — ChatGPT, Perplexity, Google AI Overviews, Gemini, and Claude — and tells you how to get cited by them.
+**GEO Optimizer measures how visible your website is to AI answer engines** — ChatGPT, Perplexity, Google AI Overviews, Gemini, and Claude — scores it 0–100, and tells you exactly what to fix to get cited. It is free and open source, and runs as a command-line tool, a Python library, an [MCP server](#mcp-server), or an [Astro integration](#astro-integration).
 
-This discipline goes by several names; this tool covers all of them: **Answer Engine Optimization (AEO)**, **Generative Engine Optimization (GEO)**, **AI SEO**, **LLM SEO**, **AI Search Optimization**, and **AI visibility / LLM visibility** monitoring. If you're searching for an *"open-source AEO tool"*, a *"tool to check if ChatGPT cites my website"*, or an *"llms.txt checker"* — that's this.
+This practice goes by several names — **Answer Engine Optimization (AEO)**, **Generative Engine Optimization (GEO)**, **AI SEO**, **LLM SEO**, **AI Search Optimization** — and GEO Optimizer covers all of them under one command. Several of its checks (schema markup, meta tags, canonical URLs, Open Graph, content structure) are standard technical SEO practice too, audited alongside the AI-specific ones. If you're searching for an *"open-source AEO tool"*, a *"tool to check if ChatGPT cites my website"*, or a *"technical SEO and llms.txt checker"* — that's this.
 
 ```bash
 # Zero install — score any site against 8 AI-readiness categories
@@ -56,6 +57,7 @@ ChatGPT: "According to [Competitor.com], the formula is..."
 - [**28.3% of ChatGPT's most-cited pages have *zero* organic visibility on Google**](https://llmrefs.com/generative-engine-optimization) (Ahrefs) — AI engines reward different signals than classic SEO.
 - Proper JSON-LD schema lifts LLM extraction accuracy [**from 16% to 54%**](https://dev.to/geobuddy/llmstxt-schema-markup-and-technical-geo-what-actually-works-in-2026-o63) (Semrush test on GPT-4).
 - [**844,000+ sites**](https://webflow.com/blog/llms-txt) already ship an `llms.txt`. Yours?
+- Our own [State of GEO](https://geoready.dev/state-of-geo/) benchmark, run monthly across 1,000+ real sites with this same engine, finds a median score of 57/100 — most sites audited are still unprepared, and only 57% ship an `llms.txt`.
 
 ### Does AI actually cite your brand? Ask it directly.
 
@@ -73,7 +75,7 @@ SEO and AEO/GEO answer different questions:
 - **AEO / GEO** measures whether an AI answer engine can read, parse, understand, and **cite** your content when generating a response.
 - A site can rank well on Google and still be largely opaque to AI systems — missing structured data, no llms.txt, bot access blocked, thin factual density.
 
-GEO Optimizer focuses on the technical and structural signals AI answer engines use: robots.txt bot permissions, `llms.txt` presence and depth, JSON-LD schema richness, brand entity coherence, multi-page topical authority, and content citability across 47 methods. These complement traditional SEO rather than replacing it.
+GEO Optimizer focuses on the technical and structural signals AI answer engines use: robots.txt bot permissions, `llms.txt` presence and depth, JSON-LD schema richness, brand entity coherence, multi-page topical authority, and content citability across 47 methods.
 
 ---
 
@@ -165,52 +167,9 @@ geo llms --base-url https://yoursite.com --check-drift
 geo schema --type faq --url https://yoursite.com
 ```
 
-MiniMax can use either supported API wire format and regional API root:
-
-```bash
-export MINIMAX_API_KEY="your-api-key"
-export MINIMAX_API_FORMAT="openai"  # or "anthropic"
-export MINIMAX_API_BASE_URL="https://api.minimax.io/v1"
-geo citations --provider minimax --brand "YourBrand" --domain yoursite.com
-```
-
-For the China endpoint, use `https://api.minimaxi.com/v1` with the `openai` format or
-`https://api.minimaxi.com/anthropic` with the `anthropic` format. The global messages-format root is
-`https://api.minimax.io/anthropic`. `MINIMAX_THINKING` accepts `adaptive` or `disabled` for `MiniMax-M3`;
-`MiniMax-M2.7` always uses thinking.
-
-Set `GEO_LLM_MODEL` to select either supported model. Model capabilities are:
-
-| Model | Context window | API input modalities | Thinking |
-|-------|----------------|----------------------|----------|
-| `MiniMax-M3` | 1,000,000 tokens | Text, image, video | `adaptive` or `disabled` |
-| `MiniMax-M2.7` | 204,800 tokens | Text | Always on |
-
-`geo citations` currently sends text prompts. The modalities column lists what each model's API
-accepts; `query_llm` currently types text and image content parts, so video input needs a schema
-addition before it can be passed. See the
-[official MiniMax pricing page](https://platform.minimax.io/docs/pricing/overview) for current rates.
-
-Gemini is checked directly, not just simulated via crawler user-agents:
-
-```bash
-export GEMINI_API_KEY="your-api-key"
-geo citations --provider gemini --brand "YourBrand" --domain yoursite.com
-```
-
-Set `GEO_LLM_MODEL` to pick a specific model (default: `gemini-3.7-flash`). Uses the Gemini API
-directly (`generativelanguage.googleapis.com`), not Vertex AI — no extra dependency needed.
-
-DeepSeek and MiniMax cover citation checks against the Chinese AI answer-engine ecosystem, which
-Western-only providers miss entirely:
-
-```bash
-export DEEPSEEK_API_KEY="your-api-key"
-geo citations --provider deepseek --brand "YourBrand" --domain yoursite.com
-```
-
-Fully OpenAI-compatible wire format against `api.deepseek.com`. Default model `deepseek-v4-flash`;
-set `GEO_LLM_MODEL=deepseek-v4-pro` for the higher-capability tier.
+`geo citations` also supports MiniMax, Gemini, and DeepSeek as providers — including MiniMax's
+regional API roots and dual wire formats, and DeepSeek's coverage of the Chinese AI
+answer-engine ecosystem. Full setup for each: [docs/llm-providers.md](docs/llm-providers.md).
 
 ---
 
@@ -528,7 +487,7 @@ All URL inputs are validated against private IP ranges (RFC 1918, loopback, link
 ```bash
 git clone https://github.com/YOUR_USERNAME/geo-optimizer-skill.git
 cd geo-optimizer-skill && pip install -e ".[dev]"
-pytest tests/ -v   # 1960 tests, all mocked
+pytest tests/ -v   # 1,900+ tests, all mocked
 ```
 
 [Bug reports](https://github.com/Auriti-Labs/geo-optimizer-skill/issues/new?template=bug_report.yml) · [Feature requests](https://github.com/Auriti-Labs/geo-optimizer-skill/issues/new?template=feature_request.yml) · [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -541,7 +500,7 @@ Run the [CLI locally](#quick-start), try the [free audit online](https://georead
 
 ---
 
-**MIT License** · Built by [Auriti Labs](https://github.com/auriti-labs)
+**MIT License** · Built by [Auriti Labs](https://github.com/auriti-labs) · [Juan Camilo Auriti](https://www.linkedin.com/in/juancamiloauriti/) ([@JuanAuriti](https://x.com/JuanAuriti))
 
 If this saved you time, a star helps others find it.
 
