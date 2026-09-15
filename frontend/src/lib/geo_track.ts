@@ -11,16 +11,51 @@ declare global {
   }
 }
 
-/** Estrae i parametri UTM dall'URL corrente. */
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
+const UTM_STORAGE_KEY = 'geo_utm_params';
+
+/**
+ * Estrae i parametri UTM dall'URL corrente e li persiste in sessionStorage.
+ *
+ * Necessario perché AuditForm.tsx passa alla pagina del report con un hard
+ * redirect (`window.location.href`) verso un URL che porta solo `?url=`, non
+ * gli UTM originali. Senza questo fallback, `geo_audit_completed` — sparato
+ * da quella pagina — risultava sempre privo di attribuzione di campagna,
+ * anche se la sessione GA4 restava correttamente attribuita (il client id
+ * sopravvive al redirect, la query string no). sessionStorage sopravvive
+ * alla navigazione nella stessa tab, quindi il primo touch resta disponibile
+ * per ogni evento successivo nella stessa sessione di navigazione.
+ */
 export function getUtmParams(): Record<string, string> {
   if (typeof window === 'undefined') return {};
+
   const search = new URLSearchParams(window.location.search);
-  const result: Record<string, string> = {};
-  for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
+  const fromUrl: Record<string, string> = {};
+  for (const key of UTM_KEYS) {
     const val = search.get(key);
-    if (val) result[key] = val;
+    if (val) fromUrl[key] = val;
   }
-  return result;
+
+  if (Object.keys(fromUrl).length > 0) {
+    try {
+      sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(fromUrl));
+    } catch {
+      // Storage non disponibile (modalità privata, quota piena): l'evento
+      // corrente ha comunque i parametri corretti, solo il fallback per le
+      // pagine successive non verrà salvato.
+    }
+    return fromUrl;
+  }
+
+  try {
+    const stored = sessionStorage.getItem(UTM_STORAGE_KEY);
+    if (stored) return JSON.parse(stored) as Record<string, string>;
+  } catch {
+    // Storage non disponibile o contenuto corrotto: nessun fallback, meglio
+    // un evento senza UTM che un errore che blocca il tracking.
+  }
+
+  return {};
 }
 
 /** Ritorna il referrer semplificato ('organic', 'direct', 'github', ecc.). */
