@@ -7,7 +7,7 @@
 #### Audit, optimize, and track whether **ChatGPT, Perplexity, Gemini, Claude, and Google AI Overviews** can crawl, understand, and **cite** your website.
 
 [![PyPI](https://img.shields.io/pypi/v/geo-optimizer-skill?style=flat-square&color=3b82f6)](https://pypi.org/project/geo-optimizer-skill/)
-[![Downloads/month](https://img.shields.io/pypi/dm/geo-optimizer-skill?style=flat-square&color=3b82f6&label=downloads%2Fmonth)](https://pypi.org/project/geo-optimizer-skill/)
+[![Downloads/month](https://static.pepy.tech/badge/geo-optimizer-skill/month)](https://pepy.tech/project/geo-optimizer-skill)
 [![GitHub Stars](https://img.shields.io/github/stars/auriti-labs/geo-optimizer-skill?style=flat-square&color=facc15&logo=github&label=stars)](https://github.com/auriti-labs/geo-optimizer-skill/stargazers)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-3776ab?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![CI](https://github.com/auriti-labs/geo-optimizer-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/auriti-labs/geo-optimizer-skill/actions)
@@ -479,6 +479,14 @@ Traditional SEO tools optimize for Google rankings and backlinks. GEO Optimizer 
 ## Security
 
 All URL inputs are validated against private IP ranges (RFC 1918, loopback, link-local, cloud metadata) with DNS pinning before any request. See [SECURITY.md](SECURITY.md) for reporting vulnerabilities.
+
+---
+
+## Sponsors
+
+GEO Optimizer is free and open source (MIT), built and maintained by Juan Camilo Auriti. If it saves you time, consider sponsoring its development on GitHub Sponsors — it directly funds the time spent on audits, bug fixes, and new research-backed checks.
+
+[![Sponsor on GitHub](https://img.shields.io/badge/Sponsor-%E2%9D%A4-db61a2?style=flat-square&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/auriti)
 
 ---
 
