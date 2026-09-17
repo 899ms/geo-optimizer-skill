@@ -163,9 +163,14 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             "font-src 'self' data:; "
             "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com "
             "https://launchpadly.co https://cdn.sanity.io; "
-            # region1.google-analytics.com: endpoint regionale GA4 (usato da gtag.js)
-            "connect-src 'self' https://www.google-analytics.com https://analytics.google.com "
-            "https://stats.g.doubleclick.net https://region1.google-analytics.com; "
+            # GA4 instrada la raccolta dati su sottodomini regionali sharded
+            # (region1, region2, ...) scelti per sessione — un singolo host
+            # esplicito (region1.google-analytics.com) bloccava silenziosamente
+            # le sessioni instradate su un region diverso. Wildcard su entrambe
+            # le famiglie di dominio usate da GA4.
+            "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com "
+            "https://analytics.google.com https://*.analytics.google.com "
+            "https://stats.g.doubleclick.net; "
             "frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
         )
         # Fix #413: restrict browser API access
