@@ -98,6 +98,10 @@ The GEO Optimizer engine is actively maintained. Scoring weights and audit metho
 - [ChatGPT Visibility Checker](https://geoready.dev/chatgpt-visibility-checker/): Readiness page explaining how to check whether a site can appear in ChatGPT-style answers, with a path from audit to source-backed citation checks.
 - [Perplexity Citation Checker](https://geoready.dev/perplexity-citation-checker/): Commercial citation page for checking whether Perplexity-style answers cite the user's own domain or cite competitors instead.
 - [Perplexity Citation Monitoring](https://geoready.dev/perplexity-citation-monitoring/): Monitor whether Perplexity-style answers cite a domain, mention the brand without citing it, or cite competitors instead.
+- [GEO Monitoring Tool](https://geoready.dev/geo-monitoring-tool/): Monitor your GEO score over time — scheduled re-audits, score history, and regression alerts when a signal drops. Weekly on Pro, daily on Studio.
+- [Citation Gap Analysis](https://geoready.dev/citation-gap-analysis/): See who AI engines cite instead of you, compare GEO-score readiness, and track the gap over time.
+- [ChatGPT Citation Tracker](https://geoready.dev/chatgpt-citation-tracker/): Honest breakdown of ChatGPT citation tracking — what's automated (Perplexity/Studio), manual (Agency), and what no tool does yet.
+- [AI Overviews Trend Tracking](https://geoready.dev/ai-overviews-trend-tracking/): A repeatable workflow for tracking AI Overviews trends over time — query sets, logging schema, cadence, and how to read real shifts vs. noise.
 - [Compare](https://geoready.dev/compare/): Side-by-side comparison of two URLs.
 - [Analyze Competitors](https://geoready.dev/analyze-competitors/): Multi-URL competitor analysis.
 - [Research](https://geoready.dev/research/): Peer-reviewed research foundation.
@@ -107,7 +111,12 @@ The GEO Optimizer engine is actively maintained. Scoring weights and audit metho
 - [State of GEO: July 2026](https://geoready.dev/state-of-geo/july-2026/): Monthly benchmark report — 360 domains audited, average GEO score 54.1/100, only 24.7% reach "Good" or above.
 - [State of GEO: June 2026](https://geoready.dev/state-of-geo/june-2026/): Monthly benchmark report — 288 domains audited, average GEO score 53.6/100, only 20.8% reach "Good" or above.
 - [Best GEO Tools](https://geoready.dev/best-geo-tools/): Criteria-based guide to evaluating generative engine optimization software, including methodology transparency, audit vs monitoring, CI/CD support, and answer-engine citation checks.
+- [Which GEO Tool Has a Transparent Methodology?](https://geoready.dev/transparent-geo-tool/): The scoring weights, the check logic and the test suite are public and MIT licensed. Reproduce any GEO Optimizer score on your own machine — plus what the score cannot tell you.
 - [Open-Source Alternative to Profound & Otterly](https://geoready.dev/open-source-profound-otterly-alternative/): Why GEO Optimizer is a free, MIT-licensed, self-hostable alternative to commercial GEO platforms — audit, AI citation tracking, and CI/CD support.
+- [Otterly Alternative](https://geoready.dev/otterly-alternative/): Otterly alternative comparison — entry pricing, the $29-to-$189 jump, engine coverage, and where Otterly is genuinely stronger. Sourced, dated Sep 2026.
+- [Profound Alternative](https://geoready.dev/profound-alternative/): Profound starts at $99/mo and gates Enterprise behind sales. Where it shines, who should stay, and how GeoReady's $0-$49 plans compare. Sep 2026.
+- [Veesie Alternative](https://geoready.dev/veesie-alternative/): Comparing Veesie and GeoReady for GEO monitoring — engine coverage, EUR vs USD pricing, and free-audit differences. Sourced, dated September 2026.
+- [Semrush AI Visibility Toolkit Alternative](https://geoready.dev/semrush-ai-visibility-toolkit-alternative/): What Semrush's AI Visibility Toolkit costs, and when a dedicated $0-$19 GEO tool beats a bundled suite module. Facts dated September 2026.
 - [Roadmap](https://geoready.dev/roadmap/): Planned and in-progress features.
 - [GEO Readiness Manual](https://geoready.dev/geo-readiness-manual/): 160-page technical guide to AI search visibility, citations, and Generative Engine Optimization — access, schema, quotability, entity authority, measurement, and security.
 - [Manifesto](https://geoready.dev/manifesto/): Why the open-source GEO Optimizer engine exists and what it stands for.
@@ -168,6 +177,12 @@ The GEO Optimizer engine is actively maintained. Scoring weights and audit metho
 - [AEO vs GEO: same practice, different vocabulary?](https://geoready.dev/guides/aeo-vs-geo/): AEO and GEO both mean optimizing content for AI answer engines.
 - [GEO Prompt Research: How to Find the Prompts Your Buyers Actually Ask AI Engines](https://geoready.dev/guides/geo-prompt-research/): Keyword research targets queries; GEO targets prompts.
 - [What is Answer Engine Optimization (AEO)?](https://geoready.dev/guides/what-is-answer-engine-optimization/): Answer Engine Optimization (AEO) means structuring content so AI answer engines can extract, trust, and cite it.
+- [Dashboard vs. Action Plan: What a GEO Score Needs](https://geoready.dev/guides/dashboard-vs-action-plan/): Most GEO tools hand you a dashboard. What changes results is a prioritized action plan — and GeoReady's own free report already includes one.
+- [GEO for Higher Ed: Get Cited by AI Assistants](https://geoready.dev/guides/geo-for-higher-ed/): How prospective students research programs through AI, why .edu authority alone isn't enough, and how to make program and research pages citable.
+- [GEO Research, Explained: The Papers Behind AI SEO](https://geoready.dev/guides/geo-research-papers-explained/): A plain-language walkthrough of the peer-reviewed research behind Generative Engine Optimization — what was tested, found, and what wasn't.
+- [How Often Should You Monitor AI Visibility?](https://geoready.dev/guides/how-often-to-monitor-ai-visibility/): How often to monitor AI visibility depends on how fast your site changes, not "as often as possible." A cadence framework by site type and plan.
+- [LLM Seeding vs GEO: What's the Difference?](https://geoready.dev/guides/llm-seeding-and-geo/): LLM seeding places your brand in sources AI models draw from. How it differs from GEO, what's legitimate, and what research actually supports.
+- [What Is a Good GEO Score? Benchmarks & Bands](https://geoready.dev/guides/what-is-a-good-geo-score/): A good GEO score is 68+ (the "good" band). Most sites average in the mid-50s. Real score bands, what moves your score, and how to check yours free.
 
 ## Research sources
 

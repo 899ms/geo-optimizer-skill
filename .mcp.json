@@ -5,6 +5,12 @@
       "env": {
         "PYTHONUNBUFFERED": "1"
       }
+    },
+    "graft": {
+      "command": "graft",
+      "args": [
+        "mcp"
+      ]
     }
   }
 }
