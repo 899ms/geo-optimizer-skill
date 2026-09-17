@@ -62,3 +62,9 @@ local_cache/
 
 # Generated graph analysis output (graphify tool)
 graphify-out/
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+
+# OpenCode's local MCP config — personal tooling preference, not a project convention.
+/opencode.json
