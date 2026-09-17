@@ -28,6 +28,27 @@ def _flatten_graph(raw_schema: dict) -> list[dict]:
     return [raw_schema]
 
 
+# Title separators, e.g. "Brand — Tagline" / "Brand – Tagline" / "Brand | Blog".
+# Includes both the em dash (U+2014) and en dash (U+2013): the en dash is a
+# common separator in German/French/other European titles and was missing
+# entirely before this fix (#550), so titles built with it were never cut and
+# compared as whole sentences instead of brand names.
+_TITLE_SEPARATORS = (" — ", " – ", " - ", " | ", " · ")
+
+
+def _cut_at_first_separator(text: str) -> str:
+    """Cut `text` at whichever separator occurs earliest in the string (#550).
+
+    A plain "first separator in tuple order" scan is wrong: in
+    "Acme – Tools for makers | Blog" the correct brand-name cut is at the en
+    dash, but " | " would be found first if the tuple happened to list it
+    before " – ". Matching by actual text position instead of tuple order
+    fixes that regardless of how _TITLE_SEPARATORS is ordered.
+    """
+    hits = [text.find(sep) for sep in _TITLE_SEPARATORS if sep in text]
+    return text[: min(hits)].strip() if hits else text
+
+
 def _normalize_brand_name(name: str) -> str:
     """Normalize a brand name for comparison by stripping legal suffixes (#397).
 
@@ -80,33 +101,20 @@ def audit_brand_entity(
     # H1
     h1 = soup.find("h1")
     if h1 and h1.get_text(strip=True):
-        h1_text = h1.get_text(strip=True)
-        # Take the first part before common separators
-        for sep in (" — ", " - ", " | ", " · "):
-            if sep in h1_text:
-                h1_text = h1_text.split(sep)[0].strip()
-                break
+        h1_text = _cut_at_first_separator(h1.get_text(strip=True))
         if h1_text:
             names.append(h1_text)
 
     # Title tag
     if meta_result.title_text:
-        title_name = meta_result.title_text
-        for sep in (" — ", " - ", " | ", " · "):
-            if sep in title_name:
-                title_name = title_name.split(sep)[0].strip()
-                break
+        title_name = _cut_at_first_separator(meta_result.title_text)
         if title_name:
             names.append(title_name)
 
     # og:title
     og_title = soup.find("meta", property="og:title")
     if og_title and og_title.get("content", ""):
-        og_name = og_title["content"]
-        for sep in (" — ", " - ", " | ", " · "):
-            if sep in og_name:
-                og_name = og_name.split(sep)[0].strip()
-                break
+        og_name = _cut_at_first_separator(og_title["content"])
         if og_name:
             names.append(og_name)
 

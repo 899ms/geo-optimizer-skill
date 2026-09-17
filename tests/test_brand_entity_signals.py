@@ -316,6 +316,52 @@ class TestAuditBrandEntity:
 
 
 # ============================================================================
+# TEST: title separator cutting — en dash + earliest-position match (#550)
+# ============================================================================
+
+
+def _check(title: str, og_title: str, h1: str):
+    """Build the exact minimal-input shape from #550's repro and run the audit."""
+    html = (
+        f"<html><head><title>{title}</title>"
+        f'<meta property="og:title" content="{og_title}"></head>'
+        f"<body><h1>{h1}</h1></body></html>"
+    )
+    result = audit_brand_entity(
+        _soup(html),
+        SchemaResult(raw_schemas=[]),
+        MetaResult(has_title=True, title_text=title, has_og_title=True),
+        ContentResult(has_h1=True, h1_text=h1),
+    )
+    return result.brand_name_consistent, result.names_found
+
+
+class TestTitleSeparatorCutting:
+    def test_en_dash_same_brand_different_tagline_is_consistent(self):
+        """#550: the en dash (U+2013) was not recognized as a separator at all,
+        so "Acme – Tools for makers" and "Acme – Guides and tools" were compared
+        as whole sentences (never equal) instead of being cut down to "Acme"."""
+        consistent, names = _check("Acme – Tools for makers | Blog", "Acme – Guides and tools | Blog", "Welcome")
+        assert consistent is True
+        assert "Acme" in names
+
+    def test_cuts_at_earliest_separator_not_first_in_tuple_order(self):
+        """#550: "Acme – Tools for makers | Blog" must cut at the en dash (position 4),
+        not at " | " (position ~20), even though " | " appears earlier in the
+        separator tuple than " – "."""
+        _, names = _check("Acme – Tools for makers | Blog", "Acme", "Acme")
+        assert "Acme" in names
+        assert "Acme – Tools for makers | Blog" not in names
+        assert "Acme – Tools for makers" not in names
+
+    def test_em_dash_still_works(self):
+        """Regression guard: the original em dash separator must keep working."""
+        consistent, names = _check("Acme — Tools for makers | Blog", "Acme — Guides and tools | Blog", "Welcome")
+        assert consistent is True
+        assert "Acme" in names
+
+
+# ============================================================================
 # TEST: Negative Signals severity bands (fix #333)
 # ============================================================================
 
