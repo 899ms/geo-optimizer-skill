@@ -208,9 +208,7 @@ class TestMultiRun:
     def test_runs_multiplies_calls_and_aggregates(self):
         with patch.object(citations_mod, "query_llm") as mock_q:
             mock_q.return_value = _sonar_response("GeoReady is great.", citations=["https://geoready.dev/x"])
-            result = run_citation_check(
-                "GeoReady", "geoready.dev", provider="perplexity", api_key="pk-test", runs=4
-            )
+            result = run_citation_check("GeoReady", "geoready.dev", provider="perplexity", api_key="pk-test", runs=4)
 
         assert mock_q.call_count == 3 * 4  # 3 templates x 4 runs
         assert result.runs_per_query == 4
@@ -229,9 +227,7 @@ class TestMultiRun:
         not_cited = _sonar_response("Other tools are fine.", citations=["https://other.com"])
         with patch.object(citations_mod, "query_llm") as mock_q:
             mock_q.side_effect = [cited, not_cited, cited, not_cited] * 3
-            result = run_citation_check(
-                "GeoReady", "geoready.dev", provider="perplexity", api_key="pk-test", runs=4
-            )
+            result = run_citation_check("GeoReady", "geoready.dev", provider="perplexity", api_key="pk-test", runs=4)
 
         assert result.domain_citation_rate == 0.5
         assert result.stable is False
@@ -252,9 +248,7 @@ class TestMultiRun:
         err = LLMResponse(error="timeout", provider="perplexity")
         with patch.object(citations_mod, "query_llm") as mock_q:
             mock_q.side_effect = [ok, err, ok] * 3  # 2 of 3 runs answer per query
-            result = run_citation_check(
-                "GeoReady", "geoready.dev", provider="perplexity", api_key="pk-test", runs=3
-            )
+            result = run_citation_check("GeoReady", "geoready.dev", provider="perplexity", api_key="pk-test", runs=3)
 
         assert result.total_answers == 6  # 3 queries x 2 successful runs
         assert all(e.runs == 2 for e in result.entries)
@@ -266,9 +260,7 @@ class TestCitationsCli:
         with patch.object(citations_mod, "query_llm") as mock_q:
             mock_q.return_value = _sonar_response("GeoReady leads.", citations=["https://geoready.dev"])
             runner = CliRunner()
-            result = runner.invoke(
-                cli, ["citations", "--brand", "GeoReady", "--domain", "geoready.dev", "--runs", "5"]
-            )
+            result = runner.invoke(cli, ["citations", "--brand", "GeoReady", "--domain", "geoready.dev", "--runs", "5"])
 
         assert result.exit_code == 0
         assert "runs" in result.output
@@ -278,9 +270,7 @@ class TestCitationsCli:
     def test_cli_runs_out_of_range_rejected(self, monkeypatch):
         monkeypatch.setenv("PERPLEXITY_API_KEY", "pk-test")
         runner = CliRunner()
-        result = runner.invoke(
-            cli, ["citations", "--brand", "X", "--domain", "x.com", "--runs", "99"]
-        )
+        result = runner.invoke(cli, ["citations", "--brand", "X", "--domain", "x.com", "--runs", "99"])
         assert result.exit_code != 0
 
     def test_cli_text_output(self, monkeypatch):
@@ -370,3 +360,129 @@ class TestPerplexityProvider:
 
         assert resp.error is not None
         assert resp.provider == "perplexity"
+
+
+class TestResolveProviderSerpbase:
+    def test_explicit_serpbase_uses_its_own_env_key(self, monkeypatch):
+        """serpbase is resolved only when explicitly requested — SERPBASE_API_KEY
+        is never part of the default auto-detection chain (#527)."""
+        monkeypatch.setenv("SERPBASE_API_KEY", "sb-test")
+        provider, key = citations_mod.resolve_provider("serpbase")
+        assert (provider, key) == ("serpbase", "sb-test")
+
+    def test_explicit_serpbase_without_key(self, monkeypatch):
+        monkeypatch.delenv("SERPBASE_API_KEY", raising=False)
+        provider, key = citations_mod.resolve_provider("serpbase")
+        assert provider == "serpbase" and key is None
+
+    def test_serpbase_never_auto_detected(self, monkeypatch):
+        """Setting SERPBASE_API_KEY alone (no explicit --provider serpbase)
+        must not change the default auto-detection outcome."""
+        monkeypatch.setenv("SERPBASE_API_KEY", "sb-test")
+        monkeypatch.delenv("PERPLEXITY_API_KEY", raising=False)
+        monkeypatch.delenv("GEO_LLM_PROVIDER", raising=False)
+        monkeypatch.delenv("GEO_LLM_API_KEY", raising=False)
+        for var in (
+            "OPENAI_API_KEY",
+            "ANTHROPIC_API_KEY",
+            "GROQ_API_KEY",
+            "MINIMAX_API_KEY",
+            "GEMINI_API_KEY",
+            "DEEPSEEK_API_KEY",
+        ):
+            monkeypatch.delenv(var, raising=False)
+        provider, key = citations_mod.resolve_provider()
+        assert provider is None and key is None
+
+
+def _serp(organic=None, ai_overview_text="", ai_overview_sources=None, ai_overview_present=False, error=None):
+    from geo_optimizer.core.serp_provider import SerpResponse
+
+    return SerpResponse(
+        organic=organic or [],
+        ai_overview_present=ai_overview_present,
+        ai_overview_text=ai_overview_text,
+        ai_overview_sources=ai_overview_sources or [],
+        error=error,
+    )
+
+
+class TestRunCitationCheckServpbase:
+    """run_citation_check(provider="serpbase", ...) — Google SERP + AI Overview (#527)."""
+
+    def test_domain_cited_via_organic_results(self):
+        from geo_optimizer.core.serp_provider import SerpResult
+
+        with patch("geo_optimizer.core.serp_provider.query_serpbase") as mock_q:
+            mock_q.return_value = _serp(
+                organic=[
+                    SerpResult(title="Acme Home", url="https://acme.com/", snippet="Acme is a CRM"),
+                    SerpResult(title="Other", url="https://other.com/", snippet="unrelated"),
+                ]
+            )
+            result = run_citation_check(
+                "Acme", "acme.com", queries=["best CRM"], provider="serpbase", api_key="sb-test"
+            )
+
+        assert result.checked and result.skipped_reason is None
+        assert result.domain_citation_rate == 1.0
+        assert result.brand_mention_rate == 1.0
+        assert result.entries[0].platform == "google_serp"
+        assert result.entries[0].model == ""
+        assert result.runs_per_query == 1
+        assert result.stable is False
+
+    def test_domain_cited_via_ai_overview_source_only(self):
+        """Brand/domain appear only inside the AI Overview, not the organic list."""
+        with patch("geo_optimizer.core.serp_provider.query_serpbase") as mock_q:
+            mock_q.return_value = _serp(
+                ai_overview_present=True,
+                ai_overview_text="Acme is a popular CRM for startups.",
+                ai_overview_sources=["https://acme.com/pricing"],
+            )
+            result = run_citation_check(
+                "Acme", "acme.com", queries=["best CRM"], provider="serpbase", api_key="sb-test"
+            )
+
+        assert result.domain_citation_rate == 1.0
+        assert result.brand_mention_rate == 1.0
+        assert result.entries[0].model == "ai_overview"
+
+    def test_invisible_when_neither_organic_nor_overview_mention_brand(self):
+        from geo_optimizer.core.serp_provider import SerpResult
+
+        with patch("geo_optimizer.core.serp_provider.query_serpbase") as mock_q:
+            mock_q.return_value = _serp(
+                organic=[SerpResult(title="CompetitorX", url="https://competitorx.com/", snippet="x")]
+            )
+            result = run_citation_check(
+                "Acme", "acme.com", queries=["best CRM"], provider="serpbase", api_key="sb-test"
+            )
+
+        assert result.verdict == "invisible"
+        assert ("competitorx.com", 1) in result.top_cited_domains
+
+    def test_query_error_recorded_and_skips_that_query(self):
+        with patch("geo_optimizer.core.serp_provider.query_serpbase") as mock_q:
+            mock_q.return_value = _serp(error="ConnectionError: down")
+            result = run_citation_check(
+                "Acme", "acme.com", queries=["best CRM"], provider="serpbase", api_key="sb-test"
+            )
+
+        assert result.skipped_reason is not None
+        assert "down" in result.skipped_reason
+
+    def test_runs_parameter_is_not_multiplied_for_serpbase(self):
+        """Unlike LLM providers, --runs must not multiply serpbase calls —
+        a SERP snapshot isn't resampled the way a non-deterministic LLM
+        answer is, and doing so would burn through the paid API for nothing."""
+        from geo_optimizer.core.serp_provider import SerpResult
+
+        with patch("geo_optimizer.core.serp_provider.query_serpbase") as mock_q:
+            mock_q.return_value = _serp(organic=[SerpResult(title="Acme", url="https://acme.com/", snippet="x")])
+            result = run_citation_check(
+                "Acme", "acme.com", queries=["best CRM"], provider="serpbase", api_key="sb-test", runs=5
+            )
+
+        assert mock_q.call_count == 1  # one query in query_list, runs=5 ignored
+        assert result.runs_per_query == 1
