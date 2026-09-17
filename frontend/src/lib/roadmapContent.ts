@@ -19,7 +19,7 @@ export const roadmapPhases: RoadmapPhase[] = [
   {
     id: 'current',
     label: 'Current Foundation',
-    subtitle: 'What exists today in v4.17.x',
+    subtitle: 'What exists today in v4.18.x',
     statusColor: 'border-accent-success',
     items: [
       {
@@ -110,6 +110,12 @@ export const roadmapPhases: RoadmapPhase[] = [
         id: 'server-logs',
         title: 'AI Crawler Activity Analytics',
         description: 'Detect AI crawler activity from access logs (OAI-SearchBot, ClaudeBot, PerplexityBot). Available via `geo logs` CLI command and `POST /api/logs/analyze`.',
+        status: 'available',
+      },
+      {
+        id: 'citation-check',
+        title: 'AI Citation Check',
+        description: '`geo citations` asks real answer engines (Perplexity, OpenAI, Anthropic, Gemini, DeepSeek, MiniMax) customer-style questions and reports brand mentions / domain citations, with `--runs N` sampling for a 95% confidence interval, plus an optional Google SERP + AI Overview source via serpbase.dev.',
         status: 'available',
       },
     ],
@@ -292,5 +298,7 @@ export const releaseCadence = [
   { version: 'v4.16.4', name: 'Ground Truth (patch)', status: 'available' as RoadmapStatus },
   { version: 'v4.17.0', name: 'Parallax', status: 'available' as RoadmapStatus },
   { version: 'v4.17.1', name: 'Parallax (patch)', status: 'available' as RoadmapStatus },
+  { version: 'v4.18.0', name: 'Quorum', status: 'available' as RoadmapStatus },
+  { version: 'v4.18.1', name: 'Quorum (patch)', status: 'available' as RoadmapStatus },
   { version: 'v5.0.0', name: 'Black Archive', status: 'exploring' as RoadmapStatus },
 ];
