@@ -8,6 +8,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 ## [Unreleased]
 
 ### Fixed
+- **The About-link check missed single-page sites entirely.** `ABOUT_LINK_PATTERNS` in `models/config.py` only listed `/`-prefixed URL paths (`/about`, `/chi-siamo`, `/team`, ...), so a single-page marketing site — which has no dedicated About URL, only a same-page section like `<a href="#about">About</a>` — always failed the check, even with a permanently visible About link in its nav. Added the `#`-prefixed anchor equivalent of every existing pattern; the substring match already in place picks these up with no other code changes needed.
 - **Organization schema went unrecognized on every LocalBusiness site.** `audit_schema.py` and `audit_brand.py` both matched the JSON-LD `@type` against the literal string `"Organization"` only, so a node typed `"LocalBusiness"` — schema.org's own recommended, more specific type for exactly the small-business audience this tool targets — scored as having no Organization schema at all, and its `telephone`/`email`/`address`/`contactPoint` fields were never credited toward `has_contact_info`, even when present. Same fix shape as `ARTICLE_TYPES`/#392: a new `ORGANIZATION_TYPES` frozenset in `models/config.py` covers `LocalBusiness` plus ~25 of its and Organization's own common subtypes (`Restaurant`, `Store`, `ProfessionalService`, `Dentist`, `Attorney`, etc.), and both checks now match against it instead of the bare string.
 
 ---
