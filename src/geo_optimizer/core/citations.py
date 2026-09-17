@@ -12,6 +12,7 @@ Bring-your-own-API-key: set PERPLEXITY_API_KEY (or OPENAI_API_KEY, ...).
 
 from __future__ import annotations
 
+import logging
 import re
 from collections import Counter
 from urllib.parse import urlparse
@@ -19,6 +20,8 @@ from urllib.parse import urlparse
 from geo_optimizer.core.llm_client import _PROVIDER_ENV_KEYS, detect_provider, query_llm
 from geo_optimizer.models.results import CitationCheckEntry, CitationCheckResult
 from geo_optimizer.utils.brand_match import brand_pattern
+
+logger = logging.getLogger(__name__)
 
 _QUERY_TEMPLATES = [
     "What is the best tool for {topic}?",
@@ -88,8 +91,16 @@ def resolve_provider(provider: str | None = None) -> tuple[str | None, str | Non
     Explicit provider wins (key from its env var); otherwise prefer
     Perplexity when its key is set (real web citations), falling back to
     the standard auto-detection chain.
+
+    "serpbase" (Google SERP + AI Overview observation, #527) is resolved
+    only when explicitly requested — it is never part of the default
+    auto-detection chain, since it observes Google directly rather than
+    asking an LLM, and is a paid API past its 100 free searches.
     """
     import os
+
+    if provider == "serpbase":
+        return "serpbase", os.environ.get("SERPBASE_API_KEY") or None
 
     if provider:
         key = os.environ.get("GEO_LLM_API_KEY", "") or os.environ.get(_PROVIDER_ENV_KEYS.get(provider, ""), "")
@@ -142,13 +153,17 @@ def run_citation_check(
             skipped_reason=(
                 "No AI provider configured. Set PERPLEXITY_API_KEY (recommended: real web citations) "
                 "or OPENAI_API_KEY / ANTHROPIC_API_KEY / GROQ_API_KEY / MINIMAX_API_KEY / "
-                "GEMINI_API_KEY / DEEPSEEK_API_KEY."
+                "GEMINI_API_KEY / DEEPSEEK_API_KEY / SERPBASE_API_KEY (Google SERP + AI Overview)."
             ),
             brand=brand,
             domain=domain,
         )
 
     brand_matcher = brand_pattern(brand)
+
+    if provider == "serpbase":
+        return _run_serpbase_citation_check(brand, domain, query_list, api_key, brand_matcher)
+
     entries: list[CitationCheckEntry] = []
     other_domains: Counter[str] = Counter()
     queries_answered = 0
@@ -249,6 +264,111 @@ def run_citation_check(
         brand_mention_rate_ci=mention_ci,
         domain_citation_rate_ci=citation_ci,
         stable=stable,
+        top_cited_domains=other_domains.most_common(5),
+        verdict=_verdict(citation_rate, mention_rate),
+    )
+
+
+def _run_serpbase_citation_check(
+    brand: str,
+    domain: str,
+    query_list: list[str],
+    api_key: str,
+    brand_matcher: re.Pattern,
+) -> CitationCheckResult:
+    """Google SERP-based citation check via serpbase.dev (#527).
+
+    Observes the organic results and AI Overview (when Google renders one)
+    directly, instead of asking an LLM. Each query is a single live SERP
+    snapshot: `--runs` sampling doesn't apply here the way it does to a
+    non-deterministic LLM answer — resampling the same SERP would just
+    multiply paid serpbase calls for no corresponding benefit, so every
+    entry reports `runs=1` and the aggregate has no confidence interval
+    (`stable` stays False, same as a one-run LLM check).
+    """
+    from geo_optimizer.core.serp_provider import query_serpbase
+
+    entries: list[CitationCheckEntry] = []
+    other_domains: Counter[str] = Counter()
+    queries_answered = 0
+    mentioned_count = 0
+    cited_count = 0
+    ai_overview_seen = 0
+
+    for query_text in query_list:
+        response = query_serpbase(query_text, api_key=api_key)
+        if response.error:
+            entries.append(CitationCheckEntry(query=query_text, platform="google_serp", runs=1, error=response.error))
+            continue
+
+        if response.ai_overview_present:
+            ai_overview_seen += 1
+
+        source_urls = [r.url for r in response.organic if r.url] + list(response.ai_overview_sources)
+        all_domains = list(dict.fromkeys(normalize_domain(u) for u in source_urls if u))
+
+        haystack = " ".join([f"{r.title} {r.snippet}" for r in response.organic] + [response.ai_overview_text])
+        mentioned = bool(brand_matcher.search(haystack))
+        cited = domain in all_domains
+
+        queries_answered += 1
+        mentioned_count += int(mentioned)
+        cited_count += int(cited)
+        for d in all_domains:
+            if d != domain:
+                other_domains[d] += 1
+
+        snippet = response.ai_overview_text[:_SNIPPET_LEN] or (
+            response.organic[0].snippet[:_SNIPPET_LEN] if response.organic else ""
+        )
+        entries.append(
+            CitationCheckEntry(
+                query=query_text,
+                platform="google_serp",
+                model="ai_overview" if response.ai_overview_present else "",
+                runs=1,
+                mention_runs=int(mentioned),
+                citation_runs=int(cited),
+                brand_mentioned=mentioned,
+                domain_cited=cited,
+                cited_sources=source_urls[:10],
+                snippet=snippet,
+            )
+        )
+
+    # Coverage-measurement hook (#527): how often the ai_overview block
+    # actually surfaces is undocumented and query-dependent, so this is
+    # logged rather than asserted or exposed as a scoring signal.
+    if query_list:
+        logger.info("serpbase: AI Overview present in %d/%d queries", ai_overview_seen, len(query_list))
+
+    if queries_answered == 0:
+        first_error = next((e.error for e in entries if e.error), "all queries failed")
+        return CitationCheckResult(
+            checked=True,
+            skipped_reason=f"Provider 'google_serp' returned no answers ({first_error})",
+            brand=brand,
+            domain=domain,
+            entries=entries,
+            runs_per_query=1,
+        )
+
+    mention_rate = round(mentioned_count / queries_answered, 2)
+    citation_rate = round(cited_count / queries_answered, 2)
+
+    return CitationCheckResult(
+        checked=True,
+        brand=brand,
+        domain=domain,
+        entries=entries,
+        queries_run=queries_answered,
+        runs_per_query=1,
+        total_answers=queries_answered,
+        brand_mention_rate=mention_rate,
+        domain_citation_rate=citation_rate,
+        brand_mention_rate_ci=(mention_rate, mention_rate),
+        domain_citation_rate_ci=(citation_rate, citation_rate),
+        stable=False,
         top_cited_domains=other_domains.most_common(5),
         verdict=_verdict(citation_rate, mention_rate),
     )

@@ -103,9 +103,13 @@ def _format_text(result) -> str:
 )
 @click.option(
     "--provider",
-    type=click.Choice(["perplexity", "openai", "anthropic", "groq", "minimax", "gemini", "deepseek"]),
+    type=click.Choice(["perplexity", "openai", "anthropic", "groq", "minimax", "gemini", "deepseek", "serpbase"]),
     default=None,
-    help="AI provider (default: perplexity if PERPLEXITY_API_KEY is set, else auto-detect)",
+    help=(
+        "AI provider (default: perplexity if PERPLEXITY_API_KEY is set, else auto-detect). "
+        "'serpbase' observes the real Google SERP + AI Overview instead of asking an LLM "
+        "(requires SERPBASE_API_KEY, never auto-detected — must be passed explicitly)."
+    ),
 )
 @click.option(
     "--format",
@@ -132,6 +136,7 @@ def citations(brand, domain, topic, queries, runs, provider, output_format, outp
     Examples:
       geo citations --brand "GeoReady" --domain geoready.dev --topic "GEO audit tools"
       geo citations --brand "Acme" --domain acme.com --query "best CRM for startups" --runs 5
+      geo citations --brand "Acme" --domain acme.com --provider serpbase  # Google SERP + AI Overview
     """
     resolved_provider, resolved_key = resolve_provider(provider)
     if not resolved_provider or not resolved_key:
@@ -139,7 +144,9 @@ def citations(brand, domain, topic, queries, runs, provider, output_format, outp
             "\n❌ No AI provider configured.\n"
             "   Set PERPLEXITY_API_KEY (recommended: real web citations from Sonar)\n"
             "   or OPENAI_API_KEY / ANTHROPIC_API_KEY / GROQ_API_KEY / MINIMAX_API_KEY /\n"
-            "   GEMINI_API_KEY / DEEPSEEK_API_KEY.",
+            "   GEMINI_API_KEY / DEEPSEEK_API_KEY.\n"
+            "   Or set SERPBASE_API_KEY and pass --provider serpbase to observe the real\n"
+            "   Google SERP + AI Overview instead of asking an LLM.",
             err=True,
         )
         sys.exit(1)

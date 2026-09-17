@@ -171,6 +171,16 @@ geo schema --type faq --url https://yoursite.com
 regional API roots and dual wire formats, and DeepSeek's coverage of the Chinese AI
 answer-engine ecosystem. Full setup for each: [docs/llm-providers.md](docs/llm-providers.md).
 
+Google AI Overviews isn't an LLM you can prompt — it's a SERP feature — so `--provider serpbase`
+observes the real Google SERP directly (organic results + the AI Overview block, when Google
+renders one) via [serpbase.dev](https://serpbase.dev/docs) instead of inferring it through a
+Gemini API key. Opt-in, bring-your-own-key: 100 free searches, then $0.30/1k.
+
+```bash
+export SERPBASE_API_KEY=...
+geo citations --brand "YourBrand" --domain yoursite.com --provider serpbase
+```
+
 ---
 
 ## What it checks

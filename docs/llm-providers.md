@@ -72,3 +72,34 @@ geo citations --provider deepseek --brand "YourBrand" --domain yoursite.com
 
 Fully OpenAI-compatible wire format against `api.deepseek.com`. Default model
 `deepseek-v4-flash`; set `GEO_LLM_MODEL=deepseek-v4-pro` for the higher-capability tier.
+
+---
+
+## SerpBase (Google SERP + AI Overview)
+
+Google AI Overviews isn't an LLM you can query — it's a SERP feature — so `--provider serpbase`
+takes a different path from every other provider on this page: instead of asking a model a
+question, it runs a real Google search via [serpbase.dev](https://serpbase.dev/docs) and checks
+whether your brand appears in the organic results or the AI Overview block (when Google renders
+one for the query), and whether your domain is among the cited sources.
+
+```bash
+export SERPBASE_API_KEY="your-api-key"
+geo citations --provider serpbase --brand "YourBrand" --domain yoursite.com
+```
+
+Bring-your-own-key, pay-as-you-go: 100 free searches, then $0.30/1k
+([pricing](https://serpbase.dev)). Never auto-detected — `SERPBASE_API_KEY` alone does nothing
+unless `--provider serpbase` is passed explicitly, since it's a different kind of check (SERP
+observation, not an LLM answer) and a paid one past the free tier.
+
+Two things this provider does differently from the rest:
+
+- **`--runs` is ignored.** A Google SERP isn't resampled the way a non-deterministic LLM answer
+  is — asking again immediately would mostly return the same page, just at the cost of another
+  API call. Every check is a single live snapshot per query.
+- **The AI Overview block isn't always present.** Google only renders one for some queries, and
+  serpbase's docs don't publish its internal field schema, so `ai_overview` is parsed
+  defensively — a query without one still runs the citation check against the organic results,
+  it just won't have an AI Overview signal to add. How often it actually surfaces is logged
+  (`serpbase: AI Overview present in N/M queries`) rather than promised.
