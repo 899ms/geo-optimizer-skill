@@ -707,7 +707,7 @@ async def stats():
             ),
             asyncio.to_thread(
                 _fetch_json,
-                "https://pypistats.org/api/packages/geo-optimizer-skill/system?mirrors=false",
+                "https://pypistats.org/api/packages/geo-optimizer-skill/recent",
             ),
             _maybe_fetch_stats(),
         )
@@ -718,12 +718,12 @@ async def stats():
             result["github_stars"] = 13  # Fallback: last known value
 
         if pypi_data:
-            downloads = sum(
-                item.get("downloads", 0)
-                for item in pypi_data.get("data", [])
-                if item.get("category") not in (None, "null")
-            )
-            result["pypi_downloads_month"] = downloads
+            # The /recent endpoint already reports last_day/last_week/last_month.
+            # The previous implementation summed the /system endpoint, which breaks
+            # downloads down by OS over the package's whole history: the figure was
+            # a lifetime cumulative (~74k) published under a "downloads/mo" label.
+            data = pypi_data.get("data") or {}
+            result["pypi_downloads_month"] = data.get("last_month", 0)
 
         if geo_stats and "stats" in geo_stats:
             result["audits_run"] = geo_stats["stats"].get("audits", 0)

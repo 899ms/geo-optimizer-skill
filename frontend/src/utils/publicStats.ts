@@ -4,8 +4,9 @@
 //
 // Il caso era peggiore del benchmark. StatsBar caricava i contatori via JS con un
 // fallback statico fermo al 2026-07-15, quindi l'HTML servito a un LLM dichiarava
-// 587 stelle e 5.134 download al mese contro i 767 e 71.997 reali: la prova sociale
-// del progetto sottodichiarata di 14 volte proprio nel punto in cui viene citata.
+// numeri molto più bassi di quelli dell'endpoint proprio nel punto in cui vengono
+// citati. (Nota storica: il divario "di 14 volte" citato in origine confrontava con
+// il contatore download difettoso — vedi STATS_FALLBACK sotto.)
 //
 // I valori restano aggiornati anche lato client: StatsBar continua a fare il suo fetch
 // dopo l'idratazione e sovrascrive quelli del build. Questo serve al crawler, non al
@@ -22,12 +23,18 @@ export interface PublicStats {
   audits_run: number;
 }
 
-// Ultima lettura verificata a mano (2026-09-04, endpoint in produzione). Da aggiornare
+// Ultima lettura verificata a mano (2026-09-18, endpoint in produzione). Da aggiornare
 // quando si tocca questo file: è ciò che vede un crawler se il fetch fallisce.
+//
+// ATTENZIONE al confronto con i valori precedenti (71.997 il 2026-09-04): quel numero
+// NON era mensile. L'endpoint sommava pypistats /system, cioè i download per sistema
+// operativo sull'intera storia del pacchetto, e il sito lo pubblicava come
+// "downloads/mo". Ora /api/stats usa /recent → last_month, quindi il valore corretto è
+// un ordine di grandezza più basso. Non è una regressione: prima era sovradichiarato.
 export const STATS_FALLBACK: PublicStats = {
-  github_stars: 767,
-  pypi_downloads_month: 71997,
-  audits_run: 1912,
+  github_stars: 831,
+  pypi_downloads_month: 5690,
+  audits_run: 2006,
 };
 
 export async function getPublicStats(): Promise<{ stats: PublicStats; isLive: boolean }> {

@@ -25,7 +25,10 @@ interface StatsBarProps {
 }
 
 // Usato solo se la pagina non passa nulla (nessun chiamante oggi lo fa).
-const FALLBACK: Stats = { github_stars: 767, pypi_downloads_month: 71997, audits_run: 1912 };
+// Shown only until /api/stats answers. pypi_downloads_month is now genuinely
+// monthly (pypistats /recent), so this value is an order of magnitude lower than
+// the old one, which was a lifetime cumulative mislabelled as monthly.
+const FALLBACK: Stats = { github_stars: 831, pypi_downloads_month: 5690, audits_run: 2006 };
 
 export default function StatsBar({ initial, initialIsLive = false, variant = 'default' }: StatsBarProps) {
   const [stats, setStats] = useState<Stats>(initial ?? FALLBACK);
