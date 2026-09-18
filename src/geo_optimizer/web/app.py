@@ -21,7 +21,7 @@ import os
 import re
 import secrets
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
 from urllib.parse import urlsplit
@@ -707,7 +707,7 @@ async def stats():
             ),
             asyncio.to_thread(
                 _fetch_json,
-                "https://pypistats.org/api/packages/geo-optimizer-skill/recent",
+                "https://pypistats.org/api/packages/geo-optimizer-skill/overall?mirrors=false",
             ),
             _maybe_fetch_stats(),
         )
@@ -717,13 +717,29 @@ async def stats():
         else:
             result["github_stars"] = 13  # Fallback: last known value
 
+        # Monthly downloads: sum the last 30 days of the /overall daily series.
+        #
+        # Two earlier attempts were wrong, both worth recording:
+        #   - /system summed downloads per operating system over the package's WHOLE
+        #     history, so the site published a lifetime cumulative (~74k) under a
+        #     "downloads/mo" label — an overstatement of roughly 13x.
+        #   - /recent reports last_month directly, but pypistats rate-limits that
+        #     endpoint: it answers 429 while /system and /overall answer 200, so the
+        #     field silently fell back to 0 in production.
         if pypi_data:
-            # The /recent endpoint already reports last_day/last_week/last_month.
-            # The previous implementation summed the /system endpoint, which breaks
-            # downloads down by OS over the package's whole history: the figure was
-            # a lifetime cumulative (~74k) published under a "downloads/mo" label.
-            data = pypi_data.get("data") or {}
-            result["pypi_downloads_month"] = data.get("last_month", 0)
+            cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
+            rows = pypi_data.get("data") or []
+            result["pypi_downloads_month"] = sum(
+                row.get("downloads", 0)
+                for row in rows
+                if isinstance(row, dict) and str(row.get("date", "")) >= cutoff
+            )
+
+        # Never publish a zero: a counter at 0 reads as "nobody uses this" and is worse
+        # than a value a few hours old. Reuse the last good reading when the upstream
+        # fetch fails (429, timeout), even if the cache entry has expired.
+        if not result["pypi_downloads_month"] and cached:
+            result["pypi_downloads_month"] = cached["data"].get("pypi_downloads_month", 0)
 
         if geo_stats and "stats" in geo_stats:
             result["audits_run"] = geo_stats["stats"].get("audits", 0)

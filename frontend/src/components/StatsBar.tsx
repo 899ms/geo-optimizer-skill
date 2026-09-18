@@ -38,7 +38,10 @@ export default function StatsBar({ initial, initialIsLive = false, variant = 'de
     fetch(buildApiUrl('/stats'))
       .then((r) => r.json())
       .then((data: Stats) => {
-        if (data.github_stars > 0) {
+        // All or nothing, same rule as utils/publicStats.ts: the endpoint returns 0
+        // for any counter it could not fetch, and a 0 on screen reads as "nobody uses
+        // this" — worse than the build-time value from a few hours earlier.
+        if (data.github_stars > 0 && data.pypi_downloads_month > 0 && data.audits_run > 0) {
           setStats(data);
           setLive(true);
         }
