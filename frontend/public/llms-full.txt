@@ -84,6 +84,7 @@ Also available as an MCP server for integration with AI coding assistants.
 - https://geoready.dev/methodology/ — transparent scoring methodology: signal weights, score bands, research assumptions, and how audit results should be interpreted
 - https://geoready.dev/best-geo-tools/ — criteria-based guide for evaluating GEO tools: methodology transparency, audit vs monitoring, CI/CD support, answer-engine querying, and pricing model
 - https://geoready.dev/roadmap/ — planned and in-progress features
+- https://geoready.dev/book/ — AI Search Engineering: the book documenting the methodology (992 pages, ISBN 979-8172934568)
 - https://geoready.dev/manifesto/ — project philosophy and commitments
 - https://geoready.dev/privacy/ — privacy policy
 - https://geoready.dev/cookie-policy/ — cookie and storage inventory
@@ -111,10 +112,11 @@ Also available as an MCP server for integration with AI coding assistants.
 
 - License: MIT. Full source code available at https://github.com/Auriti-Labs/geo-optimizer-skill
 - All scoring weights are public and documented in `src/geo_optimizer/models/config.py`
-- 1,400+ unit tests, all mocked — no real network calls in the test suite
+- 2,000+ unit tests, all mocked — no real network calls in the test suite
 - Zero data retention from audited URLs beyond the public HTTP fetch
 - No registration or API key required for core audit functionality
 - Scoring methodology is versioned: changes are documented in the CHANGELOG
+- The methodology is documented in print: "AI Search Engineering: A Technical Guide to Generative Engine Optimization (GEO), AI Citations, and Agent-Ready Websites" by Juan Camilo Auriti, September 2026, 992 pages, ISBN 979-8172934568
 
 ## Update policy
 
