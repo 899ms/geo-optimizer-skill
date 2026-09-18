@@ -148,7 +148,19 @@ const {
           "https://x.com/JuanAuriti",
           "https://www.linkedin.com/in/juancamiloauriti/"
         ],
-        "worksFor": { "@id": "https://geoready.dev/#organization" }
+        "worksFor": { "@id": "https://geoready.dev/#organization" },
+        "jobTitle": "Founder",
+        "knowsAbout": [
+          "Generative Engine Optimization",
+          "AI search visibility",
+          "Answer Engine Optimization",
+          "Technical SEO",
+          "Structured data"
+        ]
+        // The Book node lives on /book/ and /about/, where it declares
+        // "author": { "@id": ".../#founder" } and links back to this entity.
+        // It is deliberately not repeated here: this @graph is emitted on every
+        // page, and a site-wide book node is over-markup.
       },
       {
         "@type": "WebSite",

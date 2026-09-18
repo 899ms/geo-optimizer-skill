@@ -91,6 +91,7 @@ The GEO Optimizer engine is actively maintained. Scoring weights and audit metho
 
 - [Audit](https://geoready.dev/): Run a GEO audit on any URL — free, no account required.
 - [About](https://geoready.dev/about/): Who builds GeoReady and GEO Optimizer — Auriti Labs.
+- [Book: AI Search Engineering](https://geoready.dev/book/): 992-page technical guide to Generative Engine Optimization, AI citations, and agent-ready websites by Juan Camilo Auriti (ISBN 979-8172934568, September 2026). Documents the methodology the audit engine implements.
 - [AI SEO Guide](https://geoready.dev/ai-seo/): What AI SEO is, how it differs from traditional SEO, and how to audit a site for visibility in ChatGPT, Perplexity, Claude, and Gemini.
 - [Free AI SEO Audit](https://geoready.dev/ai-seo-audit/): High-intent audit landing page with a no-account form for checking crawler access, llms.txt, schema, content quality, AI discovery, and entity signals.
 - [AI SEO Audit for SaaS](https://geoready.dev/ai-seo-audit-for-saas/): Audit landing page for SaaS product, comparison, pricing, and docs pages — crawl access, schema, llms.txt, content citability, and entity signals.

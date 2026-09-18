@@ -1,5 +1,6 @@
 ---
 import Shell from '../components/Shell.astro';
+import { BOOK } from '../lib/bookData';
 ---
 
 <Shell
@@ -140,6 +141,18 @@ import Shell from '../components/Shell.astro';
           </div>
         </section>
 
+        {/* The book */}
+        <section class="border-t border-rail pt-10">
+          <h2 class="mb-4 font-head text-2xl font-extrabold tracking-[-0.02em] md:text-3xl">The book</h2>
+          <p class="max-w-3xl text-sm leading-relaxed text-ink-soft">
+            The methodology behind these tools is documented in full in
+            <a href="/book/" class="text-pass-deep underline decoration-rail underline-offset-4 transition-colors hover:decoration-pass-deep">AI Search Engineering</a>
+            — a 992-page technical guide to Generative Engine Optimization, AI citations, and
+            agent-ready websites, written by Juan Camilo Auriti and published in September 2026
+            (ISBN 979-8172934568). The book explains the reasoning; the open-source engine runs it.
+          </p>
+        </section>
+
         {/* Built in Italy */}
         <section class="border-t border-rail pt-10">
           <h2 class="mb-4 font-head text-2xl font-extrabold tracking-[-0.02em] md:text-3xl">Built in Italy. Designed for the global web.</h2>
@@ -169,6 +182,15 @@ import Shell from '../components/Shell.astro';
     "name": "About Auriti Labs",
     "url": "https://geoready.dev/about/",
     "description": "Auriti Labs builds open-source tools for AI search visibility and Generative Engine Optimization. Products: GEO Optimizer (open-source audit engine) and GeoReady (commercial monitoring platform).",
+    // Same @id as the full Book node on /book/, so consumers merge the two
+    // instead of seeing two books. ISBN and page count are declared once, there.
+    "mentions": {
+      "@type": "Book",
+      "@id": "https://geoready.dev/book/#book",
+      "name": BOOK.title,
+      "url": "https://geoready.dev/book/",
+      "author": { "@id": "https://geoready.dev/#founder" }
+    },
     "author": {
       "@type": "Organization",
       "name": "Auriti Labs",
