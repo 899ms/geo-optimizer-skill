@@ -124,6 +124,7 @@ const META_BY_PATH = {
   '/research/': { changefreq: 'monthly', priority: '0.7' },
   '/roadmap/': { changefreq: 'monthly', priority: '0.7' },
   '/about/': { changefreq: 'monthly', priority: '0.8' },
+  '/book/': { changefreq: 'monthly', priority: '0.7' },
   '/guides/': { changefreq: 'weekly', priority: '0.8' },
   '/state-of-geo/': { changefreq: 'daily', priority: '0.8' },
   '/tools/llms-txt-generator/': { changefreq: 'monthly', priority: '0.8' },

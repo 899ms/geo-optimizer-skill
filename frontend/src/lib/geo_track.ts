@@ -286,3 +286,17 @@ export function trackCitationCheckerFailed(params: {
 }): void {
   track('geo_citation_checker_failed', params);
 }
+
+/** Click on an outbound book link (Amazon).
+ *
+ *  This is the only book metric we can actually measure ourselves: it counts
+ *  people leaving for the store, NOT purchases. Sales attribution lives in
+ *  Amazon Associates / Attribution — see `bookData.ts`.
+ *
+ *  `surface` says which page produced the click, `format` which edition. */
+export function trackBookLinkClicked(params: {
+  surface: string;
+  format: 'kindle' | 'paperback';
+}): void {
+  track('geo_book_link_clicked', params);
+}
