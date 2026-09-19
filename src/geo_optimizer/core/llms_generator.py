@@ -24,7 +24,6 @@ from geo_optimizer.models.config import (
     OPTIONAL_CATEGORIES,
     SECTION_PRIORITY_ORDER,
     SKIP_PATTERNS,
-    get_headers,
 )
 from geo_optimizer.models.results import LlmsDriftResult, SitemapUrl
 from geo_optimizer.utils.http import MAX_RESPONSE_SIZE, create_session_with_retry, fetch_url
@@ -116,25 +115,25 @@ def fetch_sitemap(
         session = create_session_with_retry(pinned_ips=pinned_ips)
 
     try:
-        # stream=True: the body is downloaded in chunks so the size check
-        # below can abort mid-download, instead of requests.Session buffering
-        # the entire response into r.content before any check runs (the
-        # non-streamed call previously here had no real DoS protection —
-        # every other network call in this codebase streams for this reason;
-        # see utils.http.fetch_url).
-        r = session.get(sitemap_url, headers=get_headers(), timeout=15, stream=True)
-        r.raise_for_status()
+        # Anti-SSRF: use the shared fetch_url which does DNS pinning + manual
+        # redirect revalidation on every hop. allow_redirects must never be
+        # left to requests' default (True) here — redirects to internal
+        # networks would otherwise be followed unvalidated (open-redirect SSRF).
+        response, fetch_err = fetch_url(sitemap_url, timeout=15, max_size=MAX_RESPONSE_SIZE)
+        if fetch_err is not None or response is None:
+            raise requests.exceptions.RequestException(fetch_err or "Failed to fetch sitemap")
 
         body = bytearray()
-        for chunk in r.iter_content(chunk_size=8192):
+        for chunk in response.iter_content(chunk_size=8192):
             body.extend(chunk)
             if len(body) > MAX_RESPONSE_SIZE:
-                r.close()
+                response.close()
                 logger.warning("Sitemap too large (>%d bytes), aborting download: %s", MAX_RESPONSE_SIZE, sitemap_url)
                 if on_status:
                     on_status(f"Sitemap too large, aborting: {sitemap_url}")
                 return urls
         sitemap_body = bytes(body)
+        response.close()
     except requests.exceptions.Timeout:
         logger.warning("Sitemap timeout: %s", sitemap_url)
         if on_status:
@@ -540,53 +539,41 @@ def _discover_sitemap_inner(
     base_domain = parsed_base.netloc
     robots_url = urljoin(base_url, "/robots.txt")
     try:
-        r = session.get(robots_url, headers=get_headers(), timeout=5)
-        for line in r.text.splitlines():
-            if line.lower().startswith("sitemap:"):
-                sitemap_url = line.split(":", 1)[1].strip()
-                # Anti-SSRF: URL must belong to the same domain
-                if not url_belongs_to_domain(sitemap_url, base_domain):
-                    logger.warning("External sitemap URL ignored: %s", sitemap_url)
-                    continue
-                safe, reason = validate_public_url(sitemap_url)
-                if not safe:
-                    logger.warning("Unsafe sitemap URL ignored: %s (%s)", sitemap_url, reason)
-                    continue
-                logger.info("Sitemap found in robots.txt: %s", sitemap_url)
-                if on_status:
-                    on_status(f"Sitemap found in robots.txt: {sitemap_url}")
-                return sitemap_url
+        resp, err = fetch_url(robots_url, timeout=5, max_size=MAX_RESPONSE_SIZE)
+        if err is not None or resp is None:
+            logger.debug("robots.txt fetch failed for %s: %s", robots_url, err)
+        else:
+            text = resp.text
+            for line in text.splitlines():
+                if line.lower().startswith("sitemap:"):
+                    sitemap_url = line.split(":", 1)[1].strip()
+                    # Anti-SSRF: URL must belong to the same domain
+                    if not url_belongs_to_domain(sitemap_url, base_domain):
+                        logger.warning("External sitemap URL ignored: %s", sitemap_url)
+                        continue
+                    safe, reason = validate_public_url(sitemap_url)
+                    if not safe:
+                        logger.warning("Unsafe sitemap URL ignored: %s (%s)", sitemap_url, reason)
+                        continue
+                    logger.info("Sitemap found in robots.txt: %s", sitemap_url)
+                    if on_status:
+                        on_status(f"Sitemap found in robots.txt: {sitemap_url}")
+                    return sitemap_url
     except Exception:
         pass
 
-    # Try common paths: HEAD first, fallback GET if 405/timeout (#115)
+    # Try common paths (GET only; fetch_url revalidates redirects for SSRF)
     for path in common_paths:
         url = urljoin(base_url, path)
         try:
-            r = session.head(url, headers=get_headers(), timeout=5)
-            if r.status_code == 200:
+            resp, err = fetch_url(url, timeout=5, max_size=MAX_RESPONSE_SIZE)
+            if err is None and resp is not None and resp.status_code == 200:
                 logger.info("Sitemap found: %s", url)
                 if on_status:
                     on_status(f"Sitemap found: {url}")
                 return url
-            if r.status_code == 405:
-                logger.debug("HEAD 405 for %s, fallback to GET", url)
-                r_get = session.get(url, headers=get_headers(), timeout=5)
-                if r_get.status_code == 200:
-                    logger.info("Sitemap found (via GET): %s", url)
-                    if on_status:
-                        on_status(f"Sitemap found: {url}")
-                    return url
         except Exception:
-            try:
-                r_get = session.get(url, headers=get_headers(), timeout=5)
-                if r_get.status_code == 200:
-                    logger.info("Sitemap found (via GET fallback): %s", url)
-                    if on_status:
-                        on_status(f"Sitemap found: {url}")
-                    return url
-            except Exception:
-                continue
+            continue
 
     logger.warning("No sitemap found automatically for %s", base_url)
     if on_status:

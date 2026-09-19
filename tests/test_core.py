@@ -537,14 +537,15 @@ class TestFetchUrl:
 
     @patch("geo_optimizer.utils.http.create_session_with_retry")
     def test_generic_exception(self, mock_create):
-        """Generic exception returns (None, error_message)."""
+        """Generic exception returns (None, generic_error) without leaking internals."""
         mock_session = MagicMock()
         mock_session.get.side_effect = RuntimeError("something broke")
         mock_create.return_value = mock_session
 
         resp, err = fetch_url("https://example.com")
         assert resp is None
-        assert "something broke" in err
+        assert "something broke" not in err
+        assert "Unexpected error" in err
 
 
 # ============================================================================

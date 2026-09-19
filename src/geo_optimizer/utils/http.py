@@ -296,9 +296,10 @@ def _fetch_with_manual_redirects(
             return None, f"Timeout ({timeout}s) dopo retry esponenziale"
         except requests.exceptions.ConnectionError as e:
             _logger.warning("ConnectionError per %s dopo retry esponenziale: %s", current_url, e)
-            return None, f"Connection failed dopo retry esponenziale: {e}"
+            return None, "Connection failed dopo retry esponenziale"
         except Exception as e:
-            return None, str(e)
+            _logger.warning("Unexpected fetch error per %s: %s", current_url, e)
+            return None, "Unexpected error during fetch"
 
         # Check Content-Length before downloading the body
         content_length = r.headers.get("Content-Length")

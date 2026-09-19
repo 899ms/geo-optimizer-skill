@@ -15,10 +15,13 @@ from __future__ import annotations
 
 import asyncio
 import contextvars
+import logging
 from typing import Any
 
 from geo_optimizer.models.config import get_headers
 from geo_optimizer.utils.http import MAX_RESPONSE_SIZE
+
+_logger = logging.getLogger(__name__)
 
 # Maximum number of redirects to follow manually
 _MAX_REDIRECTS = 10
@@ -141,14 +144,28 @@ async def fetch_url_async(
 
             current_url = location
 
+            # Update the DNS pin to the revalidated redirect target so the
+            # next hop connects to the correct, anti-SSRF-pinned IP (TOCTOU fix).
+            # If the redirect target is a different host/IP, re-pin.
+            _next_redir_ip = _redir_ips[0] if _redir_ips else None
+            if _next_redir_ip and _next_redir_ip != _pinned_ip:
+                _parsed_redir = _urlparse(location)
+                _pinned_ip = _next_redir_ip
+                _target_redir_port = _parsed_redir.port or (443 if _parsed_redir.scheme == "https" else 80)
+                pin_data = {"host": _parsed_redir.hostname, "ip": _pinned_ip, "port": _target_redir_port}
+                _pinning_local.pin = pin_data
+                _pinning_ctx.set(pin_data)
+
         return None, f"Too many redirects (max: {_MAX_REDIRECTS})"
 
     except httpx.TimeoutException:
         return None, f"Timeout ({timeout}s)"
     except httpx.ConnectError as e:
-        return None, f"Connection failed: {e}"
+        _logger.warning("Async connection failed for %s: %s", url, e)
+        return None, "Connection failed"
     except Exception as e:
-        return None, str(e)
+        _logger.warning("Async fetch unexpected error for %s: %s", url, e)
+        return None, "Unexpected error during fetch"
     finally:
         # Fix H-1: clear both pin stores
         _pinning_local.pin = None
