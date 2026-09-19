@@ -184,6 +184,10 @@ The GEO Optimizer engine is actively maintained. Scoring weights and audit metho
 - [How Often Should You Monitor AI Visibility?](https://geoready.dev/guides/how-often-to-monitor-ai-visibility/): How often to monitor AI visibility depends on how fast your site changes, not "as often as possible." A cadence framework by site type and plan.
 - [LLM Seeding vs GEO: What's the Difference?](https://geoready.dev/guides/llm-seeding-and-geo/): LLM seeding places your brand in sources AI models draw from. How it differs from GEO, what's legitimate, and what research actually supports.
 - [What Is a Good GEO Score? Benchmarks & Bands](https://geoready.dev/guides/what-is-a-good-geo-score/): A good GEO score is 68+ (the "good" band). Most sites average in the mid-50s. Real score bands, what moves your score, and how to check yours free.
+- [How to Benchmark Your AI Visibility Against Competitors](https://geoready.dev/guides/benchmark-ai-visibility-competitors/): A practical workflow for benchmarking your AI visibility against competitors: pick a set, sample prompts, and compare GEO-score readiness.
+- [Google AI Mode Optimization: What Actually Matters Right Now](https://geoready.dev/guides/google-ai-mode-optimization/): What Google AI Mode is, how it differs from AI Overviews, and the readiness signals you can actually optimize today.
+- [llms.txt Examples: 4 Real Files, Annotated](https://geoready.dev/guides/llms-txt-examples/): See 4 real llms.txt files fetched live on Sept 1, 2026, an annotated walkthrough of what each section does, and a template you can copy.
+- [The llms.txt Placeholder Problem: Why Half of Adopters Ship an Empty File](https://geoready.dev/guides/llms-txt-placeholder-problem/): 52% of llms.txt adopters ship a placeholder file, per August 2026 State of GEO data. What counts as a placeholder, why it happens, and how to check yours.
 
 ## Research sources
 
