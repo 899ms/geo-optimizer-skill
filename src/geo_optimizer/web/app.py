@@ -730,9 +730,7 @@ async def stats():
             cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
             rows = pypi_data.get("data") or []
             result["pypi_downloads_month"] = sum(
-                row.get("downloads", 0)
-                for row in rows
-                if isinstance(row, dict) and str(row.get("date", "")) >= cutoff
+                row.get("downloads", 0) for row in rows if isinstance(row, dict) and str(row.get("date", "")) >= cutoff
             )
 
         # Never publish a zero: a counter at 0 reads as "nobody uses this" and is worse
