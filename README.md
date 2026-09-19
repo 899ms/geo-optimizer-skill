@@ -275,7 +275,7 @@ Treat AI visibility like test coverage: gate every deploy on it. The GitHub Acti
 
 ```yaml
 # .github/workflows/geo.yml
-- uses: Auriti-Labs/geo-optimizer-skill@v4.18.1
+- uses: Auriti-Labs/geo-optimizer-skill@v4.18.2
   with:
     url: https://yoursite.com
     min-score: 70        # Fail the build if the GEO score drops below 70
@@ -457,6 +457,7 @@ This project follows a deliberate release cadence — focused waves, not noisy p
 | v4.17.1 | Aug 2026 | — (patch) | Shipped |
 | v4.18.0 | Sep 2026 | Quorum | Shipped |
 | v4.18.1 | Sep 2026 | — (patch) | Shipped |
+| v4.18.2 | Sep 2026 | — (patch) | Shipped |
 | v5.0.0 | May 2027 | Black Archive | Exploring |
 
 Next focus areas: signal architecture, retrieval surface analysis, scoring recalibration, and structural pattern recognition. The v5.0 cycle represents a broader architectural evolution.

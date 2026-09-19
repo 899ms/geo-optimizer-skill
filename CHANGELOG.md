@@ -5,6 +5,24 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 ---
 
+## [4.18.2] — 2026-09-19
+
+A security patch: `fetch_sitemap()` and `discover_sitemap()` fetched their initial URL through
+the SSRF-safe, DNS-pinned session, but followed HTTP redirects via plain `requests`
+(`allow_redirects` defaulting to `True`) — a redirect response could repoint the request at an
+internal address (`http://169.254.169.254/`, a private IP, ...) without ever being revalidated,
+bypassing the DNS pin entirely. Both functions now route through the shared `fetch_url()` helper,
+which resolves and validates every redirect hop manually instead of trusting `requests` to follow
+them unchecked. The async fetch path (`fetch_url_async`) had a matching gap — a validated redirect
+target could still connect over the *original* DNS pin instead of the revalidated one (TOCTOU) —
+now re-pins to the redirect's own resolved IP before the next hop. Dependency floors raised against
+known CVEs: `requests>=2.31.0`, `urllib3>=1.26.20`, `python-multipart>=0.0.18`. Network error
+messages no longer leak raw exception text (`Connection failed`/`Unexpected error during fetch`
+instead of forwarding `str(exc)`) — the full exception is still logged server-side.
+
+Also fixes `/api/stats` reporting a $0/zero monthly PyPI download count when the `/overall`
+downloads breakdown was present but unsummed.
+
 ## [4.18.1] — 2026-09-17
 
 A community-and-issue-tracker release: three external contributions (LocalBusiness/Organization
