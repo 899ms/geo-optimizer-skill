@@ -22,7 +22,6 @@ from unittest.mock import MagicMock, Mock, patch
 from urllib.parse import urlparse
 
 import pytest
-import requests
 from bs4 import BeautifulSoup
 
 # ─── Core imports ────────────────────────────────────────────────────────────
@@ -1858,20 +1857,16 @@ class TestFetchPageTitle:
 class TestFetchSitemap:
     """Tests for fetch_sitemap()."""
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_parse_simple_sitemap(self, mock_create):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_parse_simple_sitemap(self, mock_fetch):
         xml = """<?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
           <url><loc>https://example.com/</loc><priority>1.0</priority></url>
           <url><loc>https://example.com/about</loc><lastmod>2024-01-01</lastmod></url>
         </urlset>"""
-        mock_session = MagicMock()
         mock_resp = Mock()
-        mock_resp.content = xml.encode()
         mock_resp.iter_content = Mock(return_value=[xml.encode()])
-        mock_resp.raise_for_status = Mock()
-        mock_session.get.return_value = mock_resp
-        mock_create.return_value = mock_session
+        mock_fetch.return_value = (mock_resp, None)
 
         urls = fetch_sitemap("https://example.com/sitemap.xml")
         assert len(urls) == 2
@@ -1879,8 +1874,8 @@ class TestFetchSitemap:
         assert urls[0].priority == 1.0
         assert urls[1].lastmod == "2024-01-01"
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_sitemap_index(self, mock_create):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_sitemap_index(self, mock_fetch):
         """Sitemap index should recursively fetch sub-sitemaps."""
         index_xml = """<?xml version="1.0" encoding="UTF-8"?>
         <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -1890,67 +1885,52 @@ class TestFetchSitemap:
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
           <url><loc>https://example.com/page1</loc></url>
         </urlset>"""
-        mock_session = MagicMock()
         mock_resp_index = Mock()
-        mock_resp_index.content = index_xml.encode()
         mock_resp_index.iter_content = Mock(return_value=[index_xml.encode()])
-        mock_resp_index.raise_for_status = Mock()
         mock_resp_sub = Mock()
-        mock_resp_sub.content = sub_xml.encode()
         mock_resp_sub.iter_content = Mock(return_value=[sub_xml.encode()])
-        mock_resp_sub.raise_for_status = Mock()
-        mock_session.get.side_effect = [mock_resp_index, mock_resp_sub]
-        mock_create.return_value = mock_session
+        mock_fetch.side_effect = [(mock_resp_index, None), (mock_resp_sub, None), (mock_resp_sub, None)]
 
         urls = fetch_sitemap("https://example.com/sitemap.xml")
         assert len(urls) == 1
         assert urls[0].url == "https://example.com/page1"
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_sitemap_fetch_error(self, mock_create):
-        mock_session = MagicMock()
-        # Usa RequestException coerente con il catch specifico in fetch_sitemap
-        mock_session.get.side_effect = requests.exceptions.ConnectionError("Network error")
-        mock_create.return_value = mock_session
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_sitemap_fetch_error(self, mock_fetch):
+        # fetch_url returns (None, error) on failure → fetch_sitemap returns []
+        mock_fetch.return_value = (None, "Connection failed")
 
         urls = fetch_sitemap("https://example.com/sitemap.xml")
         assert urls == []
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_sitemap_with_on_status_callback(self, mock_create):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_sitemap_with_on_status_callback(self, mock_fetch):
         xml = """<?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
           <url><loc>https://example.com/</loc></url>
         </urlset>"""
-        mock_session = MagicMock()
         mock_resp = Mock()
-        mock_resp.content = xml.encode()
         mock_resp.iter_content = Mock(return_value=[xml.encode()])
-        mock_resp.raise_for_status = Mock()
-        mock_session.get.return_value = mock_resp
-        mock_create.return_value = mock_session
+        mock_fetch.return_value = (mock_resp, None)
 
         status_msgs = []
         urls = fetch_sitemap("https://example.com/sitemap.xml", on_status=status_msgs.append)
         assert len(urls) == 1
         assert any("Fetching" in m for m in status_msgs)
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_oversized_sitemap_aborted_mid_stream(self, mock_create):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_oversized_sitemap_aborted_mid_stream(self, mock_fetch):
         """A response body over MAX_RESPONSE_SIZE must abort during streaming,
         not after buffering the whole thing into r.content (DoS guard)."""
         from geo_optimizer.core.llms_generator import MAX_RESPONSE_SIZE
 
-        mock_session = MagicMock()
         mock_resp = Mock()
-        mock_resp.raise_for_status = Mock()
         # Never let the test actually allocate MAX_RESPONSE_SIZE bytes — a
         # handful of oversized chunks proves the abort triggers mid-stream.
         chunk = b"x" * 1024
         n_chunks = (MAX_RESPONSE_SIZE // len(chunk)) + 2
         mock_resp.iter_content = Mock(return_value=iter([chunk] * n_chunks))
-        mock_session.get.return_value = mock_resp
-        mock_create.return_value = mock_session
+        mock_fetch.return_value = (mock_resp, None)
 
         urls = fetch_sitemap("https://example.com/sitemap.xml")
         assert urls == []
@@ -2024,52 +2004,42 @@ class TestGenerateLlmsTxt:
 class TestDiscoverSitemap:
     """Tests for discover_sitemap()."""
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_discover_from_robots_txt(self, mock_create):
-        mock_session = MagicMock()
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_discover_from_robots_txt(self, mock_fetch):
         robots_resp = Mock()
         robots_resp.text = "User-agent: *\nDisallow:\nSitemap: https://example.com/sitemap.xml"
-        mock_session.get.return_value = robots_resp
-        mock_create.return_value = mock_session
+        mock_fetch.return_value = (robots_resp, None)
 
         url = discover_sitemap("https://example.com")
         assert url == "https://example.com/sitemap.xml"
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_discover_from_common_paths(self, mock_create):
-        mock_session = MagicMock()
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_discover_from_common_paths(self, mock_fetch):
         # robots.txt has no Sitemap directive
         robots_resp = Mock()
         robots_resp.text = "User-agent: *\nDisallow:\n"
-        # HEAD requests: first path returns 200
-        head_200 = Mock(status_code=200)
-        mock_session.get.return_value = robots_resp
-        mock_session.head.return_value = head_200
-        mock_create.return_value = mock_session
+        # common paths: first GET returns 200 → returns the URL
+        path_200 = Mock(status_code=200)
+        mock_fetch.side_effect = [(robots_resp, None), (path_200, None)]
 
         url = discover_sitemap("https://example.com")
         assert url is not None
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_discover_none_found(self, mock_create):
-        mock_session = MagicMock()
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_discover_none_found(self, mock_fetch):
         robots_resp = Mock()
         robots_resp.text = "User-agent: *\nDisallow:\n"
-        mock_session.get.return_value = robots_resp
-        head_404 = Mock(status_code=404)
-        mock_session.head.return_value = head_404
-        mock_create.return_value = mock_session
+        # all common paths 404 → no sitemap found
+        mock_fetch.side_effect = [(robots_resp, None)] + [(Mock(status_code=404), None)] * 20
 
         url = discover_sitemap("https://example.com")
         assert url is None
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_discover_with_on_status_callback(self, mock_create):
-        mock_session = MagicMock()
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_discover_with_on_status_callback(self, mock_fetch):
         robots_resp = Mock()
         robots_resp.text = "Sitemap: https://example.com/sitemap.xml"
-        mock_session.get.return_value = robots_resp
-        mock_create.return_value = mock_session
+        mock_fetch.return_value = (robots_resp, None)
 
         msgs = []
         url = discover_sitemap("https://example.com", on_status=msgs.append)

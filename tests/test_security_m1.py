@@ -47,12 +47,10 @@ class TestSitemapSsrf:
         </sitemapindex>
         """
         mock_response = MagicMock()
-        mock_response.content = sitemap_xml.encode()
         mock_response.iter_content = MagicMock(return_value=[sitemap_xml.encode()])
-        mock_response.raise_for_status = MagicMock()
 
-        with patch("geo_optimizer.core.llms_generator.create_session_with_retry") as mock_session:
-            mock_session.return_value.get.return_value = mock_response
+        with patch("geo_optimizer.core.llms_generator.fetch_url") as mock_fetch:
+            mock_fetch.return_value = (mock_response, None)
             urls = fetch_sitemap("https://example.com/sitemap.xml")
             # Sub-sitemap a IP privato deve essere ignorato
             assert urls == []
@@ -72,22 +70,16 @@ class TestSitemapSsrf:
         </urlset>
         """
         mock_resp_index = MagicMock()
-        mock_resp_index.content = sitemap_index_xml.encode()
         mock_resp_index.iter_content = MagicMock(return_value=[sitemap_index_xml.encode()])
-        mock_resp_index.raise_for_status = MagicMock()
 
         mock_resp_posts = MagicMock()
-        mock_resp_posts.content = sitemap_posts_xml.encode()
         mock_resp_posts.iter_content = MagicMock(return_value=[sitemap_posts_xml.encode()])
-        mock_resp_posts.raise_for_status = MagicMock()
 
-        with patch("geo_optimizer.core.llms_generator.create_session_with_retry") as mock_session:
-            mock_session.return_value.get.side_effect = [mock_resp_index, mock_resp_posts]
-            with patch("geo_optimizer.utils.validators.socket.getaddrinfo") as mock_dns:
-                mock_dns.return_value = [(2, 1, 6, "", ("93.184.216.34", 0))]
-                urls = fetch_sitemap("https://example.com/sitemap.xml")
-                assert len(urls) == 1
-                assert urls[0].url == "https://example.com/post-1"
+        with patch("geo_optimizer.core.llms_generator.fetch_url") as mock_fetch:
+            mock_fetch.side_effect = [(mock_resp_index, None), (mock_resp_posts, None), (mock_resp_posts, None)]
+            urls = fetch_sitemap("https://example.com/sitemap.xml")
+            assert len(urls) == 1
+            assert urls[0].url == "https://example.com/post-1"
 
 
 # ============================================================================

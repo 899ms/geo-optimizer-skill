@@ -16,7 +16,7 @@ Copre:
 """
 
 import socket
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 from urllib.parse import urlparse
 
 import pytest
@@ -151,12 +151,10 @@ class TestFetchSitemapOnStatus:
         messaggio = callback.call_args[0][0]
         assert "depth" in messaggio.lower() or "sitemap" in messaggio.lower()
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_on_status_chiamato_in_caso_di_errore_fetch(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_on_status_chiamato_in_caso_di_errore_fetch(self, mock_fetch):
         """Riga 77: on_status chiamato quando il fetch della sitemap fallisce."""
-        mock_sessione = MagicMock()
-        mock_sessione.get.side_effect = ConnectionError("Timeout di rete")
-        mock_crea.return_value = mock_sessione
+        mock_fetch.return_value = (None, "Timeout di rete")
 
         callback = Mock()
         result = fetch_sitemap(
@@ -169,8 +167,8 @@ class TestFetchSitemapOnStatus:
         chiamate = [c[0][0] for c in callback.call_args_list]
         assert any("error" in c.lower() or "sitemap" in c.lower() for c in chiamate)
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_on_status_chiamato_per_sitemap_index(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_on_status_chiamato_per_sitemap_index(self, mock_fetch):
         """Riga 87: on_status chiamato quando viene rilevato un sitemap index."""
         xml_indice = """<?xml version="1.0"?>
         <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -180,16 +178,12 @@ class TestFetchSitemapOnStatus:
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         </urlset>"""
 
-        mock_sessione = MagicMock()
         resp_indice = Mock()
-        resp_indice.content = xml_indice.encode()
-        resp_indice.raise_for_status = Mock()
+        resp_indice.iter_content = Mock(return_value=[xml_indice.encode()])
         resp_vuoto = Mock()
-        resp_vuoto.content = xml_vuoto.encode()
-        resp_vuoto.raise_for_status = Mock()
+        resp_vuoto.iter_content = Mock(return_value=[xml_vuoto.encode()])
         # Prima chiamata → indice, seconda chiamata → sub-sitemap vuoto
-        mock_sessione.get.side_effect = [resp_indice, resp_vuoto]
-        mock_crea.return_value = mock_sessione
+        mock_fetch.side_effect = [(resp_indice, None), (resp_vuoto, None), (resp_vuoto, None)]
 
         callback = Mock()
         fetch_sitemap(
@@ -201,8 +195,8 @@ class TestFetchSitemapOnStatus:
         chiamate = [c[0][0] for c in callback.call_args_list]
         assert any("index" in c.lower() or "sitemaps" in c.lower() for c in chiamate)
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_on_status_chiamato_con_url_trovati(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_on_status_chiamato_con_url_trovati(self, mock_fetch):
         """Riga 100: on_status chiamato con il numero di URL trovati."""
         xml_sitemap = """<?xml version="1.0"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -210,13 +204,9 @@ class TestFetchSitemapOnStatus:
             <url><loc>https://example.com/pagina2</loc></url>
         </urlset>"""
 
-        mock_sessione = MagicMock()
         resp = Mock()
-        resp.content = xml_sitemap.encode()
         resp.iter_content = Mock(return_value=[xml_sitemap.encode()])
-        resp.raise_for_status = Mock()
-        mock_sessione.get.return_value = resp
-        mock_crea.return_value = mock_sessione
+        mock_fetch.return_value = (resp, None)
 
         callback = Mock()
         result = fetch_sitemap(
@@ -237,8 +227,8 @@ class TestFetchSitemapOnStatus:
 class TestPriorityNonNumerica:
     """Verifica che un valore priority non numerico venga ignorato silenziosamente."""
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_priority_non_numerica_ignorata(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_priority_non_numerica_ignorata(self, mock_fetch):
         """Righe 119-120: <priority>high</priority> → ValueError ignorato, priority=0.5."""
         xml_sitemap = """<?xml version="1.0"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -248,13 +238,9 @@ class TestPriorityNonNumerica:
             </url>
         </urlset>"""
 
-        mock_sessione = MagicMock()
         resp = Mock()
-        resp.content = xml_sitemap.encode()
         resp.iter_content = Mock(return_value=[xml_sitemap.encode()])
-        resp.raise_for_status = Mock()
-        mock_sessione.get.return_value = resp
-        mock_crea.return_value = mock_sessione
+        mock_fetch.return_value = (resp, None)
 
         result = fetch_sitemap("https://example.com/sitemap.xml", _depth=0)
         assert len(result) == 1
@@ -422,38 +408,32 @@ class TestGenerateLlmsTxtSezioneOptional:
 class TestDiscoverSitemapValidazioneSSRF:
     """Verifica che discover_sitemap ignori URL sitemap non sicuri da robots.txt."""
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_sitemap_non_sicuro_viene_ignorato(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_sitemap_non_sicuro_viene_ignorato(self, mock_fetch):
         """Righe 407-408: URL sitemap che non passa validate_public_url viene ignorato."""
-        mock_sessione = MagicMock()
         # robots.txt con URL sitemap verso IP privato
         robots_resp = Mock(
             text="Sitemap: http://192.168.1.1/sitemap.xml",
             status_code=200,
         )
         # Fallback common paths → tutti 404
-        head_resp = Mock(status_code=404)
-        mock_sessione.get.return_value = robots_resp
-        mock_sessione.head.return_value = head_resp
-        mock_crea.return_value = mock_sessione
+        path_404 = Mock(status_code=404)
+        mock_fetch.side_effect = [(robots_resp, None)] + [(path_404, None)] * 20
 
         # validate_public_url reale blocca 192.168.1.1 (IP privato)
         result = discover_sitemap("https://example.com")
         # L'URL non sicuro non deve essere restituito
         assert result != "http://192.168.1.1/sitemap.xml"
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_sitemap_dominio_diverso_viene_ignorato(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_sitemap_dominio_diverso_viene_ignorato(self, mock_fetch):
         """Righe 413-414: URL sitemap di dominio esterno viene ignorato."""
-        mock_sessione = MagicMock()
         robots_resp = Mock(
             text="Sitemap: https://attaccante.com/sitemap.xml",
             status_code=200,
         )
-        head_resp = Mock(status_code=404)
-        mock_sessione.get.return_value = robots_resp
-        mock_sessione.head.return_value = head_resp
-        mock_crea.return_value = mock_sessione
+        path_404 = Mock(status_code=404)
+        mock_fetch.side_effect = [(robots_resp, None)] + [(path_404, None)] * 20
 
         result = discover_sitemap("https://example.com")
         assert result != "https://attaccante.com/sitemap.xml"
@@ -467,30 +447,24 @@ class TestDiscoverSitemapValidazioneSSRF:
 class TestDiscoverSitemapFallbackCommonPaths:
     """Verifica il fallback ai common paths quando robots.txt non ha Sitemap:."""
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_fallback_sitemap_xml_trovato(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_fallback_sitemap_xml_trovato(self, mock_fetch):
         """Riga 424-426: common path /sitemap.xml risponde 200 → restituito."""
-        mock_sessione = MagicMock()
         # robots.txt senza direttiva Sitemap
         robots_resp = Mock(text="User-agent: *\nAllow: /", status_code=200)
-        head_ok = Mock(status_code=200)
-        mock_sessione.get.return_value = robots_resp
-        mock_sessione.head.return_value = head_ok
-        mock_crea.return_value = mock_sessione
+        sitemap_ok = Mock(status_code=200)
+        mock_fetch.side_effect = [(robots_resp, None), (sitemap_ok, None)]
 
         result = discover_sitemap("https://example.com")
         assert result is not None
         assert "sitemap" in result.lower()
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_fallback_nessun_sitemap_trovato_ritorna_none(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_fallback_nessun_sitemap_trovato_ritorna_none(self, mock_fetch):
         """Riga 431: nessun path funziona → on_status callback + ritorna None."""
-        mock_sessione = MagicMock()
         robots_resp = Mock(text="User-agent: *\nAllow: /", status_code=200)
-        head_404 = Mock(status_code=404)
-        mock_sessione.get.return_value = robots_resp
-        mock_sessione.head.return_value = head_404
-        mock_crea.return_value = mock_sessione
+        path_404 = Mock(status_code=404)
+        mock_fetch.side_effect = [(robots_resp, None)] + [(path_404, None)] * 20
 
         callback = Mock()
         result = discover_sitemap("https://example.com", on_status=callback)
@@ -499,32 +473,24 @@ class TestDiscoverSitemapFallbackCommonPaths:
         chiamate = [c[0][0] for c in callback.call_args_list]
         assert any("no sitemap" in c.lower() or "not found" in c.lower() for c in chiamate)
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_fallback_eccezione_head_continua(self, mock_crea):
-        """Riga 427: ConnectionError su HEAD → continua al path successivo."""
-        mock_sessione = MagicMock()
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_fallback_eccezione_head_continua(self, mock_fetch):
+        """Riga 427: errore di fetch sul primo path → continua al successivo."""
         robots_resp = Mock(text="User-agent: *", status_code=200)
-        # Prima head lancia eccezione, la seconda risponde 200
-        mock_sessione.get.return_value = robots_resp
-        mock_sessione.head.side_effect = [
-            ConnectionError("Timeout"),
-            Mock(status_code=200),
-        ]
-        mock_crea.return_value = mock_sessione
+        ok = Mock(status_code=200)
+        # Primo fetch (robots) ok; primo common path fallisce; il successivo risponde 200
+        mock_fetch.side_effect = [(robots_resp, None), (None, "Connection failed"), (ok, None)]
 
         result = discover_sitemap("https://example.com")
-        # Deve trovare il secondo path non lanciare eccezione
+        # Deve trovare il secondo path senza lanciare eccezione
         assert result is not None
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_on_status_chiamato_quando_sitemap_trovato_in_common_path(self, mock_crea):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_on_status_chiamato_quando_sitemap_trovato_in_common_path(self, mock_fetch):
         """Riga 424: on_status chiamato quando sitemap trovato via common path."""
-        mock_sessione = MagicMock()
         robots_resp = Mock(text="User-agent: *", status_code=200)
-        head_ok = Mock(status_code=200)
-        mock_sessione.get.return_value = robots_resp
-        mock_sessione.head.return_value = head_ok
-        mock_crea.return_value = mock_sessione
+        sitemap_ok = Mock(status_code=200)
+        mock_fetch.side_effect = [(robots_resp, None), (sitemap_ok, None)]
 
         callback = Mock()
         result = discover_sitemap("https://example.com", on_status=callback)
