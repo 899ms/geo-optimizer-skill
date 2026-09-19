@@ -239,20 +239,16 @@ class TestSitemapDepthLimit:
         # Non deve nemmeno fare richieste HTTP
         mock_create.assert_not_called()
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_profondita_zero_funziona(self, mock_create):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_profondita_zero_funziona(self, mock_fetch):
         """Profondità 0 processa normalmente la sitemap."""
         sitemap_xml = """<?xml version="1.0"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             <url><loc>https://example.com/page1</loc></url>
         </urlset>"""
-        mock_session = MagicMock()
         mock_resp = Mock()
-        mock_resp.content = sitemap_xml.encode()
         mock_resp.iter_content = Mock(return_value=[sitemap_xml.encode()])
-        mock_resp.raise_for_status = Mock()
-        mock_session.get.return_value = mock_resp
-        mock_create.return_value = mock_session
+        mock_fetch.return_value = (mock_resp, None)
 
         result = fetch_sitemap("https://example.com/sitemap.xml", _depth=0)
         assert len(result) == 1
@@ -311,17 +307,13 @@ class TestExtractFaqNoMutation:
 class TestSitemapUrlValidation:
     """discover_sitemap valida gli URL sitemap estratti da robots.txt."""
 
-    @patch("geo_optimizer.core.llms_generator.create_session_with_retry")
-    def test_sitemap_stesso_dominio_accettato(self, mock_create):
+    @patch("geo_optimizer.core.llms_generator.fetch_url")
+    def test_sitemap_stesso_dominio_accettato(self, mock_fetch):
         """URL sitemap dello stesso dominio viene accettato."""
         from geo_optimizer.core.llms_generator import discover_sitemap
 
-        mock_session = MagicMock()
         robots_resp = Mock(text="Sitemap: https://example.com/sitemap.xml", status_code=200)
-        head_resp = Mock(status_code=200)
-        mock_session.get.return_value = robots_resp
-        mock_session.head.return_value = head_resp
-        mock_create.return_value = mock_session
+        mock_fetch.return_value = (robots_resp, None)
 
         with patch("geo_optimizer.core.llms_generator.validate_public_url", return_value=(True, None)):
             result = discover_sitemap("https://example.com")
