@@ -1,61 +1,63 @@
 # Security Policy
 
-## Supported Versions
-
-| Version | Supported          |
-|---------|--------------------|
-| 4.x     | :white_check_mark: |
-| 3.x     | :x:                |
-| < 3.0   | :x:                |
-
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in GEO Optimizer, please report it responsibly.
+We take security seriously. If you believe you have found a security
+vulnerability in GeoReady, please report it to us privately before
+disclosing it publicly.
 
-**Do NOT open a public GitHub issue for security vulnerabilities.**
+**Please do NOT open a public GitHub issue for security findings.**
 
-### How to Report
+## How to report
 
-1. **Email**: Send details to [juancamilo.auriti@gmail.com](mailto:juancamilo.auriti@gmail.com)
-2. **Subject**: `[SECURITY] GEO Optimizer — Brief description`
-3. **Include**:
-   - Description of the vulnerability
-   - Steps to reproduce
-   - Potential impact
-   - Suggested fix (if any)
+Send a private report to the maintainer:
 
-### What to Expect
+- **Email:** `security@geoready.dev`
+- **GitHub:** use **Private vulnerability reporting** on this repository
+  (Settings → Security → Private vulnerability reporting → New draft
+  advisory), which is only visible to maintainers.
 
-- **Acknowledgment**: Within 48 hours
-- **Assessment**: Within 7 days
-- **Fix timeline**: Critical vulnerabilities patched within 14 days
-- **Credit**: You will be credited in the release notes (unless you prefer anonymity)
+Include in your report:
 
-### Scope
+- The affected endpoint / file / component
+- A clear step-by-step reproduction (repro)
+- The impact you observe
+- Whether you consider it critical and why
 
-The following areas are in scope:
+## Scope
 
-| Area | Examples |
-|------|---------|
-| **SSRF** | Bypassing `validate_public_url()`, DNS rebinding, redirect attacks |
-| **XSS** | Injection via HTML formatter output, SVG badge, web app |
-| **Path Traversal** | Bypassing `validate_safe_path()` in schema injection |
-| **DoS** | Bypassing response size limits, sitemap bomb, rate limiter bypass |
-| **Injection** | Template injection in schema templates, JSON-LD injection |
+This policy covers:
 
-### Out of Scope
+- The `geoready.dev` website and its public endpoints
+- The `geo-optimizer-skill` package (`geo` CLI, FastAPI web demo, MCP server)
+- The build and CI configuration in this repository
 
-- Vulnerabilities in dependencies (report to the upstream project)
-- Social engineering attacks
-- Denial of service via legitimate high traffic
-- Issues in the legacy `scripts/` directory (removed in v3.4.0)
+Out of scope:
 
-## Security Architecture
+- Third-party services we integrate with (Sanity, Google Analytics, etc.)
+- Known, documented limitations
 
-GEO Optimizer implements multiple defense layers:
+## What happens next
 
-- **Anti-SSRF**: DNS pinning (`_PinnedIPAdapter`), manual redirect validation, blocked networks (RFC 1918, loopback, link-local, cloud metadata)
-- **Input validation**: `validate_public_url()` for URLs, `validate_safe_path()` for file paths
-- **Output encoding**: HTML escaping in formatters, `</` escape in JSON-LD tags
-- **Size limits**: `MAX_RESPONSE_SIZE` (10 MB), `MAX_TOTAL_URLS` (10,000), `_MAX_BODY_BYTES` (4 KB POST body)
-- **Rate limiting**: Per-IP rate limiter on web API endpoints
+1. We acknowledge your report within **5 business days**.
+2. We triage and validate the finding with a reproducible proof.
+3. If confirmed, we fix it, and coordinate disclosure so you can publish
+   responsibly once a patch is available.
+
+## Bounty / recognition
+
+We currently do not run a paid bounty program. We do not negotiate or pay
+for findings before they are demonstrated with a verified repro.
+
+We gratefully credit verified reporters in our release notes unless they
+prefer to stay anonymous.
+
+## Public disclosure
+
+We follow responsible disclosure: reporters who give us a head start
+(ideally 90 days) before publishing will have their finding credited and
+taken seriously. Reports sent through unofficial channels (e.g. a DM
+requesting payment before showing any proof) will not be treated as valid
+security submissions.
+
+Thanks for helping keep GeoReady safe.
