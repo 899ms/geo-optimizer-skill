@@ -11,7 +11,7 @@
 - **Maintainer**: Auriti Labs (https://github.com/Auriti-Labs)
 - **Engine repository**: https://github.com/Auriti-Labs/geo-optimizer-skill
 - **Engine package**: https://pypi.org/project/geo-optimizer-skill/
-- **Engine documentation**: https://auriti-labs.github.io/geo-optimizer-skill/
+- **Engine documentation**: https://geoready.dev/docs/
 - **License**: MIT
 - **Version**: 4.10.4
 

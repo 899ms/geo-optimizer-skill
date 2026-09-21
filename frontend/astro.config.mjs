@@ -8,6 +8,7 @@ import { loadEnv } from 'vite';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import sanity from '@sanity/astro';
+import starlight from '@astrojs/starlight';
 
 import geoReady from '../integrations/astro-geoready/index.mjs';
 import { aiFaqs, aiService } from './src/data/ai-content.mjs';
@@ -49,6 +50,64 @@ export default defineConfig({
         'AI visibility audit, monitoring, and citation tracking — built on the open-source GEO Optimizer engine.',
       faqs: aiFaqs,
       service: aiService,
+    }),
+    starlight({
+      title: 'GeoReady Docs',
+      favicon: 'src/assets/geoready-logo.svg',
+      logo: {
+        src: './src/assets/geoready-logo.svg',
+        replacesTitle: false,
+      },
+      sidebar: [
+        {
+          label: 'Come iniziare',
+          items: [
+            { label: 'Introduzione', link: '/docs/getting-started/' },
+            { label: 'Risoluzione problemi', link: '/docs/troubleshooting/' },
+            { label: 'CI/CD', link: '/docs/ci-cd/' },
+          ],
+        },
+        {
+          label: 'Comandi CLI',
+          items: [
+            { label: 'geo audit', link: '/docs/geo-audit/' },
+            { label: 'geo fix', link: '/docs/geo-fix/' },
+            { label: 'geo diff', link: '/docs/geo-diff/' },
+            { label: 'geo track', link: '/docs/geo-track/' },
+            { label: 'geo history', link: '/docs/geo-history/' },
+            { label: 'geo monitor', link: '/docs/geo-monitor/' },
+            { label: 'geo snapshots', link: '/docs/geo-snapshots/' },
+            { label: 'geo logs', link: '/docs/geo-logs/' },
+            { label: 'geo coherence', link: '/docs/geo-coherence/' },
+            { label: 'GEO methods', link: '/docs/geo-methods/' },
+            { label: 'Schema injector', link: '/docs/schema-injector/' },
+          ],
+        },
+        {
+          label: 'Scoring',
+          items: [{ label: 'Scoring rubric', link: '/docs/scoring-rubric/' }],
+        },
+        {
+          label: 'Contenuti & File',
+          items: [
+            { label: 'llms.txt', link: '/docs/llms-txt/' },
+            { label: 'AI bots reference', link: '/docs/ai-bots-reference/' },
+            { label: 'AI context', link: '/docs/ai-context/' },
+          ],
+        },
+        {
+          label: 'Infrastruttura',
+          items: [
+            { label: 'Contratto JSON', link: '/docs/json-contract/' },
+            { label: 'LLM providers', link: '/docs/llm-providers/' },
+          ],
+        },
+        {
+          label: 'Web, MCP & API',
+          items: [{ label: 'MCP server', link: '/docs/mcp-server/' }],
+        },
+      ],
+      customCss: ['./src/styles/docs.css'],
     }),
   ],
 
