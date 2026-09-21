@@ -780,3 +780,27 @@ def test_redirect_seo_non_intercetta_altri_path(client):
     """
     response = client.get("/de/qualcosa-altro", follow_redirects=False)
     assert response.status_code == 404
+
+
+@pytest.mark.parametrize(
+    "source,target",
+    [
+        ("/state-of-geo-2026", "/state-of-geo/june-2026/"),
+        ("/state-of-geo-2026/", "/state-of-geo/june-2026/"),
+        ("/guides/2", "/guides/"),
+        ("/guides/2/", "/guides/"),
+        ("/guides/10", "/guides/"),
+        ("/guides/10/", "/guides/"),
+    ],
+)
+def test_redirect_301_seo_paginazione_e_state_of_geo(client, source, target):
+    """Il vecchio slug State of GEO e la paginazione /guides/ rimossa devono dare 301 (non meta-refresh/soft-404).
+
+    /state-of-geo-2026 era un redirect client-side (<meta refresh>) che i motori
+    trattano come soft-404; /guides/2..10 sono doorway sottili rimosse. Entrambi
+    consolidano con una vera 301 verso la pagina corretta.
+    """
+    response = client.get(source, follow_redirects=False)
+
+    assert response.status_code == 301, f"{source} deve rispondere 301, non {response.status_code}"
+    assert response.headers["location"] == target

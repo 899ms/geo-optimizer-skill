@@ -2444,6 +2444,20 @@ async def analyze_logs(request: Request):
 _SEO_REDIRECTS = {
     "/de/beste-geo-tools": "/best-geo-tools/",
     "/nl/beste-geo-tools": "/best-geo-tools/",
+    # Il vecchio slug a unica pagina di State of GEO (soft-404 client-side) →
+    # vera 301 alla versione completa di giugno 2026.
+    "/state-of-geo-2026": "/state-of-geo/june-2026/",
+    # Paginazione /guides/ rimossa (55 guide su un'unica pagina): le URL 2..10
+    # consolidano su /guides/ invece di restare doorway sottili.
+    "/guides/2": "/guides/",
+    "/guides/3": "/guides/",
+    "/guides/4": "/guides/",
+    "/guides/5": "/guides/",
+    "/guides/6": "/guides/",
+    "/guides/7": "/guides/",
+    "/guides/8": "/guides/",
+    "/guides/9": "/guides/",
+    "/guides/10": "/guides/",
 }
 
 
