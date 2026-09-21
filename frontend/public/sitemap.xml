@@ -165,6 +165,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://geoready.dev/goodie-alternative/</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://geoready.dev/guides/</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>weekly</changefreq>
@@ -582,6 +588,12 @@
   <url>
     <loc>https://geoready.dev/profound-alternative/</loc>
     <lastmod>2026-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://geoready.dev/rankscale-alternative/</loc>
+    <lastmod>2026-09-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
