@@ -167,6 +167,17 @@ const medPct = Math.max(0, Math.min(100, Number(BENCHMARK.median) || 0));
             <span>Free report, no account required.</span>
             <span class="font-mono text-[11px] uppercase tracking-[0.12em]">POST /api/audit</span>
           </p>
+          <p class="mt-4 border-t border-rail/60 pt-3 text-[13px] leading-relaxed text-ink-soft">
+            A single audit is a photograph — a point in time. Monitoring is the video sequence:
+            it re-runs the same scoring on a schedule and tells you when your visibility moves.
+            <a
+              href="/pricing/"
+              data-cta="home_hero_monitoring_micro"
+              class="font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep"
+            >
+              See monitoring plans
+            </a>.
+          </p>
 
           <StatsBar client:load variant="console" initial={PUBLIC_STATS} initialIsLive={STATS_ARE_LIVE} />
 
@@ -453,52 +464,113 @@ const medPct = Math.max(0, Math.min(100, Number(BENCHMARK.median) || 0));
     </div>
   </section>
 
-  {/* From one run to scheduled runs */}
+  {/* From one audit to monitoring — pricing teaser */}
   <section class="world-console border-t border-rail bg-white font-text text-ink">
     <div class="mx-auto max-w-7xl px-6 py-16 md:py-20">
-      <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(380px,0.8fr)] lg:items-start">
-        <div>
-          <h2 class="max-w-2xl font-head text-3xl font-extrabold tracking-[-0.02em] md:text-4xl">
-            One audit gives the baseline. Monitoring tells you when the baseline moves.
-          </h2>
-          <p class="mt-5 max-w-2xl leading-relaxed text-ink-soft">
-            The free <a href="/ai-seo-audit/" data-cta="home_ai_seo_audit_link" class="text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep">AI SEO audit</a> is a point-in-time diagnosis. GeoReady Pro turns the same scoring engine into an ongoing signal for teams and client work.
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h2 class="max-w-2xl font-head text-3xl font-extrabold tracking-[-0.02em] md:text-4xl">
+          One audit gives the baseline. Monitoring tells you when the baseline moves.
+        </h2>
+        <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">paid plans · founding price</p>
+      </div>
+
+      <p class="mt-5 max-w-2xl leading-relaxed text-ink-soft">
+        The free <a href="/ai-seo-audit/" data-cta="home_ai_seo_audit_link" class="text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep">AI SEO audit</a>
+        answers one question: what does your site look like to AI crawlers
+        <em class="font-medium not-italic text-ink">right now</em>. It cannot tell you whether that
+        changes with your edits. Monitoring runs the same open-source scoring engine on a schedule,
+        keeps the score history, and flags the days your visibility moves — up or down. It measures your
+        site. It does not promise a ranking.
+      </p>
+
+      <div class="mt-10 grid gap-3 md:grid-cols-3">
+        {/* Pro */}
+        <div class="flex flex-col rounded-[4px] border border-rail bg-paper p-5">
+          <div class="flex items-baseline justify-between gap-3">
+            <h3 class="text-base font-semibold text-ink">Pro</h3>
+            <span class="whitespace-nowrap">
+              <span class="font-head text-lg font-extrabold text-ink">$19</span>
+              <span class="font-mono text-xs text-ink-mute">/mo</span>
+            </span>
+          </div>
+          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">1 domain · weekly</p>
+          <p class="mt-3 text-sm leading-relaxed text-ink-soft">
+            Turns one audit into an ongoing signal for a single site.
           </p>
+          <div class="mt-3 border-l-2 border-pass bg-pass-wash/40 px-3 py-2 text-sm text-ink">
+            Regression alert when your score moves <span class="font-semibold">5 points or more</span>.
+          </div>
+          <a
+            href="/pricing/"
+            data-cta="home_pricing_teaser_pro"
+            class="mt-4 block w-full rounded-[4px] border border-rail bg-white px-4 py-2.5 text-center font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
+          >
+            Compare plans
+          </a>
         </div>
 
-        <div class="grid gap-3">
-          <div class="rounded-[4px] border border-rail bg-paper p-5">
-            <div class="flex items-center justify-between gap-3">
-              <h3 class="text-base font-semibold text-ink">Free audit</h3>
-              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">run: once</span>
-            </div>
-            <p class="mt-2 text-sm leading-relaxed text-ink-soft">
-              GEO score, top recommendations, and a fast read on whether a URL is crawlable and understandable.
-            </p>
+        {/* Studio */}
+        <div class="flex flex-col rounded-[4px] border border-rail bg-paper p-5">
+          <div class="flex items-baseline justify-between gap-3">
+            <h3 class="text-base font-semibold text-ink">Studio</h3>
+            <span class="whitespace-nowrap">
+              <span class="font-head text-lg font-extrabold text-ink">$49</span>
+              <span class="font-mono text-xs text-ink-mute">/mo</span>
+            </span>
           </div>
-          <div class="rounded-[4px] border border-pass/50 bg-pass-wash/60 p-5">
-            <div class="flex items-center justify-between gap-3">
-              <h3 class="text-base font-semibold text-ink">GeoReady Pro</h3>
-              <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-pass-deep">schedule: weekly</span>
-            </div>
-            <p class="mt-2 text-sm leading-relaxed text-ink-soft">
-              Weekly monitoring, report history, regression alerts, PDF export, and API access.
-            </p>
-            <a
-              href="https://app.geoready.dev/signup?plan=pro"
-              data-plan-id="pro"
-              data-plan-name="Pro"
-              data-plan-price="$19"
-              data-plan-period="/month"
-              data-plan-currency="USD"
-              data-cta-location="home_monitoring_section"
-              class="mt-4 inline-block text-sm font-semibold text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep"
-            >
-              Start with Pro
-            </a>
+          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">15 domains · daily</p>
+          <p class="mt-3 text-sm leading-relaxed text-ink-soft">
+            For consultants running a portfolio of sites and client-ready reports.
+          </p>
+          <div class="mt-3 border-l-2 border-pass bg-pass-wash/40 px-3 py-2 text-sm text-ink">
+            AI citation tracking — <span class="font-semibold">5 automated Perplexity checks per day</span>.
           </div>
+          <a
+            href="/pricing/"
+            data-cta="home_pricing_teaser_studio"
+            class="mt-4 block w-full rounded-[4px] border border-rail bg-white px-4 py-2.5 text-center font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
+          >
+            Compare plans
+          </a>
+        </div>
+
+        {/* Agency */}
+        <div class="flex flex-col rounded-[4px] border border-rail bg-paper p-5">
+          <div class="flex items-baseline justify-between gap-3">
+            <h3 class="text-base font-semibold text-ink">Agency</h3>
+            <span class="whitespace-nowrap">
+              <span class="font-head text-lg font-extrabold text-ink">$89</span>
+              <span class="font-mono text-xs text-ink-mute">/mo</span>
+            </span>
+          </div>
+          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">50 domains · daily</p>
+          <p class="mt-3 text-sm leading-relaxed text-ink-soft">
+            For teams managing many client domains with shared access and bulk runs.
+          </p>
+          <div class="mt-3 border-l-2 border-pass bg-pass-wash/40 px-3 py-2 text-sm text-ink">
+            Team workspace, <span class="font-semibold">50 monitored domains</span>, and unlimited batch audits.
+          </div>
+          <a
+            href="/pricing/"
+            data-cta="home_pricing_teaser_agency"
+            class="mt-4 block w-full rounded-[4px] border border-rail bg-white px-4 py-2.5 text-center font-mono text-[12px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-pass-wash"
+          >
+            Compare plans
+          </a>
         </div>
       </div>
+
+      <p class="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-mute">
+        <span class="font-mono text-[11px] uppercase tracking-[0.12em] text-pass-deep">Free stays free</span>
+        <span>— the audit, the CLI, and 5 runs a day never expire or paywall.</span>
+        <a
+          href="/pricing/"
+          data-cta="home_free_note_pricing"
+          class="font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep"
+        >
+          View full pricing
+        </a>
+      </p>
     </div>
   </section>
 
@@ -524,34 +596,108 @@ const medPct = Math.max(0, Math.min(100, Number(BENCHMARK.median) || 0));
     </div>
   </section>
 
-  {/* Verdict band */}
+  {/* Social proof — verifiable, no invented numbers */}
+  <section class="world-console border-t border-rail bg-white font-text text-ink">
+    <div class="mx-auto max-w-7xl px-6 py-16 md:py-20">
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h2 class="font-head text-2xl font-extrabold tracking-[-0.02em] md:text-3xl">
+          Auditable by design — every number below is public
+        </h2>
+        <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">
+          GET / api / public / benchmark · GET /api/stats
+        </p>
+      </div>
+
+      <dl class="mt-8 grid gap-px overflow-hidden rounded-[4px] border border-rail bg-rail sm:grid-cols-2 lg:grid-cols-3">
+        <div class="flex flex-col gap-1 bg-white p-5">
+          <dt class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">GitHub stars — MIT open source</dt>
+          <dd class="font-head text-2xl font-extrabold tabular-nums text-ink">
+            {PUBLIC_STATS.github_stars}
+            <span class="ml-1 font-mono text-xs font-medium text-ink-mute">★</span>
+          </dd>
+          <p class="text-sm leading-relaxed text-ink-soft">
+            Full methodology and scoring weights in public. No proprietary scoring.
+            <a href="https://github.com/Auriti-Labs/geo-optimizer-skill" target="_blank" rel="noopener" class="font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep">View on GitHub</a>
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-1 bg-white p-5">
+          <dt class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">{BENCHMARK.sampleLabel} · live cohort</dt>
+          <dd class="font-head text-2xl font-extrabold tabular-nums text-ink">
+            {BENCHMARK.average}<span class="ml-1 font-mono text-xs font-medium text-ink-mute">/100 avg</span>
+          </dd>
+          <p class="text-sm leading-relaxed text-ink-soft">
+            Only {BENCHMARK.llmsTxtAdoption} of audited sites publish an <code class="font-mono text-ink">llms.txt</code>.
+            <a href="/state-of-geo/" class="font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep">Browse the live benchmark</a>
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-1 bg-white p-5">
+          <dt class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">This site's own score</dt>
+          <dd class="font-head text-2xl font-extrabold tabular-nums text-ink">
+            91<span class="ml-1 font-mono text-xs font-medium text-ink-mute">/100</span>
+          </dd>
+          <p class="text-sm leading-relaxed text-ink-soft">
+            Run the same audit on <code class="font-mono text-ink">geoready.dev</code> and check it.
+            Free, no account — it takes about a minute.
+            <a href="#audit-form" data-cta="home_proof_self_audit" class="font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep">Check a URL</a>
+          </p>
+        </div>
+      </dl>
+
+      <div class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-rail pt-5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute">
+        <span class="inline-flex items-center gap-1.5">
+          <span aria-hidden="true" class="inline-block h-1.5 w-1.5 rounded-full bg-pass align-middle" /> no paid claims · no "trusted by"
+        </span>
+        <span aria-hidden="true" class="text-ink-mute/40">/</span>
+        <span>methodology cited in</span>
+        <a href="/research/" class="font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep">AutoGEO ICLR 2026</a>
+        <span aria-hidden="true" class="text-ink-mute/40">·</span>
+        <a href="/research/" class="font-medium text-pass-deep underline decoration-pass/40 underline-offset-4 hover:decoration-pass-deep">KDD 2024</a>
+        <span aria-hidden="true" class="text-ink-mute/40">·</span>
+        <span>cohort as of {BENCHMARK.asOf}</span>
+      </div>
+    </div>
+  </section>
+
   <section class="world-console bg-pass-deep font-text text-white">
     <div class="mx-auto max-w-7xl px-6 py-16 md:py-20">
       <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3">
         <h2 class="max-w-3xl font-head text-3xl font-extrabold tracking-[-0.02em] md:text-5xl">
           AI search is already deciding which sites get cited.
         </h2>
-        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-pass-wash/80">Verdict · your site: not yet run</p>
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-pass-wash/80">Verdict · your site: pending — check it free, no account</p>
       </div>
       <p class="mt-5 max-w-2xl leading-relaxed text-pass-wash">
-        The signals are documented, the research is published, and the tool is free.
-        GeoReady exists to make AI visibility auditable and accessible to every developer.
+        The signals are documented, the research is published, and the audit is free —
+        it takes about a minute, no account. If you already have your score, that's where
+        monitoring starts: a single report is a photograph; a trend is what you can act on.
       </p>
-      <div class="mt-8 flex flex-wrap gap-3">
+      <div class="mt-8 flex flex-wrap items-center gap-3">
         <a
           href="#audit-form"
+          data-cta="home_final_free_check"
           class="inline-block rounded-[4px] bg-white px-7 py-3 font-mono text-[13px] font-semibold uppercase tracking-[0.12em] text-pass-deep transition-colors hover:bg-pass-wash"
         >
           Start free check
         </a>
         <a
-          href="/pricing/"
-          data-cta="home_final_pick_plan"
+          href="/pricing/#comparison-heading"
+          data-cta="home_final_compare_plans"
           class="inline-block rounded-[4px] border border-white/40 px-7 py-3 font-mono text-[13px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:border-white hover:bg-white/10"
         >
-          Start free or pick a plan
+          Compare Pro &amp; Studio plans
         </a>
       </div>
+      <p class="mt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-pass-wash/70">
+        <a
+          href="/pricing/#comparison-heading"
+          data-cta="home_final_already_ran"
+          class="transition-colors hover:text-white"
+        >
+          Already ran your audit? Monitoring is the next step →
+        </a>
+      </p>
     </div>
   </section>
 </Shell>
