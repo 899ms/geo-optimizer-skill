@@ -19,6 +19,20 @@
 
 [Quick Start](#quick-start) · [Live Demo](https://geoready.dev) · [Pricing](https://geoready.dev/pricing) · [Sign Up](https://app.geoready.dev/signup) · [Documentation](https://auriti-labs.github.io/geo-optimizer-skill/) · [Changelog](CHANGELOG.md)
 
+---
+
+## 📖 The book: *AI Search Engineering*
+
+**992-page technical guide to Generative Engine Optimization (GEO), AI citations, and agent-ready websites** — by Juan Camilo Auriti, the author of this engine.
+
+> How to structure, optimize, and measure your site so ChatGPT, Perplexity, Gemini, and Claude find it, understand it, and cite it — with worked examples, the research behind the signals, and the monitoring loop that turns a one-off score into a defensible position.
+
+[**Get the book — paperback + Kindle on Amazon**](https://www.amazon.it/dp/B0HJGLW5NP) · [**Book page & more details**](https://geoready.dev/book/) · ISBN 979-8172934568
+
+---
+
+## What is GEO Optimizer?
+
 <img src="assets/demo.gif" alt="geo audit demo — AI visibility score 0-100 with prioritized fixes in one command" width="800"/>
 
 **16 CLI commands** · **8 scoring categories** · **47 research-backed methods** · **7 output formats** · **1,900+ tests** · academic foundation ([KDD 2024](https://arxiv.org/abs/2311.09735), [ICLR 2026](https://arxiv.org/abs/2510.11438)) · runs in CI/CD, as a [Python library](#python-api), an [MCP server](#mcp-server), or an [Astro integration](#astro-integration)
