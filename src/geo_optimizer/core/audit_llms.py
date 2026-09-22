@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 from urllib.parse import urljoin
 
+from geo_optimizer.models.config import BROWSER_USER_AGENT
 from geo_optimizer.models.results import LlmsTxtResult
 from geo_optimizer.utils.http import fetch_url
 from geo_optimizer.utils.text import count_words
@@ -66,27 +67,43 @@ def _validate_llms_content(result: LlmsTxtResult, content: str) -> None:
 
 
 def _browser_like_headers() -> dict:
-    """Headers with a browser-like User-Agent, for the CDN/WAF retry."""
-    return {"User-Agent": "Mozilla/5.0 (compatible; GEO-Optimizer/2.0)"}
+    """Headers with a real desktop browser UA, for the CDN/WAF retry."""
+    return {"User-Agent": BROWSER_USER_AGENT}
 
 
 def _try_browser_like_retry(url: str, result: LlmsTxtResult) -> None:
-    """Re-fetch a blocked URL with a browser-like UA.
+    """Re-fetch a blocked URL with a real desktop browser UA.
 
-    If the second attempt returns 200, process it as a valid llms.txt and add a
-    validation warning that the CDN/WAF is blocking the auditor's main UA.
+    If the second attempt returns 200 with a text payload (not a WAF fallback
+    HTML page), process it as a valid llms.txt and add a validation warning
+    that the CDN/WAF is blocking the auditor's main UA.
     """
     r2, err2 = fetch_url(url, headers=_browser_like_headers())
     if err2 or not r2:
-        result.validation_warnings.append("llms.txt may exist but CDN/WAF returned 403/406, and the browser-like retry failed")
+        result.validation_warnings.append(
+            "llms.txt may exist but CDN/WAF returned a block, and the browser retry failed"
+        )
         return
     if r2.status_code == 200:
+        # Guard against a WAF/fallback that answers the browser with an HTML
+        # page instead of the real llms.txt — that would be a false positive.
+        content_type = (r2.headers.get("Content-Type") or "").lower()
+        body = (getattr(r2, "text", "") or "").lstrip("\ufeff").lstrip().lower()
+        looks_html = "<html" in body[:200] or "<!doctype" in body[:200]
+        if looks_html or ("text/html" in content_type and "text/plain" not in content_type):
+            result.validation_warnings.append(
+                "CDN/WAF returned a block; the browser retry answered with an HTML page, "
+                "so llms.txt status remains unknown"
+            )
+            return
         result.found = True
-        result.validation_warnings.append(
-            "llms.txt may exist but CDN/WAF returned 403 - check if your CDN blocks non-browser User-Agents"
-        )
-        # process the retried (200) response content normally
+        # process the retried (200) response content normally FIRST (its
+        # _validate_llms_content overwrites validation_warnings), then append
+        # the CDN note so it is not lost.
         _result_from_response(r2, result)
+        result.validation_warnings.append(
+            "CDN/WAF returned a block for the auditor's User-Agent (recovered via a browser-like retry)"
+        )
 
 
 def _result_from_response(r, result: LlmsTxtResult) -> None:
@@ -161,12 +178,15 @@ def audit_llms_txt(base_url: str) -> LlmsTxtResult:
     return result
 
 
-def _audit_llms_from_response(r, r_full=None) -> LlmsTxtResult:
+def _audit_llms_from_response(r, r_full=None, url: str | None = None) -> LlmsTxtResult:
     """Analyze llms.txt from an already-downloaded HTTP response.
 
     Args:
         r: HTTP response for /llms.txt (or None).
         r_full: HTTP response for /llms-full.txt (or None). Fix #184.
+        url: The full /llms.txt URL. When present and the response is a
+            CDN/WAF block (403/406), a browser-like retry is attempted so the
+            main audit flow can actually recover the file (not just flag it).
     """
     result = LlmsTxtResult()
 
@@ -174,14 +194,18 @@ def _audit_llms_from_response(r, r_full=None) -> LlmsTxtResult:
         return result
 
     # A 403/406 response means the CDN/WAF refused the auditor's User-Agent:
-    # llms.txt may exist, so we don't treat it as "not found". Set the
-    # blocked_by_cdn flag and surface a warning (the caller can retry with a
-    # browser-like UA via audit_llms_txt where the URL is available).
+    # llms.txt may exist, so we don't treat it as "not found". If the URL is
+    # available we retry with a browser-like UA to recover the real file.
     if r.status_code in (403, 406):
         result.blocked_by_cdn = True
         result.validation_warnings.append(
-            "llms.txt may exist but CDN/WAF returned 403 - check if your CDN blocks non-browser User-Agents"
+            f"llms.txt may exist but CDN/WAF returned {r.status_code} - check if your CDN blocks non-browser User-Agents"
         )
+        if url:
+            _try_browser_like_retry(url, result)
+            if result.found:
+                # recovered via browser-like retry: still note the CDN block
+                result.blocked_by_cdn = True
         return result
 
     if r.status_code != 200:
