@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Documentation
+canonical: "https://geoready.dev/docs/"
 description: "Complete documentation for GEO Optimizer — the open-source toolkit to audit, fix, and optimize websites for AI search engines."
 ---
 

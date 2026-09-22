@@ -41,6 +41,7 @@ jobs:
                 echo "layout: default"
                 echo "title: \"$title\""
                 echo "description: \"GEO Optimizer documentation: $title\""
+                echo "canonical: https://geoready.dev/docs/$filename/"
                 echo "permalink: /$filename/"
                 echo "---"
                 echo ""
