@@ -3,8 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
 {% seo %}
-<link rel="canonical" href="{{ page.url | absolute_url }}">
+{%- assign slug_parts = page.url | remove_first: site.baseurl | split: '/' | compact -%}
+{%- assign doc_slug = slug_parts | last -%}
+{%- if page.url == '/' or page.url == '' or doc_slug == 'index' -%}
+  {%- assign canonical_url = 'https://geoready.dev/docs/' -%}
+{%- else -%}
+  {%- assign canonical_url = 'https://geoready.dev/docs/' | append: doc_slug | append: '/' -%}
+{%- endif -%}
+<link rel="canonical" href="{{ canonical_url }}">
 <link rel="sitemap" type="application/xml" href="{{ '/sitemap.xml' | relative_url }}">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
 <link rel="alternate" type="application/rss+xml" title="GEO Optimizer Releases" href="https://github.com/Auriti-Labs/geo-optimizer-skill/releases.atom">
