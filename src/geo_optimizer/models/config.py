@@ -16,6 +16,15 @@ USER_AGENT = "GEO-Optimizer/2.0 (https://github.com/auriti-labs/geo-optimizer-sk
 
 HEADERS = {"User-Agent": USER_AGENT}
 
+# Real desktop browser UA, used only to recover a resource that the CDN/WAF
+# blocks for the auditor's User-Agent (e.g. llms.txt behind a bot wall). It is
+# an honest, well-formed browser fingerprint — not a spoofed bot signature — and
+# is deliberately a separate, explicit constant so it is never applied as the
+# default fetch UA (#528 override stays independent).
+BROWSER_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+)
+
 # Process-wide User-Agent override for the generic fetch layer (#528). Resolved
 # once at CLI startup from --user-agent / GEO_USER_AGENT and read by
 # utils/http.py, utils/http_async.py and llms_generator.py via get_headers().

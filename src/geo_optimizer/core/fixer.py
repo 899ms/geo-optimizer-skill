@@ -108,6 +108,20 @@ def generate_llms_fix(result: AuditResult, base_url: str) -> FixItem | None:
     if result.llms.found and result.llms.has_h1 and result.llms.has_sections and result.llms.has_links:
         return None
 
+    # CDN/WAF blocking: llms.txt may exist but the auditor's User-Agent is
+    # rejected. We still generate the file content from the sitemap (so a
+    # complete, non-empty llms.txt is written in case the site really lacks
+    # one), but surface the CDN note in both the description and the audit's
+    # validation warnings so the user knows the block may be hiding a real file.
+    cdn_note = ""
+    if result.llms.blocked_by_cdn:
+        cdn_note = (
+            " NOTE: your CDN/WAF returned a block (403/406) for the auditor's User-Agent — "
+            "an llms.txt may already exist behind it. If the generated file is valid, "
+            "also add an exception for GEO-Optimizer in your CDN rules (or serve llms.txt "
+            "from a path that bypasses the WAF) so AI crawlers can read it."
+        )
+
     from geo_optimizer.core.llms_generator import discover_sitemap, fetch_sitemap, generate_llms_txt
 
     # Try to discover the sitemap
@@ -133,6 +147,7 @@ def generate_llms_fix(result: AuditResult, base_url: str) -> FixItem | None:
 
     if urls:
         desc += f" ({len(urls)} URLs from sitemap)"
+    desc += cdn_note
 
     return FixItem(
         category="llms",

@@ -70,11 +70,17 @@ class TestStatusCodeValidation:
         assert result.found is True
 
     @patch("geo_optimizer.core.audit_llms.fetch_url")
-    def test_llms_403_non_parsato(self, mock_fetch):
-        """llms.txt con status 403 non viene trattato come trovato."""
+    def test_llms_403_bloccato_da_cdn(self, mock_fetch):
+        """llms.txt con status 403 viene marcato come bloccato dal CDN/WAF e fa il retry browser-like.
+
+        Il retry con 403 non recupera il file -> found resta False ma blocked_by_cdn e' True.
+        """
         mock_fetch.return_value = (Mock(status_code=403, text="Forbidden"), None)
         result = audit_llms_txt("https://example.com")
         assert result.found is False
+        assert result.blocked_by_cdn is True
+        # retry browser-like eseguito (almeno il fetch iniziale + 1 retry)
+        assert mock_fetch.call_count >= 2
 
     @patch("geo_optimizer.core.audit_llms.fetch_url")
     def test_llms_301_non_parsato(self, mock_fetch):

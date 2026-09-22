@@ -813,7 +813,7 @@ def run_full_audit(url: str, use_cache: bool = False, project_config=None) -> Au
     # Run all sub-audits using the pre-downloaded responses
     # Fix #120: pass effective_bots which includes any extra_bots from project_config
     robots = _audit_robots_from_response(r_robots, bots=effective_bots)
-    llms = _audit_llms_from_response(r_llms, r_full=r_llms_full)
+    llms = _audit_llms_from_response(r_llms, r_full=r_llms_full, url=llms_url_full)
     schema = audit_schema(soup, base_url)
     meta = audit_meta_tags(soup, base_url)
     # gap #2: X-Robots-Tag HTTP header — blocks AI indexing even when robots.txt allows it
@@ -1010,7 +1010,7 @@ async def run_full_audit_async(url: str, project_config=None) -> AuditResult:
     robots = _audit_robots_from_response(r_robots, bots=effective_bots)
 
     # Sub-audit llms.txt (uses pre-fetched response)
-    llms = _audit_llms_from_response(r_llms, r_full=r_llms_full)
+    llms = _audit_llms_from_response(r_llms, r_full=r_llms_full, url=llms_url)
 
     # Sub-audits that work on the DOM (no additional fetch required)
     schema = audit_schema(soup, base_url)
