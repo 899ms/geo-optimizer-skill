@@ -22,7 +22,7 @@
 // Uso: npm run generate:sitemap   (manuale — vedi nota churn in fondo)
 
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createClient } from '@sanity/client';
@@ -36,6 +36,12 @@ const OUTPUT = join(FRONTEND_ROOT, 'public', 'sitemap.xml');
 
 // Estensioni che producono una route.
 const ROUTE_EXTENSIONS = ['.astro', '.md', '.mdx'];
+
+// Pagine docs di GeoReady (Astro Starlight) — content collection in src/content/docs/docs/,
+// non in src/pages/, quindi non intercettate dal walk di pages. Generano route /docs/<slug>/.
+const DOCS_CONTENT_DIR = join(FRONTEND_ROOT, 'src', 'content', 'docs', 'docs');
+// slug che NON vanno indicizzati: solo il content che è vera documentazione pubblica.
+// (Starlight genera /docs/index/ come home docs; lo includiamo → /docs/).
 
 // Route da escludere dal walk (path file relativo a src/pages, senza estensione).
 // Motivi: noindex o non indicizzabili.
@@ -436,6 +442,23 @@ function buildEntries() {
     const absSrc = join(PAGES_DIR, extra.sourceFile);
     seenUrls.add(extra.url);
     entries.push({ url: extra.url, lastmod: lastmodFor(absSrc, extra.sourceFile) });
+  }
+
+  // 3. Pagine docs (Astro Starlight content collection in src/content/docs/docs/).
+  //    Route /docs/<slug>/ per ogni file .md/.mdx tranne index → /docs/.
+  if (existsSync(DOCS_CONTENT_DIR)) {
+    try {
+      for (const f of readdirSync(DOCS_CONTENT_DIR, { withFileTypes: true })) {
+        if (!f.isFile() || !/\.(md|mdx)$/.test(f.name)) continue;
+        const slug = f.name.replace(/\.(md|mdx)$/, '');
+        const url = slug === 'index' ? '/docs/' : `/docs/${slug}/`;
+        if (seenUrls.has(url)) continue;
+        seenUrls.add(url);
+        entries.push({ url, lastmod: lastmodFor(join(DOCS_CONTENT_DIR, f.name), `docs/${f.name}`) });
+      }
+    } catch (e) {
+      warnings.push(`DOCS SKIP: impossibile leggere ${DOCS_CONTENT_DIR} (${e.message}) — docs non aggiunte alla sitemap.`);
+    }
   }
 
   // Ordine stabile: home prima, poi alfabetico.
