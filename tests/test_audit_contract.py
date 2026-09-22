@@ -160,6 +160,29 @@ def _call_audit_result_to_dict(result):
     return app_module._audit_result_to_dict(result)
 
 
+def test_web_api_llms_exposes_blocked_by_cdn():
+    """`checks.llms_txt` must expose blocked_by_cdn and validation_warnings.
+
+    The SaaS platform consumes this serialization to decide the llms.txt
+    recommendation; a CDN/WAF block (v4.18.3) must be visible so the platform
+    does not tell the user to "create" a file that may already exist behind
+    the WAF.
+    """
+    from geo_optimizer.models.results import LlmsTxtResult
+
+    result = _make_minimal_audit_result()
+    result.llms = LlmsTxtResult(
+        found=False,
+        blocked_by_cdn=True,
+        validation_warnings=["llms.txt may exist but CDN/WAF returned 403"],
+    )
+
+    data = _call_audit_result_to_dict(result)
+    llms_txt = data["checks"]["llms_txt"]
+    assert llms_txt["blocked_by_cdn"] is True
+    assert "CDN/WAF" in llms_txt["validation_warnings"][0]
+
+
 def test_web_api_has_schema_version():
     """Web API JSON response must include schema_version: 1."""
     result = _make_minimal_audit_result()

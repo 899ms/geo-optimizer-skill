@@ -1563,6 +1563,8 @@ def _audit_result_to_dict(result) -> dict:
             "has_links": result.llms.has_links,
             "has_full": result.llms.has_full,
             "word_count": result.llms.word_count,
+            "blocked_by_cdn": result.llms.blocked_by_cdn,
+            "validation_warnings": list(result.llms.validation_warnings),
         },
         # Alias keys used by analytics_dashboard
         "llms_found": result.llms.found,
