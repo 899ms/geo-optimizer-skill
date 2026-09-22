@@ -1,5 +1,5 @@
 ---
-title: "GEO Score Rubric & Weights (v4.18.2)"
+title: "GEO Score Rubric & Weights (v4.18.3)"
 description: "Exact GEO score weights: 8 categories, score bands and how each check contributes out of 100. Reference for the geo audit scoring in config.py."
 order: 6
 ---

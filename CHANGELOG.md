@@ -5,6 +5,42 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 ---
 
+## [4.18.3] — 2026-09-22
+
+A CDN/WAF discovery patch. When a target's `/llms.txt` exists but its CDN/WAF
+rejects the auditor's User-Agent (403/406), GeoReady previously reported a
+misleading "No llms.txt found" and — worse — the `blocked_by_cdn` branch in
+`generate_llms_fix` returned an *empty* `llms.txt` for `geo fix --apply` to
+write, overwriting a real file.
+
+### Added
+- **CDN/WAF blocking detection for `llms.txt`.** `LlmsTxtResult` gains a
+  `blocked_by_cdn` flag. On a 403/406 response the audit sets it and adds a
+  warning instead of treating the file as absent (`audit_llms_txt` and
+  `_audit_llms_from_response`). Both the sync and the async audit flows now
+  pass the `/llms.txt` URL through, so the retry below actually runs in
+  `geo audit` / `geo-web` — before, the browser-like retry lived only in
+  `audit_llms_txt`, which no main audit path called, so it was dead code.
+- **Browser-like retry to recover a blocked file.** After a 403/406 the audit
+  re-fetches once with a real desktop browser User-Agent (Chrome/120,
+  centralized as `BROWSER_USER_AGENT` in `models/config.py`, replacing the
+  previous `Mozilla/5.0 (compatible; ...)` bot signature that modern WAFs
+  block anyway). If the retry returns 200 with a text payload, the file is
+  processed normally and the CDN block is surfaced as a warning. A guard
+  rejects the WAF fallback pattern (200 with an HTML page) so it is not
+  mistaken for a valid `llms.txt`.
+- **`fetch_url` now accepts an optional `headers` argument** (per-request
+  User-Agent override), applied on the initial session and re-applied when a
+  redirect recreates it — still routed through the full DNS-pinned,
+  size-limited secure fetch, so no anti-SSRF protection is bypassed.
+
+### Fixed
+- **`geo fix --apply` no longer writes an empty `llms.txt`** when the file is
+  CDN-blocked. `generate_llms_fix` still generates the complete file from the
+  sitemap (so a real file is written when the site genuinely lacks one) and
+  appends a note to the recommendation describing the CDN/WAF exception or a
+  WAF-bypassing path when the audit flagged a block.
+
 ## [4.18.2] — 2026-09-19
 
 A security patch: `fetch_sitemap()` and `discover_sitemap()` fetched their initial URL through
