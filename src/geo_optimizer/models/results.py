@@ -66,6 +66,9 @@ class LlmsTxtResult:
     has_optional_section: bool = False  # ## Optional section present
     companion_files_hint: bool = False  # link to companion .md files
     validation_warnings: list[str] = field(default_factory=list)  # conformance warnings
+    # CDN/WAF blocking: /llms.txt may exist but the auditor's User-Agent was
+    # rejected (403/406). A second fetch with a browser-like UA may prove it.
+    blocked_by_cdn: bool = False
 
 
 @dataclass

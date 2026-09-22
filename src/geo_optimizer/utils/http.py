@@ -222,7 +222,7 @@ def _stream_response(response: requests.Response, max_size: int) -> tuple[bytes 
 
 
 def fetch_url(
-    url: str, timeout: int = 10, max_size: int = MAX_RESPONSE_SIZE
+    url: str, timeout: int = 10, max_size: int = MAX_RESPONSE_SIZE, headers: dict | None = None
 ) -> tuple[requests.Response | None, str | None]:
     """
     Fetch a URL with automatic retry on transient failures.
@@ -236,6 +236,9 @@ def fetch_url(
         url: URL to fetch.
         timeout: Request timeout in seconds.
         max_size: Maximum response size in bytes (default: 10 MB).
+        headers: Optional header overrides for this request (e.g. a browser-like
+            User-Agent). These are merged on top of the default headers, never
+            bypassing anti-SSRF protections.
 
     Returns:
         tuple: (response, error_msg) where response is None on failure
@@ -249,7 +252,7 @@ def fetch_url(
         return None, f"Unsafe URL: {err}"
 
     # Phase 2: Fetch with DNS pinning + manual redirect + streaming
-    return _fetch_with_manual_redirects(url, timeout, max_size, pinned_ips)
+    return _fetch_with_manual_redirects(url, timeout, max_size, pinned_ips, headers)
 
 
 def _fetch_with_manual_redirects(
@@ -257,6 +260,7 @@ def _fetch_with_manual_redirects(
     timeout: int,
     max_size: int,
     pinned_ips: list[str],
+    headers: dict | None = None,
 ) -> tuple[requests.Response | None, str | None]:
     """Perform the fetch with manual redirect and SSRF revalidation on each hop.
 
@@ -286,6 +290,9 @@ def _fetch_with_manual_redirects(
         status_forcelist=[408, 429, 500, 502, 503, 504],
         pinned_ips=current_ips if current_ips else None,
     )
+    # Apply per-request header overrides (e.g. browser-like UA) on top of defaults
+    if headers:
+        session.headers.update(headers)
 
     while redirect_count <= _MAX_REDIRECTS:
         try:
@@ -348,6 +355,9 @@ def _fetch_with_manual_redirects(
                     status_forcelist=_RETRYABLE_STATUS_CODES,
                     pinned_ips=current_ips if current_ips else None,
                 )
+                # Re-apply per-request header overrides on the new session
+                if headers:
+                    session.headers.update(headers)
             continue
 
         # Final response: download body via streaming or from already-present buffer.
