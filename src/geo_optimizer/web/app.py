@@ -462,13 +462,13 @@ _DOCS_PAGES = {
 }
 
 
-@app.get("/docs/", response_class=HTMLResponse)
+# @app.get("/docs/", response_class=HTMLResponse)
 async def docs_index(request: Request):
     """Documentation index — redirect to the main docs page."""
     return await docs_page(request, "index")
 
 
-@app.get("/docs/{slug}", response_class=HTMLResponse)
+# @app.get("/docs/{slug}", response_class=HTMLResponse)
 async def docs_page(request: Request, slug: str):
     """Render a documentation page from docs/*.md as styled HTML."""
     import re as _re
