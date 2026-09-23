@@ -2,6 +2,11 @@
 title: "The 47 GEO Methods: Techniques & Tactics"
 description: "Reference list of all 47 GEO methods, from Princeton KDD 2024 and AutoGEO through to RAG-readiness checks. Which category each audit flag maps to."
 order: 8
+head:
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://geoready.dev/docs/geo-methods/
 ---
 
 # The 47 GEO Methods
